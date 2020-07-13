@@ -15,13 +15,8 @@ import com.globeop.riskfeed.dto.Test;
 import com.globeop.riskfeed.dto.TestDto;
 import com.globeop.riskfeed.entity.ClientOnboardTable;
 import com.globeop.riskfeed.entity.ClientTable;
-import com.globeop.riskfeed.entity.Customer;
-import com.globeop.riskfeed.entity.Employee;
 import com.globeop.riskfeed.entity.FundTable;
 import com.globeop.riskfeed.entity.RiskAggregator;
-import com.globeop.riskfeed.repository.CustomerRepository;
-import com.globeop.riskfeed.repository.EmployeeRepository;
-import com.globeop.riskfeed.repository.ProductRepository;
 import com.globeop.riskfeed.service.ClientOnboardService;
 import com.globeop.riskfeed.service.ClientService;
 import com.globeop.riskfeed.service.FundService;
@@ -42,23 +37,9 @@ public class TestController {
 	@Autowired
 	private FundService fundService;
 	
-	@Autowired
-	private EmployeeRepository EmployeeRepository;
-	
-	@Autowired
-    private CustomerRepository customerRepository;
-    @Autowired
-    private ProductRepository productRepository;
-	
+
 	@Autowired
 	private ClientOnboardService theClientOnboardService;
-    
-    
-
-    @GetMapping("/findAllOrders")
-    public List<Customer> findAllOrders(){
-        return customerRepository.findAll();
-    }
     
 	/*
 	 * @Autowired public TestController(RiskAggregatorService riskAggregatorService,
@@ -96,10 +77,6 @@ public class TestController {
 		return fundService.findAll();		
 	} 
 	
-	@GetMapping("/emp")
-	public List<Employee> employee () {	
-		return EmployeeRepository.findAll();		
-	} 
 	
 	List<TestDto> data=new ArrayList<TestDto>();
 	//rest api call
