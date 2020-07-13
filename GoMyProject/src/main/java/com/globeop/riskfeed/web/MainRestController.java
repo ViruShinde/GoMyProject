@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.globeop.riskfeed.dto.Test;
 import com.globeop.riskfeed.dto.TestDto;
-import com.globeop.riskfeed.repository.CustomerRepository;
-import com.globeop.riskfeed.repository.EmployeeRepository;
-import com.globeop.riskfeed.repository.ProductRepository;
 import com.globeop.riskfeed.service.ClientOnboardService;
 import com.globeop.riskfeed.service.ClientService;
 import com.globeop.riskfeed.service.FundService;
@@ -33,15 +30,8 @@ public class MainRestController {
 	
 	@Autowired
 	private FundService fundService;
-	
-	@Autowired
-	private EmployeeRepository EmployeeRepository;
-	
-	@Autowired
-    private CustomerRepository customerRepository;
-    @Autowired
-    private ProductRepository productRepository;
-	
+
+
 	@Autowired
 	private ClientOnboardService theClientOnboardService;
 	
