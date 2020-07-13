@@ -20,7 +20,7 @@ public class FundTable implements Serializable{
 	@Id   
 	@Column(name = "FundID")
 	//@GeneratedValue	//(strategy=GenerationType.AUTO)  
-	@GeneratedValue	(strategy=GenerationType.AUTO)
+	@GeneratedValue	(strategy=GenerationType.IDENTITY)
 	//@GeneratedValue	
 	private int FundID;
 
