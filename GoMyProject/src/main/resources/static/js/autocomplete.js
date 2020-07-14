@@ -17,7 +17,7 @@ jQuery(document).ready(function($) {
 			//console.log(this.value);
 			//console.log(ui.item);
 			$("#clientId").val(ui.item.value);
-			alert("INSID");
+			//alert("INSID");
 			jQuery.getJSON("getFundsFromClient", {
 				p1 : ui.item.label
 			}, function(responseData) {
