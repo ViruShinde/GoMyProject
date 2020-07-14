@@ -29,6 +29,8 @@ public class OnBordValidator implements Validator {
 	      }else if(onBordDto.getOnBoardForm().equals("onBoardForm2")) {
 	    	  validateForm1(onBordDto, errors);
 	    	  validateForm2(onBordDto, errors);
+	      }else if(onBordDto.getOnBoardForm().equals("billForm")) {
+	    	  billFormValidator(onBordDto, errors);
 	      }
 		/*
 		 * 
@@ -83,6 +85,23 @@ public class OnBordValidator implements Validator {
 	    if(onBordDto.getIsActive().equals("-1") ) {
 	    	errors.rejectValue("isActive", "OnBordDto.isActive.empty");
 	    }
+	}
+	
+	private static void billFormValidator(OnBordDto onBordDto,Errors errors) {
+		if(onBordDto.getRiskAggregatorId() == -1) {
+	    	  errors.rejectValue("riskAggregatorId", "OnBordDto.riskAggregatorId.empty");	  
+	      }
+	      
+	      if(onBordDto.getClientId() == 0) {
+	    	  errors.rejectValue("clientId", "OnBordDto.clientId.empty");
+	      }
+	      
+	      if(onBordDto.getIsClientPayingOldCharges().equals("-1")) {
+	    	  errors.rejectValue("isClientPayingOldCharges", "OnBordDto.isClientPayingOldCharges.empty");
+	      }
+	      if(onBordDto.getIsWaivedOff().equals("-1")) {
+	    	  errors.rejectValue("isWaivedOff", "OnBordDto.isWaivedOff.empty");
+	      }
 	}
 
 }
