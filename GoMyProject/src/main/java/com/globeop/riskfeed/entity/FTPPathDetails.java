@@ -18,7 +18,7 @@ public class FTPPathDetails {
 	
 	@Id   
 	@Column(name = "FTPPathId")
-	@GeneratedValue	(strategy=GenerationType.AUTO)  
+	@GeneratedValue	(strategy=GenerationType.IDENTITY)  
 	private int FTPPathId;
 	
 	@Column(name = "FTPPath")
