@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.globeop.riskfeed.dto.TestDto;
 import com.globeop.riskfeed.entity.BillTable;
 import com.globeop.riskfeed.entity.ClientTable;
 import com.globeop.riskfeed.entity.DevelopmentTable;
@@ -17,6 +18,7 @@ import com.globeop.riskfeed.entity.RiskAggregator;
 import com.globeop.riskfeed.enums.IsClientPayingOldCharges;
 import com.globeop.riskfeed.enums.IsWaivedOff;
 import com.globeop.riskfeed.repository.BillRepository;
+import com.globeop.riskfeed.repository.ClientOnboardRepository;
 import com.globeop.riskfeed.util.GenricUtil;
 
 @Service
@@ -29,6 +31,9 @@ public class BillService implements CommonService<BillTable> {
 	private ClientService theClientService;
 	
 	@Autowired RiskAggregatorService  theRiskAggregatorService; 
+	
+	@Autowired
+	ClientOnboardRepository theClientOnboardRepository;
 
 	@Override
 	public List<BillTable> findAll() {
@@ -87,9 +92,10 @@ public class BillService implements CommonService<BillTable> {
 			bill.setGoCheckNoteId(onBordDto.getGoCheckNoteId());
 			bill.setSetupFee(onBordDto.getSetupFee());
 			
-			//pending fund count
-			//bill.setFundcount();
-			
+			// to get fund count from OnBoard table
+			List<TestDto> fundList = theClientOnboardRepository.findFundsDetailsByClientAndRiskAggregator(onBordDto.getRiskAggregatorId(),onBordDto.getClientId());
+			bill.setFundcount(fundList.size());
+		
 			bill.setModified_date(new Date());
 			
 			billRepository.save(bill);
