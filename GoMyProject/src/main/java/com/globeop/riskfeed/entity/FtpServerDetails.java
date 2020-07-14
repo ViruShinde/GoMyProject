@@ -19,7 +19,7 @@ public class FtpServerDetails {
 	
 	@Id   
 	@Column(name = "FTPDetailID")
-	@GeneratedValue	(strategy=GenerationType.AUTO)  
+	@GeneratedValue	(strategy=GenerationType.IDENTITY)  
 	private int FTPDetailID;
 	
 	
