@@ -3,6 +3,8 @@ package com.globeop.riskfeed.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -11,7 +13,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +34,7 @@ import com.globeop.riskfeed.entity.RiskAggregator;
 import com.globeop.riskfeed.service.BillService;
 import com.globeop.riskfeed.service.ClientService;
 import com.globeop.riskfeed.service.RiskAggregatorService;
+import com.globeop.riskfeed.validator.OnBordValidator;
 
 @Controller
 public class BillController {
@@ -42,39 +48,39 @@ public class BillController {
 	@Autowired
 	private RiskAggregatorService riskAggregatorService;
 	
+	@Autowired
+    private OnBordValidator onBordValidator;
+    
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+       binder.addValidators(onBordValidator);
+    }
+	
 	@GetMapping("/Bill")
 	public List<BillTable> getBills() {
 		return theBillService.findAll();
 	}
 	
 	@GetMapping("/AddBill")
-	    public String showOnBordForm1(OnBordDto onBordDto) {  
-	    	//onBordDto.setOnBoardForm("onBoardForm1");
+	    public String showOnBordForm1(OnBordDto onBordDto) {  	    	
+			onBordDto.setOnBoardForm("billForm");
 	    	return "billForm";
 	    }
 	 
 	@PostMapping("/AddBillDetails")
 	 //public String uploadFile(@RequestParam("file") MultipartFile file) {
-	public String uploadFile(@ModelAttribute("onBordDto") OnBordDto onBordDto,@RequestParam("file1") MultipartFile file1, @RequestParam("file2") MultipartFile file2, @RequestParam("file3") MultipartFile file3, Model model) {
+	public String uploadFile(@ModelAttribute("onBordDto") @Valid  OnBordDto onBordDto, Errors errors, @RequestParam("file1") MultipartFile file1, @RequestParam("file2") MultipartFile file2, @RequestParam("file3") MultipartFile file3, Model model) {
+	 
+		 //System.out.println(onBordDto);
 		 
-		 System.out.println(onBordDto);
-		theBillService.saveDetails(onBordDto, file1,file2,file3);
-
-		 
-		//return "redirect:/AddBill";
-		return "redirect:/BillDetails/client/"+onBordDto.getClientId()+"/riskAggregator/"+onBordDto.getRiskAggregatorId();
-		 
-		/*
-		 * String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-		 * .path("/downloadFile/") .path(developmentTable.getDevelopmentId()+"")
-		 * .toUriString();
-		 */
-
-		/*
-		 * return new UploadFileResponse(dbFile.getFileName(), fileDownloadUri,
-		 * file.getContentType(), file.getSize());
-		 */
-	    }
+		if(errors.hasErrors()) {
+				System.out.println("ERROR accoured");				       				
+				return "billForm";								
+			}else {
+				theBillService.saveDetails(onBordDto, file1,file2,file3);
+				return "redirect:/BillDetails/client/"+onBordDto.getClientId()+"/riskAggregator/"+onBordDto.getRiskAggregatorId();
+			}		
+	}
 	
 	
 	@GetMapping("/BillDetails")
