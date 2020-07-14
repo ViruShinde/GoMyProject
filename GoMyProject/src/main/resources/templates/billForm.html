@@ -129,17 +129,19 @@
 	
 	<form action="#" th:action="@{/AddBillDetails}" th:object="${onBordDto}" method="post" enctype="multipart/form-data">
 	
+		<input type="text" id="billForm" th:field="*{onBoardForm}"	class="form-control mb-4 col-4" value="billForm" readonly>
+		
 		RiskAggregator
 		<select id="riskAggregator" class="form-control mb-4 col-4" th:field="*{riskAggregatorId}">
 			<option value="0">Select RiskAggregator</option>			
 		</select>
-		<p th:if="${#fields.hasErrors('riskAggregatorId')}" th:errors="*{riskAggregatorId}"></p>	
-		<!-- <p th:unless="${#fields.hasErrors('riskAggregatorId')}" th:text="TEST"></p> -->
-			
+		<p th:if="${#fields.hasErrors('riskAggregatorId')}" th:errors="*{riskAggregatorId}" class="alert alert-danger mb-4 col-4"></p>
+		
 		Client	
 		<input id="client" type="text" class="form-control mb-4 col-4">
 		<input type="text" id="clientId" th:field="*{clientId}"	placeholder="clientId" class="form-control mb-4 col-4" readonly>
-		<p th:if="${#fields.hasErrors('clientId')}" th:errors="*{clientId}"></p>
+		
+		<p th:if="${#fields.hasErrors('clientId')}" th:errors="*{clientId}" class="alert alert-danger mb-4 col-4"></p>
 		
 		Setup Fee
 		<input type="text" th:field="*{setupFee}"  class="form-control mb-4 col-4">
@@ -159,12 +161,17 @@
 		</select>
 		<br>
 		
+		<p th:if="${#fields.hasErrors('isClientPayingOldCharges')}" th:errors="*{isClientPayingOldCharges}" class="alert alert-danger mb-4 col-4"></p>
+		
 		Is WaivedOff
   		<select class="form-control mb-4 col-4" th:field="*{isWaivedOff}">
   			<option value="-1">Select</option>
 			<option th:each="opt : ${T(com.globeop.riskfeed.enums.IsWaivedOff).values()}" th:value="${opt}" th:text="${opt.displayValue}"></option>			
 		</select>
-		<br>		
+		<br>	
+		
+		<p th:if="${#fields.hasErrors('isWaivedOff')}" th:errors="*{isWaivedOff}" class="alert alert-danger mb-4 col-4"></p>
+			
 		Waiver Mail
   		<br>
   		<!-- add required if file is required
