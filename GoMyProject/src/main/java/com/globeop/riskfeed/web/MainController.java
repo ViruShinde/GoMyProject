@@ -222,20 +222,14 @@ public class MainController {
     }
     
     @GetMapping("/getFund/{riskAggregatorId}/{clientId}")
-    public String getFundByriskAggregatorIdAndClientId(@PathVariable Integer riskAggregatorId,@PathVariable Integer clientId,Model model) {    		
+    public String getFundByriskAggregatorIdAndClientId(@PathVariable Integer riskAggregatorId,@PathVariable Integer clientId,Model model) {
+    	ClientTable clientTable = clientService.findById(clientId);
     	RiskAggregator riskAggregator = riskAggregatorService.findById(riskAggregatorId);
-    	List<TestDto> testDto = theClientOnboardService.findFundsDetailsByClientAndRiskAggregator(clientId,riskAggregatorId);
-    	
-    	ClientTable client2 =  new ClientTable();
-    	for(TestDto t: testDto) {
-    		client2.setClientShortName(t.getClientName());
-    		FundTable fund = fundService.findByFundShortName(t.getFundName());
-    		client2.addFund(fund);
-    		client2.setModified_date(t.getModified_date());
-    	}
+    	List<TestDto> testDto = theClientOnboardService.findFundsDetailsByClientAndRiskAggregator(clientId,riskAggregatorId);    	   
+    	//System.out.println("######### "+testDto);
     	model.addAttribute("riskAggregator", riskAggregator.getRiskAggregatorName());
-    	model.addAttribute("clientName", client2.getClientShortName());
-    	model.addAttribute("client", client2);
+    	model.addAttribute("clientName", clientTable.getClientShortName());
+    	model.addAttribute("clientDto", testDto);
     	return "fund";
     }
     
