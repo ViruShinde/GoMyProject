@@ -151,10 +151,16 @@ public class TestDto {
 		this.monthlyFee = monthlyFee;
 	}
 	
-	public TestDto(int clientID, String clientName, String fundName, Date modifDate) {		
+	  
+	public TestDto(int clientID, String clientName, String fundName, Date setUpDate,IsActive isActive, String frequency, AutomationProcess automationProcess,String comment, Date  modifDate) {		
 		this.clientID = clientID;
 		this.clientName = clientName;
 		this.fundName = fundName;
+		this.setUpDate=setUpDate;
+		this.isActive=isActive;
+		this.frequency=frequency;
+		this.automationProcess=automationProcess;
+		this.clientOnBoardComments =comment;
 		this.modified_date = modifDate;
 	}
 
