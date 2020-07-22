@@ -20,6 +20,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.globeop.riskfeed.enums.AutomationProcess;
+import com.globeop.riskfeed.enums.Frequency;
 import com.globeop.riskfeed.enums.IsActive;
 
 @Entity  
@@ -32,7 +33,7 @@ public class ClientOnboardTable implements Serializable{
 	private int ClientOnboardId;
 
 	@JsonBackReference
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(cascade=CascadeType.MERGE,fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ClientID", nullable = false)    
 	private ClientTable client;
 
@@ -63,8 +64,10 @@ public class ClientOnboardTable implements Serializable{
 	@Column(name = "Comments")
 	private String Comments;
 	
+	//@Enumerated(EnumType.STRING)
 	@Column(name = "Frequency")
 	private String Frequency;
+	//private Frequency Frequency;
 	
 	@Column(name = "Modified_date")
 	private Date Modified_date;
@@ -113,11 +116,13 @@ public class ClientOnboardTable implements Serializable{
 	public void setComments(String comments) {
 		Comments = comments;
 	}
-	public String getFrequency() {
+		
+	public String getFrequency() {		
 		return Frequency;
 	}
+	
 	public void setFrequency(String frequency) {
-		Frequency = frequency;
+		this.Frequency = frequency;
 	}
 	public Date getModified_date() {
 		return Modified_date;
@@ -145,4 +150,5 @@ public class ClientOnboardTable implements Serializable{
 				+ ", automationProcess=" + automationProcess + ", isActive=" + isActive + ", Comments=" + Comments
 				+ ", Frequency=" + Frequency + ", Modified_date=" + Modified_date + "]";
 	}	
+		
 }
