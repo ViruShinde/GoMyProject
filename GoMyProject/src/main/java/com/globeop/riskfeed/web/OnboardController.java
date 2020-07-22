@@ -2,8 +2,6 @@ package com.globeop.riskfeed.web;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.validation.Valid;
 
@@ -17,22 +15,18 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.globeop.riskfeed.dto.OnBoardFunds;
 import com.globeop.riskfeed.dto.TestDto;
 import com.globeop.riskfeed.entity.ClientOnboardTable;
 import com.globeop.riskfeed.entity.ClientTable;
-import com.globeop.riskfeed.entity.DevelopmentTable;
-import com.globeop.riskfeed.entity.FundTable;
 import com.globeop.riskfeed.entity.OnBordDto;
 import com.globeop.riskfeed.entity.RiskAggregator;
 import com.globeop.riskfeed.service.ClientOnboardService;
 import com.globeop.riskfeed.service.ClientService;
-import com.globeop.riskfeed.service.FundService;
 import com.globeop.riskfeed.service.OnBordService;
 import com.globeop.riskfeed.service.RiskAggregatorService;
-import com.globeop.riskfeed.util.GenricUtil;
 import com.globeop.riskfeed.validator.OnBordValidator;
 
 @Controller
@@ -44,8 +38,8 @@ public class OnboardController {
 	@Autowired
 	private OnBordService onBordService;
 
-	@Autowired
-	private FundService fundService;
+	//@Autowired
+	//private FundService fundService;
 	
 	@Autowired
 	private RiskAggregatorService riskAggregatorService;
@@ -214,4 +208,34 @@ public class OnboardController {
 	 * ownerService.findOwner(ownerId); Pet pet = owner.getPet(petId);
 	 * model.addAttribute("pet", pet); return "displayPet"; }
 	 */
+    
+    @GetMapping("/editClientOnboard")
+   	public String editClientOnboard(@RequestParam("ClientOnboardId") int clientOnboardId, Model model) {
+   		
+       	System.out.println("Inside delete editClientOnboard"+clientOnboardId);
+   		// delete the fund
+       	ClientOnboardTable clientOnboardTable = theClientOnboardService.findById(clientOnboardId);
+       	model.addAttribute("clientOnboardTable",clientOnboardTable);
+       	model.addAttribute("riskAggregatorName",clientOnboardTable.getRiskAggregator().getRiskAggregatorName());
+       	model.addAttribute("clientShortName",clientOnboardTable.getClient().getClientShortName());
+       	model.addAttribute("fundShortName",clientOnboardTable.getFund().getFundShortName());
+   		
+   		// redirect to /getFund/{}
+       	//return "redirect:/getFund/"+clientOnboardTable.getRiskAggregator().getId()+"/"+clientOnboardTable.getClient().getClientID();
+   		return "editFundDetails";
+   	}
+    
+    @PostMapping("/editClientOnboard")
+   	public String editClientOnboard(  @ModelAttribute("clientOnboardTable") ClientOnboardTable clientOnboardTable, Errors errors, Model model) {	
+    	System.out.println("INSIDE POST METHOD" +clientOnboardTable.getClientOnboardId());
+    	ClientOnboardTable clientOnboardTable2 = theClientOnboardService.findById(clientOnboardTable.getClientOnboardId());
+    	clientOnboardTable2.setIsActive(clientOnboardTable.getIsActive());
+    	clientOnboardTable2.setAutomationProcess(clientOnboardTable.getAutomationProcess());
+    	clientOnboardTable2.setFrequency(clientOnboardTable.getFrequency());
+    	clientOnboardTable2.setComments(clientOnboardTable.getComments());
+    	theClientOnboardService.save(clientOnboardTable2);
+    	
+    	return "redirect:/getFund/"+clientOnboardTable2.getRiskAggregator().getId()+"/"+clientOnboardTable2.getClient().getClientID();
+    	//return "editFundDetails";
+    }
 }
