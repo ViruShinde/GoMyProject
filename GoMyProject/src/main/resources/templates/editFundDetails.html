@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" mlns:th="http://www.thymeleaf.org">
+
+<!-- working for navbar dropdowns -->
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+<script src="/jquery/jquery-3.4.1.js"></script>
+<link rel="stylesheet" type="text/css"  th:href="@{/css/bootstrap.min.css}"/>
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Working for auto complete-->
+
+<link href="/jquery/jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet" type="text/css"  />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+<!-- Working for multi select -->
+
+<link href="/multi-select/css/multi-select.css" rel="stylesheet" />
+<script src="/multi-select/js/jquery.multi-select.js"></script>
+
+<link href="/multi-select/css/select2.css" rel="stylesheet" />
+<script src="/multi-select/js/select2.js"></script>
+
+<script src="/js/autocomplete.js"></script>
+
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	
+
+$(".frequency").select2({
+	  maximumSelectionLength: 2
+	});
+
+$(".frequency").select2({
+	  placeholder: 'Select Frequency',
+	  allowClear: true
+	});
+
+
+$("#frequency").select2({
+	  maximumSelectionLength: 2
+	});
+
+$("#frequency").select2({
+	  placeholder: 'Select Frequency',
+	  allowClear: true
+	});
+	
+});
+</script>
+<head>
+<meta charset="ISO-8859-1">
+<title>Fund Form</title>
+</head>
+<body>
+<!-- to include the Navbar from fragments/nav.html -->
+<div  th:replace="fragments/nav :: navbar"></div>
+<div class="container">
+	
+	<h3>Edit OnBoard Details For</h3>
+	
+	<h3 th:text="${riskAggregatorName} +' ' +${clientShortName} + ' ' +${fundShortName} "> </h3>
+	
+	<hr>	
+
+	<form action="#" th:action="@{/editClientOnboard}" th:object="${clientOnboardTable}" method="post">			
+		
+		<input type="text" id="clientOnboardId" th:field="*{clientOnboardId}" placeholder="clientOnboardId" class="form-control mb-4 col-4" readonly>
+		
+		<input type="text" id="clientId" th:field="*{client.ClientID}" placeholder="clientId" class="form-control mb-4 col-4" readonly>									
+		
+		Client Name
+		<input type="text" id="clientShortName" th:field="*{client.clientShortName}" placeholder="clientShortName" class="form-control mb-4 col-4" readonly>
+		
+		Automation Process		
+		
+		<select class="form-control mb-4 col-4" th:field="*{automationProcess}">
+  			<option value="-1">Select Automation Process</option>
+			<option th:each="opt : ${T(com.globeop.riskfeed.enums.AutomationProcess).values()}" th:value="${opt}" th:text="${opt.displayValue}" th:selected="${opt == clientOnboardTable.automationProcess}"></option>			
+		</select>
+				
+		Is Active	
+		<select class="form-control mb-4 col-4" id="isActive" name="isActive">
+			<option value="-1">Select is Active</option>
+			<option th:each="opt : ${T(com.globeop.riskfeed.enums.IsActive).values()}" th:value="${opt}" th:text="${opt.displayValue}" th:selected="${opt == clientOnboardTable.isActive}" ></option>
+		</select>
+		<hr> 
+		<h3 th:text="${clientOnboardTable.Frequency}" ></h3>
+		<hr>
+		Frequency
+		<br>
+		<select class="frequency form-control mb-4 col-4" id="frequency" multiple="multiple" name="frequency">
+			<option value="-1">Select Frequency</option>
+			<option th:each="opt : ${T(com.globeop.riskfeed.enums.Frequency).values()}" th:value="${opt}" th:text="${opt.displayValue}" th:selected="${ clientOnboardTable.Frequency.contains(opt.toString()) }" ></option>
+		</select>
+		
+		<!-- th:selected="${clientOnboardTable.check(clientOnboardTable.Frequency,opt) }" -->
+		
+		<!-- <select class="frequency form-control" multiple="multiple" th:field="*{onBoardFundsList[__${itemStat.index}__].frequency}">				
+							<option value="D">Daily</option>
+							<option value="W">Weekly</option>
+							<option value="M" selected="selected">Monthly</option>
+		</select> -->
+		
+		<br>
+		<br>
+		Comments
+		<input type="text" th:field="*{Comments}" placeholder="Comments" class="form-control mb-4 col-4">
+		
+		
+		<br>
+		<br>
+		<button type="submit" class="btn btn-info col-2">Save</button>
+	</form>
+</div>	
+</body>
+</html>
