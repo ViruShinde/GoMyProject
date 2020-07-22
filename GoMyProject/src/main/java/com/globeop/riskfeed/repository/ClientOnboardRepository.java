@@ -123,6 +123,7 @@ public interface ClientOnboardRepository extends JpaRepository<ClientOnboardTabl
 	  
 	  @Query(value=
 			  "SELECT NEW com.globeop.riskfeed.dto.TestDto("
+			  + "c.ClientOnboardId,  "
 			  + "c.client.ClientID,  "
 			  + "c.client.clientShortName, "
 			  + "c.fund.fundShortName, "
