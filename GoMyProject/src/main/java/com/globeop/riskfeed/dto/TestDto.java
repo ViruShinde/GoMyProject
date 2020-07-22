@@ -3,6 +3,7 @@ package com.globeop.riskfeed.dto;
 import java.util.Date;
 
 import com.globeop.riskfeed.enums.AutomationProcess;
+import com.globeop.riskfeed.enums.Frequency;
 import com.globeop.riskfeed.enums.IsActive;
 import com.globeop.riskfeed.enums.IsClientPayingOldCharges;
 import com.globeop.riskfeed.enums.IsWaivedOff;
@@ -18,8 +19,12 @@ public class TestDto {
 	private AutomationProcess automationProcess;
 
 	private IsActive isActive;
+	
+	//private Frequency frequency;
+	
+	private String frequency;
 
-	private String clientOnBoardComments, frequency;
+	private String clientOnBoardComments;
 
 	private int billId, setupFee, monthlyFee, devlopementFee;
 
@@ -152,7 +157,8 @@ public class TestDto {
 	}
 	
 	  
-	public TestDto(int clientID, String clientName, String fundName, Date setUpDate,IsActive isActive, String frequency, AutomationProcess automationProcess,String comment, Date  modifDate) {		
+	public TestDto(int clientOnboardId,int clientID, String clientName, String fundName, Date setUpDate,IsActive isActive, String frequency, AutomationProcess automationProcess,String comment, Date  modifDate) {		
+		this.clientOnboardId=clientOnboardId;
 		this.clientID = clientID;
 		this.clientName = clientName;
 		this.fundName = fundName;
@@ -407,6 +413,10 @@ public class TestDto {
 	public void setClientOnBoardComments(String clientOnBoardComments) {
 		this.clientOnBoardComments = clientOnBoardComments;
 	}
+
+	
+
+	
 
 	public String getFrequency() {
 		return frequency;
