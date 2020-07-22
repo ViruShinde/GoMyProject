@@ -6,6 +6,7 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import com.globeop.riskfeed.dto.OnBoardFunds;
+import com.globeop.riskfeed.entity.ClientOnboardTable;
 import com.globeop.riskfeed.entity.OnBordDto;
 
 @Component
@@ -13,7 +14,11 @@ public class OnBordValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return OnBordDto.class.equals(clazz);
+		if(ClientOnboardTable.class.equals(clazz)) {
+			return ClientOnboardTable.class.equals(clazz);
+		}else {
+			return OnBordDto.class.equals(clazz);
+		}
 	}
 
 	@Override
