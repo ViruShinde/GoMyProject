@@ -1,5 +1,6 @@
 package com.globeop.riskfeed.dto;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import com.globeop.riskfeed.enums.AutomationProcess;
@@ -14,7 +15,7 @@ public class TestDto {
 
 	private String riskAggregatorName, riskAggregatorContact, clientName, fundName;
 
-	private Date setUpDate, endDate;
+	private LocalDate setUpDate, endDate;
 
 	private AutomationProcess automationProcess;
 
@@ -26,7 +27,9 @@ public class TestDto {
 
 	private String clientOnBoardComments;
 
-	private int billId, setupFee, monthlyFee, devlopementFee;
+	private Integer billId;
+	
+	private int  setupFee, monthlyFee, devlopementFee;
 
 	private IsClientPayingOldCharges isClientPayingOldCharges;
 
@@ -34,7 +37,7 @@ public class TestDto {
 
 	private byte[] waiverMail;
 	
-	private Date billStartDate, billEndDate;
+	private LocalDate billStartDate, billEndDate;
 	
 	private String crmName, crmailID, billingComments;
 	
@@ -50,22 +53,26 @@ public class TestDto {
 	
 	private String developmentComments;
 	
+	
+	//2
 	public TestDto(String riskAggregatorName, String clientName) {
 		this.riskAggregatorName = riskAggregatorName;
 		this.clientName = clientName;
 	}
 	
+	//3
 	public TestDto(int riskAggregatorId,String riskAggregatorName, long count) {
 		this.riskAggregatorId=riskAggregatorId;
 		this.riskAggregatorName = riskAggregatorName;
 		this.count = count;
 	}
 	
+	//34
 	public TestDto(int riskAggregatorId, String riskAggregatorName, String riskAggregatorContact, 
 			int  clientID, String clientName, 
 			int fundId, String fundName,
-			int clientOnboardId, Date setUpDate, Date endDate, AutomationProcess automationProcess, IsActive isActive, String clientOnBoardComments, String frequency,
-			int billId, int setupFee, int monthlyFee, int devlopementFee, IsClientPayingOldCharges isClientPayingOldCharges, IsWaivedOff isWaivedOff, Date billStartDate, Date billEndDate, String crmName, String crmailID, String billingComments, int goCheckNoteId, int fundcount,
+			int clientOnboardId, LocalDate setUpDate, LocalDate endDate, AutomationProcess automationProcess, IsActive isActive, String clientOnBoardComments, String frequency,
+			int billId, int setupFee, int monthlyFee, int devlopementFee, IsClientPayingOldCharges isClientPayingOldCharges, IsWaivedOff isWaivedOff, LocalDate billStartDate, LocalDate billEndDate, String crmName, String crmailID, String billingComments, int goCheckNoteId, int fundcount,
 			
 			//d.developmentId,   d.developmentHours,     d.developmentCost, d.isWaivedOff, 						d.startDate,  				d.endDate, 				d.developmentComment
 			Integer developmentId
@@ -96,7 +103,8 @@ public class TestDto {
 		  this.devlopementFee=devlopementFee;
 		  this.isClientPayingOldCharges=isClientPayingOldCharges;
 		  this.isWaivedOff=isWaivedOff; //this.waiverMail=waiverMail;
-		  this.billStartDate=billStartDate; this.billEndDate=billEndDate;
+		  this.billStartDate=billStartDate; 
+		  this.billEndDate=billEndDate;
 		  this.crmName=crmName; this.crmailID=crmailID;
 		  this.billingComments=billingComments; this.goCheckNoteId=goCheckNoteId;
 		  this.fundcount=fundcount;
@@ -149,6 +157,7 @@ public class TestDto {
 	 * }
 	 */
 
+	//4
 	public TestDto(String riskAggregatorName, String clientName, String fundName, int monthlyFee) {
 		this.riskAggregatorName = riskAggregatorName;
 		this.clientName = clientName;
@@ -156,8 +165,8 @@ public class TestDto {
 		this.monthlyFee = monthlyFee;
 	}
 	
-	  
-	public TestDto(int clientOnboardId,int clientID, String clientName, String fundName, Date setUpDate,IsActive isActive, String frequency, AutomationProcess automationProcess,String comment, Date  modifDate) {		
+	 //10 
+	public TestDto(int clientOnboardId,int clientID, String clientName, String fundName, LocalDate setUpDate,IsActive isActive, String frequency, AutomationProcess automationProcess,String comment, Date  modifDate) {		
 		this.clientOnboardId=clientOnboardId;
 		this.clientID = clientID;
 		this.clientName = clientName;
@@ -170,24 +179,41 @@ public class TestDto {
 		this.modified_date = modifDate;
 	}
 
+	//3
 	public TestDto(int clientID, int riskAggregatorId, int fundID) {
 		this.clientID = clientID;
 		this.riskAggregatorId = riskAggregatorId;
 		this.fundID = fundID;
 	}
 
+	//1
 	public TestDto(int clientID) {
 		super();
 		this.clientID = clientID;
 	}
 
-	public TestDto(int clientId, String clientName, Date modifDate) {
+	//3
+	public TestDto(int clientId, String clientName, LocalDate setUpDate) {
 		this.clientID=clientId;
 		this.clientName=clientName;
-		this.modified_date = modifDate;
+		this.setUpDate = setUpDate;
 	}
 	
-	
+	//7
+	public TestDto(int riskAggregatorId, String riskAggregatorName, int clientId, String clientName, Integer billId, LocalDate billStartDate, LocalDate billEndtDate) {
+		this.riskAggregatorId=riskAggregatorId;
+		this.riskAggregatorName=riskAggregatorName;
+		this.clientID=clientId;
+		this.clientName=clientName;
+		try {
+			this.billId=billId;
+		} catch (Exception e) {
+			this.billId=-1;
+		}
+		
+		this.billStartDate = billStartDate;
+		this.billEndDate=billEndtDate;
+	}
 	
 	
 	public long getCount() {
@@ -254,19 +280,19 @@ public class TestDto {
 		this.developmentComments = developmentComments;
 	}
 
-	public Date getBillStartDate() {
+	public LocalDate getBillStartDate() {
 		return billStartDate;
 	}
 
-	public void setBillStartDate(Date billStartDate) {
+	public void setBillStartDate(LocalDate billStartDate) {
 		this.billStartDate = billStartDate;
 	}
 
-	public Date getBillEndDate() {
+	public LocalDate getBillEndDate() {
 		return billEndDate;
 	}
 
-	public void setBillEndDate(Date billEndDate) {
+	public void setBillEndDate(LocalDate billEndDate) {
 		this.billEndDate = billEndDate;
 	}
 
@@ -310,11 +336,11 @@ public class TestDto {
 		this.fundcount = fundcount;
 	}
 
-	public int getBillId() {
+	public Integer getBillId() {
 		return billId;
 	}
 
-	public void setBillId(int billId) {
+	public void setBillId(Integer billId) {
 		this.billId = billId;
 	}
 
@@ -374,19 +400,19 @@ public class TestDto {
 		this.riskAggregatorContact = riskAggregatorContact;
 	}
 
-	public Date getSetUpDate() {
+	public LocalDate getSetUpDate() {
 		return setUpDate;
 	}
 
-	public void setSetUpDate(Date setUpDate) {
+	public void setSetUpDate(LocalDate setUpDate) {
 		this.setUpDate = setUpDate;
 	}
 
-	public Date getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 
