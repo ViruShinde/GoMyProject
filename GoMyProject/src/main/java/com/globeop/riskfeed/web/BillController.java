@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,15 +19,12 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.globeop.riskfeed.entity.BillTable;
 import com.globeop.riskfeed.entity.ClientTable;
-import com.globeop.riskfeed.entity.DevelopmentTable;
 import com.globeop.riskfeed.entity.OnBordDto;
 import com.globeop.riskfeed.entity.RiskAggregator;
 import com.globeop.riskfeed.service.BillService;
@@ -69,7 +65,7 @@ public class BillController {
 	 
 	@PostMapping("/AddBillDetails")
 	 //public String uploadFile(@RequestParam("file") MultipartFile file) {
-	public String uploadFile(@ModelAttribute("onBordDto") @Valid  OnBordDto onBordDto, Errors errors, @RequestParam("file1") MultipartFile file1, @RequestParam("file2") MultipartFile file2, @RequestParam("file3") MultipartFile file3, Model model) {
+	public String uploadFile(@ModelAttribute("onBordDto") @Valid  OnBordDto onBordDto, Errors errors, @RequestParam("file1") MultipartFile waiverMail, @RequestParam("file2") MultipartFile clientApprovalMail, @RequestParam("file3") MultipartFile terminationMail, Model model) {
 	 
 		 //System.out.println(onBordDto);
 		 
@@ -77,7 +73,7 @@ public class BillController {
 				System.out.println("ERROR accoured");				       				
 				return "billForm";								
 			}else {
-				theBillService.saveDetails(onBordDto, file1,file2,file3);
+				theBillService.saveDetails(onBordDto, waiverMail,clientApprovalMail,terminationMail);
 				return "redirect:/BillDetails/client/"+onBordDto.getClientId()+"/riskAggregator/"+onBordDto.getRiskAggregatorId();
 			}		
 	}
@@ -188,4 +184,69 @@ public class BillController {
        } 		   
        return null;	       
     }
+	
+	
+	@GetMapping("/editBillDetails")
+   	public String editBillDetails(@RequestParam("billId") int billId, Model model) {
+		BillTable billTable= theBillService.findById(billId);		
+		model.addAttribute("clientId",billTable.getClient().getClientID());
+       	model.addAttribute("clientShortName",billTable.getClient().getClientShortName());
+       	model.addAttribute("riskAggregatorId",billTable.getRiskAggregator().getRiskAggregatorId());
+       	model.addAttribute("riskAggregatorName",billTable.getRiskAggregator().getRiskAggregatorName());
+       	model.addAttribute("billTable",billTable);
+       	    
+    	return "editBillDetails";
+    }
+	
+	@PostMapping("/editBillDetails")
+   	public String editBillDetails(@ModelAttribute("billTable")  BillTable billTable, Errors errors, @RequestParam("file1") MultipartFile waiverMail, @RequestParam("file2") MultipartFile clientApprovalMail, @RequestParam("file3") MultipartFile terminationMail, Model model) {
+		System.out.println("INSIDE POST METHOD" +billTable.getBillId() + " === "+"redirect:/BillDetails/client/"+billTable.getClient().getClientID()+"/riskAggregator/"+billTable.getRiskAggregator().getRiskAggregatorId());
+		System.out.println(billTable);
+		System.out.println(model.toString());
+		System.out.println(billTable.getClient().getClientID() + " >> "+billTable.getRiskAggregator().getRiskAggregatorId() );
+	
+		
+		/*
+		 * BillTable billTable2 = theBillService.findById(billTable.getBillId());
+		 * billTable2.setSetupFee(billTable.getSetupFee());
+		 * billTable2.setMonthlyFee(billTable.getMonthlyFee());
+		 * billTable2.setDevlopementFee(billTable.getDevlopementFee());
+		 * billTable2.setIsClientPayingOldCharges(billTable.getIsClientPayingOldCharges(
+		 * )); billTable2.setIsWaivedOff(billTable.getIsWaivedOff());
+		 * 
+		 * billTable2.setBillStartDate(billTable.getBillStartDate());
+		 * billTable2.setBillEndDate(billTable.getBillEndDate());
+		 * billTable2.setCrmName(billTable.getCrmName());
+		 * billTable2.setCrmailID(billTable.getCrmailID());
+		 * billTable2.setBillingComments(billTable.getBillingComments());
+		 * billTable2.setGoCheckNoteId(billTable.getGoCheckNoteId());
+		 */
+		  
+		  theBillService.updateDetails(billTable, waiverMail, clientApprovalMail, terminationMail);
+		 		
+		return "redirect:/BillDetails/client/"+billTable.getClient().getClientID()+"/riskAggregator/"+billTable.getRiskAggregator().getRiskAggregatorId();
+		//return "redirect:/BillDetails";
+	}
+	
+	/*
+	 * @PostMapping("/editClientOnboard") public String
+	 * editClientOnboard( @ModelAttribute("clientOnboardTable") ClientOnboardTable
+	 * clientOnboardTable, Errors errors, Model model) {
+	 * System.out.println("INSIDE POST METHOD"
+	 * +clientOnboardTable.getClientOnboardId()); ClientOnboardTable
+	 * clientOnboardTable2 =
+	 * theClientOnboardService.findById(clientOnboardTable.getClientOnboardId());
+	 * clientOnboardTable2.setIsActive(clientOnboardTable.getIsActive());
+	 * clientOnboardTable2.setAutomationProcess(clientOnboardTable.
+	 * getAutomationProcess());
+	 * clientOnboardTable2.setFrequency(clientOnboardTable.getFrequency());
+	 * clientOnboardTable2.setComments(clientOnboardTable.getComments());
+	 * theClientOnboardService.save(clientOnboardTable2);
+	 * 
+	 * return
+	 * "redirect:/getFund/"+clientOnboardTable2.getRiskAggregator().getId()+"/"+
+	 * clientOnboardTable2.getClient().getClientID(); //return "editFundDetails"; }
+	 */
+	    
+	 
 }
