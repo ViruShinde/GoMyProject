@@ -1,7 +1,7 @@
 package com.globeop.riskfeed.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,6 +17,8 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.globeop.riskfeed.enums.IsClientPayingOldCharges;
@@ -57,18 +59,20 @@ public class BillTable implements Serializable{
 	private String waiverFileName;
 	
 	@Column(name = "BillStartDate")
-	private Date billStartDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate billStartDate;
 	
 	@Column(name = "BillEndDate")
-	private Date billEndDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate billEndDate;
 
 	@JsonBackReference
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "ClientID", nullable = false)    
 	private ClientTable client;
 	
 	@JsonBackReference
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY,optional = false)
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.EAGER,optional = false)
 	@JoinColumn(name="RiskAggregatorId", nullable = false)
 	private RiskAggregator riskAggregator;
 	
@@ -102,7 +106,8 @@ public class BillTable implements Serializable{
 	private int fundcount;
 	
 	@Column(name = "Modified_date")
-	private Date modified_date;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate modified_date;
 		
 	@Transient
 	private String waiverMailUrl;
@@ -181,19 +186,19 @@ public class BillTable implements Serializable{
 		this.waiverMail = waiverMail;
 	}
 
-	public Date getBillStartDate() {
+	public LocalDate getBillStartDate() {
 		return billStartDate;
 	}
 
-	public void setBillStartDate(Date billStartDate) {
+	public void setBillStartDate(LocalDate billStartDate) {
 		this.billStartDate = billStartDate;
 	}
 
-	public Date getBillEndDate() {
+	public LocalDate getBillEndDate() {
 		return billEndDate;
 	}
 
-	public void setBillEndDate(Date billEndDate) {
+	public void setBillEndDate(LocalDate billEndDate) {
 		this.billEndDate = billEndDate;
 	}
 
@@ -269,11 +274,11 @@ public class BillTable implements Serializable{
 		this.fundcount = fundcount;
 	}
 
-	public Date getModified_date() {
+	public LocalDate getModified_date() {
 		return modified_date;
 	}
 
-	public void setModified_date(Date modified_date) {
+	public void setModified_date(LocalDate modified_date) {
 		this.modified_date = modified_date;
 	}
 	
