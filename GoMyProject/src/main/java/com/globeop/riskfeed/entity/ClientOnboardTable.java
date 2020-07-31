@@ -2,9 +2,7 @@ package com.globeop.riskfeed.entity;
 
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Set;
-
+import java.time.LocalDate;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,10 +15,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.globeop.riskfeed.enums.AutomationProcess;
-import com.globeop.riskfeed.enums.Frequency;
 import com.globeop.riskfeed.enums.IsActive;
 
 @Entity  
@@ -30,28 +30,30 @@ public class ClientOnboardTable implements Serializable{
 	@Id   
 	@Column(name = "ClientOnboardId")
 	@GeneratedValue	(strategy=GenerationType.IDENTITY)  
-	private int ClientOnboardId;
+	private int clientOnboardId;
 
 	@JsonBackReference
-	@ManyToOne(cascade=CascadeType.MERGE,fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(cascade=CascadeType.PERSIST,fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "ClientID", nullable = false)    
 	private ClientTable client;
 
 	@JsonBackReference
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY,optional = false)
+	@ManyToOne(cascade=CascadeType.PERSIST,fetch = FetchType.EAGER,optional = false)
 	@JoinColumn(name="RiskAggregatorId", nullable = false)
 	private RiskAggregator riskAggregator;
 	
 	@JsonBackReference
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY,optional = false)
+	@ManyToOne(cascade=CascadeType.PERSIST,fetch = FetchType.EAGER,optional = false)
 	@JoinColumn(name="FundID", nullable = false)  
 	private FundTable fund;
 		
 	@Column(name = "SetUpDate")
-	private Date SetUpDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate setUpDate;
 	
 	@Column(name = "EndDate")
-	private Date EndDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate endDate;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "AutomationProcess")
@@ -62,15 +64,16 @@ public class ClientOnboardTable implements Serializable{
 	private IsActive isActive;
 	
 	@Column(name = "Comments")
-	private String Comments;
+	private String comments;
 	
 	//@Enumerated(EnumType.STRING)
 	@Column(name = "Frequency")
-	private String Frequency;
+	private String frequency;
 	//private Frequency Frequency;
 	
 	@Column(name = "Modified_date")
-	private Date Modified_date;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate modified_date;
 	
 	
 	public RiskAggregator getRiskAggregator() {
@@ -81,10 +84,10 @@ public class ClientOnboardTable implements Serializable{
 	}
 		
 	public int getClientOnboardId() {
-		return ClientOnboardId;
+		return clientOnboardId;
 	}
 	public void setClientOnboardId(int clientOnboardId) {
-		ClientOnboardId = clientOnboardId;
+		this.clientOnboardId = clientOnboardId;
 	}
 	public ClientTable getClient() {
 		return client;
@@ -98,37 +101,37 @@ public class ClientOnboardTable implements Serializable{
 	public void setFund(FundTable fund) {
 		this.fund = fund;
 	}
-	public Date getSetUpDate() {
-		return SetUpDate;
+	public LocalDate getSetUpDate() {
+		return setUpDate;
 	}
-	public void setSetUpDate(Date setUpDate) {
-		SetUpDate = setUpDate;
+	public void setSetUpDate(LocalDate setUpDate) {
+		this.setUpDate = setUpDate;
 	}
-	public Date getEndDate() {
-		return EndDate;
+	public LocalDate getEndDate() {
+		return endDate;
 	}
-	public void setEndDate(Date endDate) {
-		EndDate = endDate;
+	public void setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
 	}	
 	public String getComments() {
-		return Comments;
+		return comments;
 	}
 	public void setComments(String comments) {
-		Comments = comments;
+		this.comments = comments;
 	}
 		
 	public String getFrequency() {		
-		return Frequency;
+		return frequency;
 	}
 	
 	public void setFrequency(String frequency) {
-		this.Frequency = frequency;
+		this.frequency = frequency;
 	}
-	public Date getModified_date() {
-		return Modified_date;
+	public LocalDate getModified_date() {
+		return modified_date;
 	}
-	public void setModified_date(Date modified_date) {
-		Modified_date = modified_date;
+	public void setModified_date(LocalDate modified_date) {
+		this.modified_date = modified_date;
 	}
 	public AutomationProcess getAutomationProcess() {
 		return automationProcess;
@@ -142,13 +145,37 @@ public class ClientOnboardTable implements Serializable{
 	public void setIsActive(IsActive theIsActive) {
 		this.isActive=theIsActive;
 	}
-
-	@Override
-	public String toString() {
-		return "ClientOnboardTable [ClientOnboardId=" + ClientOnboardId + ", client=" + client.getClientID() + ", riskAggregator="
-				+ riskAggregator.getId() + ", fund=" + fund.getFundID() + ", SetUpDate=" + SetUpDate + ", EndDate=" + EndDate
-				+ ", automationProcess=" + automationProcess + ", isActive=" + isActive + ", Comments=" + Comments
-				+ ", Frequency=" + Frequency + ", Modified_date=" + Modified_date + "]";
-	}	
+	/*
+	 * @Override public String toString() { return
+	 * "ClientOnboardTable [clientOnboardId=" + clientOnboardId + ", client=" +
+	 * client.getClientID() + ", riskAggregator=" +
+	 * riskAggregator.getRiskAggregatorId() + ", fund=" + fund.getFundID() +
+	 * ", setUpDate=" + setUpDate + ", endDate=" + endDate + ", automationProcess="
+	 * + automationProcess + ", isActive=" + isActive + ", comments=" + comments +
+	 * ", frequency=" + frequency + ", modified_date=" + modified_date + "]"; }
+	 */
+	/*
+	 * @Override public String toString() { return
+	 * "ClientOnboardTable [clientOnboardId=" + clientOnboardId + ", client=" +
+	 * client.getClientID() + ", riskAggregator=" +
+	 * riskAggregator.getRiskAggregatorId() + ", fund=" + fund + "]"; }
+	 */
+	
+	
+	
+	
+	
+	  @Override public String toString() { return
+	  "ClientOnboardTable [clientOnboardId=" + clientOnboardId + ", client=" +
+	  client.getClientID() + ", riskAggregator=" +
+	  riskAggregator.getRiskAggregatorId() + ","
+	  		+ " fund=" + fund.getFundID() +
+	  ", setUpDate=" + setUpDate + ", endDate=" + endDate + ", automationProcess="
+	  + automationProcess + ", isActive=" + isActive + ", comments=" + comments +
+	  ", frequency=" + frequency + ", modified_date=" + modified_date + "]"; }
+	 
+	
+	
+	
 		
 }
