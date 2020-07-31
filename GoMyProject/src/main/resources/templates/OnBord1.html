@@ -35,15 +35,15 @@
 <link href="/multi-select/css/select2.css" rel="stylesheet" />
 <script src="/multi-select/js/select2.js"></script>
 
-<script src="/js/autocomplete.js"></script>
+<!-- <script src="/js/autocomplete.js"></script> -->
 
 <script type="text/javascript">
 
  jQuery(document).ready(function($) {
 
-	// to get the client list in drop down.
-	/*jQuery("#client").autocomplete({
-		source : "\clientList",
+	// to get the client list in drop down \clientList\?riskAggregatorId=-1 to get all clients.
+	jQuery("#client").autocomplete({
+		source : "\clientList\?riskAggregatorId=-1",
 		minLength : 0,
 		scroll : true,
 		select : function(event, ui) {
@@ -52,8 +52,7 @@
 			//console.log(this.value);
 			//console.log(ui.item);
 			$("#clientId").val(ui.item.value);
-
-			alert("INSID");
+			//alert("INSID");
 			jQuery.getJSON("getFundsFromClient", {
 				p1 : ui.item.label
 			}, function(responseData) {
@@ -70,8 +69,23 @@
 			});
 			return false;
 		}
+	}); 
+	
+	
+	jQuery.getJSON("riskAggregatorList", function(responseData) {
+		//console.log(responseData);
+		//var clientFunds = jQuery('#clientFunds');
+		jQuery('#riskAggregatorId').empty();
+		let ra =jQuery('#riskAggregatorId');
+		jQuery('<option>').val(-1).text("Select RiskAggregator").appendTo(ra);
+		jQuery.each(responseData, function(key, value) {
+			//console.log(value.label + " >> "+value.value);				
+			jQuery('<option id =' +value.value+'>').val(value.value)
+    	    .text(value.label).appendTo(ra);			
+		});
+
 	});
-	 */
+	 
 	//label	value
 			
 	$("#funds").select2({
@@ -151,9 +165,9 @@
 	<hr> -->
 
 	<form action="#" th:action="@{/AddOnBordDetails1}" th:object="${onBordDto}" method="post">
-		<input type="text" id="onBoardForm1" th:field="*{onBoardForm}"	class="form-control mb-4 col-4" value="onBoardForm1" readonly>
+		<input type="hidden" id="onBoardForm1" th:field="*{onBoardForm}"	class="form-control mb-4 col-4" value="onBoardForm1" readonly>
 		RiskAggregator
-		<select id="riskAggregator" class="form-control mb-4 col-4" th:field="*{riskAggregatorId}">
+		<select id="riskAggregatorId" class="form-control mb-4 col-4" th:field="*{riskAggregatorId}">
 			<option value="0">Select RiskAggregator</option>			
 		</select>
 		
@@ -166,7 +180,7 @@
 		
 		Client	
 		<input id="client" type="text" class="form-control mb-4 col-4" th:field="*{clientName}">
-		<input type="text" id="clientId" th:field="*{clientId}"	placeholder="clientId" class="form-control mb-4 col-4" readonly>
+		<input type="hidden" id="clientId" th:field="*{clientId}"	placeholder="clientId" class="form-control mb-4 col-4" readonly>
 		
 		<p th:if="${#fields.hasErrors('clientId')}" th:errors="*{clientId}" class="alert alert-danger mb-4 col-4"></p>
 		
