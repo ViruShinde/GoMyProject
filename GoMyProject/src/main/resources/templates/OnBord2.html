@@ -199,11 +199,16 @@ table, td, th {
                     <td >
                     	<!-- <select class="form-control mb-4 col-4" multiple="multiple" th:field="*{onBoardFundsList[__${itemStat.index}__].frequency}"> -->
                     	<!-- <select multiple="multiple" th:id="${itemStat.count}" th:field="*{onBoardFundsList[__${itemStat.index}__].frequency}"> -->
-                    	<select class="frequency form-control" multiple="multiple" th:field="*{onBoardFundsList[__${itemStat.index}__].frequency}">				
+                    	<!-- <select class="frequency form-control" multiple="multiple" th:field="*{onBoardFundsList[__${itemStat.index}__].frequency}">				
 							<option value="D">Daily</option>
 							<option value="W">Weekly</option>
 							<option value="M" selected="selected">Monthly</option>
-						</select>
+						</select> -->
+						
+					<select class="frequency form-control" multiple="multiple" name="frequency" th:field="*{onBoardFundsList[__${itemStat.index}__].frequency}">
+							<!-- <option value="-1">Select Frequency</option> -->
+							<option th:each="opt : ${T(com.globeop.riskfeed.enums.Frequency).values()}" th:value="${opt}" th:text="${opt.displayValue}"  ></option>
+					</select>
                     </td>
                 </tr>
             </tbody>
