@@ -12,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,16 +24,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
-import com.globeop.riskfeed.entity.ClientOnboardTable;
 import com.globeop.riskfeed.entity.ClientTable;
 import com.globeop.riskfeed.entity.DevelopmentTable;
 import com.globeop.riskfeed.entity.OnBordDto;
 import com.globeop.riskfeed.entity.RiskAggregator;
 import com.globeop.riskfeed.service.ClientService;
 import com.globeop.riskfeed.service.DevelopmentService;
-import com.globeop.riskfeed.service.FundService;
-import com.globeop.riskfeed.service.OnBordService;
 import com.globeop.riskfeed.service.RiskAggregatorService;
+import com.globeop.riskfeed.validator.OnBordValidator;
 
 @Controller
 public class DevelopmentController {
@@ -45,18 +45,39 @@ public class DevelopmentController {
 	@Autowired
 	private DevelopmentService developmentService;
 	
+	 @Autowired
+	 private OnBordValidator onBordValidator;
+	    
+	 @InitBinder
+	 protected void initBinder(WebDataBinder binder) {
+		 binder.addValidators(onBordValidator);
+	 }
+	    
 	 @GetMapping("/AddDevelopmentDetails")
-	    public String showDevelopmentDetailsForm(OnBordDto onBordDto) {       	    	
+	    public String showDevelopmentDetailsForm(OnBordDto onBordDto) {  
+		 	onBordDto.setOnBoardForm("developmentForm");
 	    	return "developmentForm";
 	    }
 	 
 	 
 	 @PostMapping("/AddDevelopmentDetails")
 	 //public String uploadFile(@RequestParam("file") MultipartFile file) {
-	 public String uploadFile(@ModelAttribute("onBordDto") OnBordDto onBordDto,@RequestParam("file") MultipartFile file, Model model) {
+	 public String uploadFile(@ModelAttribute("onBordDto") @Valid OnBordDto onBordDto, Errors errors, @RequestParam("file") MultipartFile file, Model model) {
 		 
 		 //System.out.println(onBordDto);
-		developmentService.saveDetails(onBordDto, file);
+		 
+		 if(errors.hasErrors()) {
+			 System.out.println("ERROR accoured");	
+			 if(file.isEmpty())				 
+			 	errors.rejectValue("waiverMail", "OnBordDto.waivedOffMail.empty");
+			 return "developmentForm";								
+		 }else if(file.isEmpty()){
+			 System.out.println("ERROR accoured");
+			 errors.rejectValue("waiverMail", "OnBordDto.waivedOffMail.empty");
+			 return "developmentForm";
+		 }else {
+			 developmentService.saveDetails(onBordDto, file);
+		 }
 
 		 
 		//return "redirect:/AddDevelopmentDetails";
