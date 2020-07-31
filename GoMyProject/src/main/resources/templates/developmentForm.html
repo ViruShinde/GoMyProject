@@ -143,7 +143,7 @@ jQuery(document).ready(function($) {
 		<button type="submit" class="btn btn-info col-2">Save</button>
 	</form> -->
 
-	<h3>Client Onboard</h3>
+	<h3>Add Development Details</h3>
 	<hr>
 	
 
@@ -151,16 +151,19 @@ jQuery(document).ready(function($) {
 	<hr> -->
 
 	<form action="#" th:action="@{/AddDevelopmentDetails}" th:object="${onBordDto}" method="post" enctype="multipart/form-data">
+	
+		<input type="hidden" id="developmentForm" th:field="*{onBoardForm}"	class="form-control mb-4 col-4" value="developmentForm" readonly>
 		RiskAggregator
 		<select id="riskAggregator" class="form-control mb-4 col-4" th:field="*{riskAggregatorId}">
-			<option value="0">Select RiskAggregator</option>			
+			<option value="-1">Select RiskAggregator</option>			
 		</select>
-		<p th:if="${#fields.hasErrors('riskAggregatorId')}" th:errors="*{riskAggregatorId}"></p>	
+		<p th:if="${#fields.hasErrors('riskAggregatorId')}" th:errors="*{riskAggregatorId}" class="alert alert-danger mb-4 col-4"></p>	
 		<!-- <p th:unless="${#fields.hasErrors('riskAggregatorId')}" th:text="TEST"></p> -->	
 		Client	
 		<input id="client" type="text" class="form-control mb-4 col-4">
-		<input type="text" id="clientId" th:field="*{clientId}"	placeholder="clientId" class="form-control mb-4 col-4" readonly>
-		<p th:if="${#fields.hasErrors('clientId')}" th:errors="*{clientId}"></p>		
+		
+		<input type="hidden" id="clientId" th:field="*{clientId}"	placeholder="clientId" class="form-control mb-4 col-4" readonly>
+		<p th:if="${#fields.hasErrors('clientId')}" th:errors="*{clientId}" class="alert alert-danger mb-4 col-4"></p>		
   		<br>
   		
   		Is WaivedOff
@@ -168,6 +171,9 @@ jQuery(document).ready(function($) {
   			<option value="-1">Select</option>
 			<option th:each="opt : ${T(com.globeop.riskfeed.enums.IsWaivedOff).values()}" th:value="${opt}" th:text="${opt.displayValue}"></option>			
 		</select>
+		
+		<p th:if="${#fields.hasErrors('isWaivedOff')}" th:errors="*{isWaivedOff}" class="alert alert-danger mb-4 col-4"></p>
+		
 		<br>
 		Development Hours
 		<input type="text" th:field="*{developmentHours}" placeholder="Hours" class="form-control mb-4 col-4">
@@ -184,12 +190,15 @@ jQuery(document).ready(function($) {
   		Comments
   		<br>
   		<textarea rows="4" cols="50" name="comment" placeholder="Comments...." th:field="*{comments}"></textarea>
-  		<p th:if="${#fields.hasErrors('comments')}" th:errors="*{comments}"></p>
+  		<p th:if="${#fields.hasErrors('comments')}" th:errors="*{comments}" class="alert alert-danger mb-4 col-4"></p>
   		<br>
   		Approval Mail
   		<br>
-  		<input type="file" name="file" required>  		
+  		<input type="file" name="file">  		
   		<br>
+  		<br>
+  		<p th:if="${#fields.hasErrors('waiverMail')}" th:errors="*{waiverMail}" class="alert alert-danger mb-4 col-4"></p>
+  		
 		<br>
 		<br>
 		<button type="submit" class="btn btn-info col-2">Save</button>
