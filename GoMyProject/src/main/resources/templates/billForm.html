@@ -98,12 +98,39 @@
 		});
 	
 	// its check if clien field is blank then blank clientId as well
-	jQuery('#client').change(function(event) {		
+	jQuery('#client').blur(function(event) {		
 		//let clientLength = $('#client').val().length;
 		//console.log(clientLength);
 		if( $('#client').val() == "" ){
 			$("#clientId").val("");
-		}	
+		}
+		
+		//$('#info').text("");
+		
+		let riskAggregatorId = jQuery("#riskAggregator").val();
+		let clientId = jQuery("#clientId").val();
+		
+		console.log(riskAggregatorId + ">> "+ clientId);
+		
+		jQuery.getJSON("checkFundCount", {
+			p1 : riskAggregatorId,
+			p2 : clientId
+		}, function(responseData) {
+			console.log(responseData);
+			console.log(responseData.length);
+
+			var set=1;
+			for (i = 5; i < 20; i=i+5) {
+				if(responseData.length > i ){
+					set++;
+				}				
+			}	
+			
+			console.log("Current fund count "+responseData.length + " and monthly charges = "+set*750);
+			$('#info').text("Current fund count = "+responseData.length + " and monthly charges = "+set*750);
+			$('#info').show();
+			$('#info').addClass("alert alert-info");
+		});
 	});
 			
 	
@@ -129,7 +156,7 @@
 	
 	<form action="#" th:action="@{/AddBillDetails}" th:object="${onBordDto}" method="post" enctype="multipart/form-data">
 	
-		<input type="text" id="billForm" th:field="*{onBoardForm}"	class="form-control mb-4 col-4" value="billForm" readonly>
+		<input type="hidden" id="billForm" th:field="*{onBoardForm}"	class="form-control mb-4 col-4" value="billForm" readonly>
 		
 		RiskAggregator
 		<select id="riskAggregator" class="form-control mb-4 col-4" th:field="*{riskAggregatorId}">
@@ -139,10 +166,11 @@
 		
 		Client	
 		<input id="client" type="text" class="form-control mb-4 col-4">
-		<input type="text" id="clientId" th:field="*{clientId}"	placeholder="clientId" class="form-control mb-4 col-4" readonly>
+		<input type="hidden" id="clientId" th:field="*{clientId}"	placeholder="clientId" class="form-control mb-4 col-4" readonly>
 		
 		<p th:if="${#fields.hasErrors('clientId')}" th:errors="*{clientId}" class="alert alert-danger mb-4 col-4"></p>
 		
+		<p id="info" class="mb-4 col-4" > </p>
 		Setup Fee
 		<input type="text" th:field="*{setupFee}"  class="form-control mb-4 col-4">
 	
