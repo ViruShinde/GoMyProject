@@ -49,7 +49,7 @@ public class TestDto {
 	
 	private IsWaivedOff isDevelopmentWaivedOff;
 	
-	private Date developmentStartDate, developmentEndDate, modified_date;
+	private LocalDate developmentStartDate, developmentEndDate, modified_date;
 	
 	private String developmentComments;
 	
@@ -76,7 +76,7 @@ public class TestDto {
 			
 			//d.developmentId,   d.developmentHours,     d.developmentCost, d.isWaivedOff, 						d.startDate,  				d.endDate, 				d.developmentComment
 			Integer developmentId
-			, Integer developmentHours, Integer developmentCost, IsWaivedOff isDevelopmentWaivedOff, Date developmentStartDate, Date developmentEndDate, String developmentComments 
+			, Integer developmentHours, Integer developmentCost, IsWaivedOff isDevelopmentWaivedOff, LocalDate developmentStartDate, LocalDate developmentEndDate, String developmentComments 
 			
 			) {		
 		
@@ -166,7 +166,7 @@ public class TestDto {
 	}
 	
 	 //10 
-	public TestDto(int clientOnboardId,int clientID, String clientName, String fundName, LocalDate setUpDate,IsActive isActive, String frequency, AutomationProcess automationProcess,String comment, Date  modifDate) {		
+	public TestDto(int clientOnboardId,int clientID, String clientName, String fundName, LocalDate setUpDate,IsActive isActive, String frequency, AutomationProcess automationProcess,String comment, LocalDate  modifDate) {		
 		this.clientOnboardId=clientOnboardId;
 		this.clientID = clientID;
 		this.clientName = clientName;
@@ -256,19 +256,19 @@ public class TestDto {
 		this.isDevelopmentWaivedOff = isDevelopmentWaivedOff;
 	}
 
-	public Date getDevelopmentStartDate() {
+	public LocalDate getDevelopmentStartDate() {
 		return developmentStartDate;
 	}
 
-	public void setDevelopmentStartDate(Date developmentStartDate) {
+	public void setDevelopmentStartDate(LocalDate developmentStartDate) {
 		this.developmentStartDate = developmentStartDate;
 	}
 
-	public Date getDevelopmentEndDate() {
+	public LocalDate getDevelopmentEndDate() {
 		return developmentEndDate;
 	}
 
-	public void setDevelopmentEndDate(Date developmentEndDate) {
+	public void setDevelopmentEndDate(LocalDate developmentEndDate) {
 		this.developmentEndDate = developmentEndDate;
 	}
 
@@ -509,11 +509,11 @@ public class TestDto {
 	}
 
 	
-	public Date getModified_date() {
+	public LocalDate getModified_date() {
 		return modified_date;
 	}
 
-	public void setModified_date(Date modified_date) {
+	public void setModified_date(LocalDate modified_date) {
 		this.modified_date = modified_date;
 	}
 
