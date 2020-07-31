@@ -1,6 +1,7 @@
 package com.globeop.riskfeed.entity;
 
 
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +17,9 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.globeop.riskfeed.enums.IsWaivedOff;
 
@@ -40,10 +44,12 @@ public class DevelopmentTable {
 	private IsWaivedOff isWaivedOff;
 	
 	@Column(name = "StartDate")
-	private Date startDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate startDate;
 	
 	@Column(name = "EndDate")
-	private Date endDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate endDate;
 	
 	@Column(name = "DevelopmentComments")
 	private String developmentComments;
@@ -69,7 +75,8 @@ public class DevelopmentTable {
 	private RiskAggregator riskAggregator;
 	
 	@Column(name = "Modified_date")
-	private Date modified_date;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate modified_date;
 	
 	@Transient
 	private String downloadUrl="";		
@@ -118,19 +125,19 @@ public class DevelopmentTable {
 		this.isWaivedOff = isWaivedOff;
 	}
 
-	public Date getStartDate() {
+	public LocalDate getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getEndDate() {
+	public LocalDate getEndDate() {
 		return endDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
 
@@ -166,11 +173,11 @@ public class DevelopmentTable {
 		this.riskAggregator = riskAggregator;
 	}
 
-	public Date getModified_date() {
+	public LocalDate getModified_date() {
 		return modified_date;
 	}
 
-	public void setModified_date(Date modified_date) {
+	public void setModified_date(LocalDate modified_date) {
 		this.modified_date = modified_date;
 	}
 
