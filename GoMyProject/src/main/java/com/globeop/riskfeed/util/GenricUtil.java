@@ -129,16 +129,17 @@ public class GenricUtil {
 	public static String  getFileName(MultipartFile file) {
 		return StringUtils.cleanPath(file.getOriginalFilename());		
 	}
-    public static void main(String[] args) throws Exception {        
-    	//getClientFundList("BFAM");
-    	
-    	//System.out.println(convertStringToDate("2020-04-04"));
-    	
-    	//System.out.println(AutomationProcess.valueOf("RiskMQ"));
-    	
-    	System.out.println(AutomationProcess.getEnum("RiskMQ"));
-    	
-    	Enum automationProcess=AutomationProcess.getEnum("RiskMQ");
-    	System.out.println(AutomationProcess.valueOf("RiskMQ"));
-    }
+	/*
+	 * public static void main(String[] args) throws Exception {
+	 * //getClientFundList("BFAM");
+	 * 
+	 * //System.out.println(convertStringToDate("2020-04-04"));
+	 * 
+	 * //System.out.println(AutomationProcess.valueOf("RiskMQ"));
+	 * 
+	 * System.out.println(AutomationProcess.getEnum("RiskMQ"));
+	 * 
+	 * Enum automationProcess=AutomationProcess.getEnum("RiskMQ");
+	 * System.out.println(AutomationProcess.valueOf("RiskMQ")); }
+	 */
 }
