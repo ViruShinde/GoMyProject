@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en" mlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Bill</title>
+
+
+<!-- <script type="text/javascript" th:href="@{/webjars/jquery/3.3.1/jquery.min.js}" ></script>
+<script type="text/javascript" scr="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" scr="https://code.jquery.com/jquery-1.12.4.js"></script>
+ -->
+
+<!-- <link rel="stylesheet" type="text/css"	th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}" />
+<script type="text/javascript"	th:href="@{/webjars/bootstrap/4.4.1/js/bootstrap.min.js}"></script>
+<script type="text/javascript"	th:href="@{/webjars/jquery/3.3.1/jquery.js}"></script>
+<script type="text/javascript" th:href="@{/webjars/bootstrap/4.4.1/js/bootstrap.bundle.min.js}" ></script> -->
+
+
+
+<!-- working for navbar dropdowns -->
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+<script src="/jquery/jquery-3.4.1.js"></script>
+<link rel="stylesheet" type="text/css"  th:href="@{/css/bootstrap.min.css}"/>
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Working -->
+
+<link href="/jquery/jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet" type="text/css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script	src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+<script type="text/javascript" th:href="@{/webjars/popper.js/1.14.3/popper.js}"></script>
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script> -->
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+<!-- <script type="text/javascript" src="/js/autocomplete.js"></script> -->
+
+<script src="/js/autocomplete.js"></script>
+
+<script type="text/javascript">
+
+ jQuery(document).ready(function($) {
+
+	// to get the client list in drop down.
+	/*jQuery("#client").autocomplete({
+		source : "\clientList",
+		minLength : 0,
+		scroll : true,
+		select : function(event, ui) {
+			this.value = ui.item.label;
+			$("#client").val(ui.item.label);
+			//console.log(this.value);
+			//console.log(ui.item);
+			$("#clientId").val(ui.item.value);
+
+			alert("INSID");
+			jQuery.getJSON("getFundsFromClient", {
+				p1 : ui.item.label
+			}, function(responseData) {
+				console.log(responseData);
+				//var clientFunds = jQuery('#clientFunds');
+				jQuery('#funds').empty();
+				var clientFunds = jQuery('#funds');
+				jQuery.each(responseData, function(key, value) {
+					console.log(value.label + " >> "+value.value);										
+					jQuery('<option id =' +value.value+'>').val(value.value)
+            	    .text(value.label).appendTo(clientFunds);			
+				});
+
+			});
+			return false;
+		}
+	});
+	 */
+	//label	value
+			
+	$("#funds").select2({
+		  maximumSelectionLength: 2
+		});
+
+	$("#funds").select2({
+		  placeholder: 'Select Funds',
+		  allowClear: true
+		});
+	
+	
+	
+	
+	$("#frequency").select2({
+		  maximumSelectionLength: 2
+		});
+
+	$("#frequency").select2({
+		  placeholder: 'Select Frequency',
+		  allowClear: true
+		});
+	
+	// its check if clien field is blank then blank clientId as well
+	jQuery('#client').blur(function(event) {		
+		//let clientLength = $('#client').val().length;
+		//console.log(clientLength);
+		if( $('#client').val() == "" ){
+			$("#clientId").val("");
+		}
+		
+		//$('#info').text("");
+		
+		let riskAggregatorId = jQuery("#riskAggregator").val();
+		let clientId = jQuery("#clientId").val();
+		
+		console.log(riskAggregatorId + ">> "+ clientId);
+		
+		jQuery.getJSON("checkFundCount", {
+			p1 : riskAggregatorId,
+			p2 : clientId
+		}, function(responseData) {
+			console.log(responseData);
+			console.log(responseData.length);
+
+			var set=1;
+			for (i = 5; i < 20; i=i+5) {
+				if(responseData.length > i ){
+					set++;
+				}				
+			}	
+			
+			console.log("Current fund count "+responseData.length + " and monthly charges = "+set*750);
+			$('#info').text("Current fund count = "+responseData.length + " and monthly charges = "+set*750);
+			$('#info').show();
+			$('#info').addClass("alert alert-info");
+		});
+	});
+			
+	
+	 
+});
+
+</script>
+
+
+
+</head>
+<body>
+
+	<!-- to include the Navbar from fragments/nav.html -->
+	<div  th:replace="fragments/nav :: navbar"></div>
+	
+	<br>
+	<div class="container">
+
+
+	<h3>Edit Bill Details</h3>
+	
+	<h3 th:text="${riskAggregatorName} +' ' +${clientShortName} "> </h3>
+	<hr>
+	
+	<form action="#" th:action="@{/editBillDetails}" th:object="${billTable}" method="post" enctype="multipart/form-data">
+	
+		<!-- <input type="hidden" id="billForm" th:field="*{onBoardForm}"	class="form-control mb-4 col-4" value="billForm" readonly> -->
+		
+		<input type="text" id="billId" th:field="*{billId}" placeholder="billId" class="form-control mb-4 col-4" readonly>
+		
+		<input type="text" id="riskAggregatorId" th:field="*{riskAggregator.riskAggregatorId}" placeholder="riskAggregatorId" class="form-control mb-4 col-4" readonly>
+		RiskAggregator
+		<!-- <select id="riskAggregator" class="form-control mb-4 col-4" th:field="*{riskAggregatorId}">
+			<option value="0">Select RiskAggregator</option>			
+		</select> -->
+		<input type="text" id="riskAggregator" th:field="*{riskAggregator.riskAggregatorName}" placeholder="riskAggregatorName" class="form-control mb-4 col-4" readonly>
+		
+		<!-- <p th:if="${#fields.hasErrors('riskAggregatorId')}" th:errors="*{riskAggregatorId}" class="alert alert-danger mb-4 col-4"></p> -->
+			
+		
+		<input type="text" id="clientId" th:field="*{client.clientID}" placeholder="clientId" class="form-control mb-4 col-4" readonly>									
+		
+		Client Name
+		<input type="text" id="clientShortName" th:field="*{client.clientShortName}" placeholder="clientShortName" class="form-control mb-4 col-4" readonly>
+		
+		fund count
+		<input type="text" id="fundcount" th:field="*{fundcount}" placeholder="fundcount" class="form-control mb-4 col-4" readonly>
+		
+<!-- 		Client	
+		<input id="client" type="text" class="form-control mb-4 col-4">
+		<input type="hidden" id="clientId" th:field="*{clientId}"	placeholder="clientId" class="form-control mb-4 col-4" readonly>
+		
+		<p th:if="${#fields.hasErrors('clientId')}" th:errors="*{clientId}" class="alert alert-danger mb-4 col-4"></p> -->
+		
+		<p id="info" class="mb-4 col-4" > </p>
+		Setup Fee
+		<input type="text" th:field="*{setupFee}"  class="form-control mb-4 col-4">
+	
+		
+		Monthly Fee
+		<input type="text" th:field="*{monthlyFee}" class="form-control mb-4 col-4">
+
+		
+		Development Fee
+		<input type="text" th:field="*{devlopementFee}"  class="form-control mb-4 col-4">
+	
+		Is CLient Paying old charges
+  		<select class="form-control mb-4 col-4" th:field="*{isClientPayingOldCharges}">
+  			<option value="-1">Select</option>
+			<option th:each="opt : ${T(com.globeop.riskfeed.enums.IsClientPayingOldCharges).values()}" th:value="${opt}" th:text="${opt.displayValue}" th:selected="${opt == billTable.isClientPayingOldCharges}"></option>			
+		</select>
+		<br>
+		
+		<!-- <p th:if="${#fields.hasErrors('isClientPayingOldCharges')}" th:errors="*{isClientPayingOldCharges}" class="alert alert-danger mb-4 col-4"></p> -->
+		
+		Is WaivedOff
+  		<select class="form-control mb-4 col-4" th:field="*{isWaivedOff}">
+  			<option value="-1">Select</option>
+			<option th:each="opt : ${T(com.globeop.riskfeed.enums.IsWaivedOff).values()}" th:value="${opt}" th:text="${opt.displayValue}" th:selected="${opt == billTable.isWaivedOff}"></option>			
+		</select>
+		<br>	
+		
+		<!-- <p th:if="${#fields.hasErrors('isWaivedOff')}" th:errors="*{isWaivedOff}" class="alert alert-danger mb-4 col-4"></p> -->
+			
+		Waiver Mail
+  		<br>
+  		<!-- add required if file is required
+  		<input type="file" name="file1" required> --> 
+  		<input type="file" name="file1"> 
+		<br>
+		<br>		
+		Bill Start Date
+  		<input type="date" th:field="*{billStartDate}">
+  		
+  		<br>
+  		<br>  		  
+  		
+  		Bill End Date
+  		<input type="date" th:field="*{billEndDate}">  		
+  		<br>  		
+  		<br>
+  		
+  		CRM Name
+		<input type="text" th:field="*{crmName}" placeholder="CRM Name" class="form-control mb-4 col-4">
+
+		CRM E-mail ID
+		<input type="text" th:field="*{crmailID}" placeholder="CRM E-mail" class="form-control mb-4 col-4">
+  		
+  		Client Approval Mail
+  		<br>
+  		<input type="file" name="file2"> 
+  		<br>
+  		<br>
+  		Billing Comment  		
+  		<br>
+  		<!-- <textarea rows="4" cols="50" name="comment" placeholder="Comments...." th:field="*{comments}"></textarea> -->
+  		<!-- <p th:if="${#fields.hasErrors('comments')}" th:errors="*{comments}"></p> -->
+  		<br>
+  		
+  		Gocheck Note ID
+		<input type="text" th:field="*{goCheckNoteId}" class="form-control mb-4 col-4">
+		
+		Termination Mail
+  		<br>
+  		<input type="file" name="file3">   		
+  		<br>
+  		<br>		
+		<button type="submit" class="btn btn-info col-2">Save</button>
+	</form>
+
+</div>
+
+
+
+</body>
+</html>
