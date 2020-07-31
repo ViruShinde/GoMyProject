@@ -1,6 +1,7 @@
 package com.globeop.riskfeed.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,7 +32,7 @@ public class RiskAggregator implements Serializable{
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="RiskAggregatorId")
-	private int id;
+	private int riskAggregatorId;
 	
 	@Column(name="RiskAggregatorName")
 	private String riskAggregatorName;
@@ -40,7 +41,7 @@ public class RiskAggregator implements Serializable{
 	private String riskAggregatorContact;
 	
 	@Column(name="Modified_date")
-	private Date Modified_date;
+	private LocalDate modified_date;
 		
 	
 	@JsonManagedReference	
@@ -56,13 +57,19 @@ public class RiskAggregator implements Serializable{
 	}
 	
 	
-	public int getId() {
-		return id;
+	public int getRiskAggregatorId() {
+		return riskAggregatorId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setRiskAggregatorId(int riskAggregatorId) {
+		this.riskAggregatorId = riskAggregatorId;
 	}
+
+	public void setModified_date(LocalDate modified_date) {
+		this.modified_date = modified_date;
+	}
+
+
 
 	public String getRiskAggregatorName() {
 		return riskAggregatorName;
@@ -81,16 +88,11 @@ public class RiskAggregator implements Serializable{
 	}
 
 	
-	public Date getModified_date() {
-		return Modified_date;
+	public LocalDate getModified_date() {
+		return modified_date;
 	}
 
-
-	public void setModified_date(Date modified_date) {
-		Modified_date = modified_date;
-	}
-
-
+	
 	public Set<ClientOnboardTable> getClientOnboardSet() {
 		return clientOnboardSet;
 	}
@@ -118,10 +120,18 @@ public class RiskAggregator implements Serializable{
 
 	@Override
 	public String toString() {
-		return "RiskAggregator [id=" + id + ", RiskAggregatorName=" + riskAggregatorName + ", RiskAggregatorContact="
-				+ riskAggregatorContact + ", Modified_date=" + Modified_date + "]";
+		return "RiskAggregator [riskAggregatorId=" + riskAggregatorId + ", riskAggregatorName=" + riskAggregatorName
+				+ ", riskAggregatorContact=" + riskAggregatorContact + ", modified_date=" + modified_date + "]";
 	}
+	
+	
 
+
+	/*
+	 * @Override public String toString() { return "RiskAggregator [id=" + id +
+	 * ", RiskAggregatorName=" + riskAggregatorName + ", RiskAggregatorContact=" +
+	 * riskAggregatorContact + ", Modified_date=" + Modified_date + "]"; }
+	 */
 
 	/*
 	 * @Override public String toString() { return "RiskAggregator [id=" + id +
