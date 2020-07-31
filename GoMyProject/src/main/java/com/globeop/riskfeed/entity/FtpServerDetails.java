@@ -1,5 +1,6 @@
 package com.globeop.riskfeed.entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity  
 @Table(name="FtpServerDetails")  
 public class FtpServerDetails {
@@ -20,74 +23,75 @@ public class FtpServerDetails {
 	@Id   
 	@Column(name = "FTPDetailID")
 	@GeneratedValue	(strategy=GenerationType.IDENTITY)  
-	private int FTPDetailID;
+	private int ftpDetailID;
 	
 	
 	@Column(name = "FTPName")
-	private String FTPName;
+	private String ftpName;
 	
 	@Column(name = "FTPUserName")
-	private String FTPUserName;
+	private String ftpUserName;
 	
 	@Column(name = "FTPPassword")
-	private String FTPPassword;
+	private String ftpPassword;
 	
 	@Column(name = "FTPType")
-	private String FTPType;
+	private String ftpType;
 	
 	@Column(name = "Modified_date")
-	private Date Modified_date;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate modified_date;
 	
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="RiskAggregatorId")
 	private RiskAggregator riskAggregator;
 
-	public int getFTPDetailID() {
-		return FTPDetailID;
+	public int getFtpDetailID() {
+		return ftpDetailID;
 	}
 
-	public void setFTPDetailID(int fTPDetailID) {
-		FTPDetailID = fTPDetailID;
+	public void setFtpDetailID(int ftpDetailID) {
+		this.ftpDetailID = ftpDetailID;
 	}
 
-	public String getFTPName() {
-		return FTPName;
+	public String getFtpName() {
+		return ftpName;
 	}
 
-	public void setFTPName(String fTPName) {
-		FTPName = fTPName;
+	public void setFtpName(String ftpName) {
+		this.ftpName = ftpName;
 	}
 
-	public String getFTPUserName() {
-		return FTPUserName;
+	public String getFtpUserName() {
+		return ftpUserName;
 	}
 
-	public void setFTPUserName(String fTPUserName) {
-		FTPUserName = fTPUserName;
+	public void setFtpUserName(String ftpUserName) {
+		this.ftpUserName = ftpUserName;
 	}
 
-	public String getFTPPassword() {
-		return FTPPassword;
+	public String getFtpPassword() {
+		return ftpPassword;
 	}
 
-	public void setFTPPassword(String fTPPassword) {
-		FTPPassword = fTPPassword;
+	public void setFtpPassword(String ftpPassword) {
+		this.ftpPassword = ftpPassword;
 	}
 
-	public String getFTPType() {
-		return FTPType;
+	public String getFtpType() {
+		return ftpType;
 	}
 
-	public void setFTPType(String fTPType) {
-		FTPType = fTPType;
+	public void setFtpType(String ftpType) {
+		this.ftpType = ftpType;
 	}
 
-	public Date getModified_date() {
-		return Modified_date;
+	public LocalDate getModified_date() {
+		return modified_date;
 	}
 
-	public void setModified_date(Date modified_date) {
-		Modified_date = modified_date;
+	public void setModified_date(LocalDate modified_date) {
+		this.modified_date = modified_date;
 	}
 
 	public RiskAggregator getRiskAggregator() {
@@ -97,8 +101,6 @@ public class FtpServerDetails {
 	public void setRiskAggregator(RiskAggregator riskAggregator) {
 		this.riskAggregator = riskAggregator;
 	}
-	
-	
-	
-	
+
+		
 }
