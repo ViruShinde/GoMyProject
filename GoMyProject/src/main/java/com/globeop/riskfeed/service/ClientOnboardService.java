@@ -1,5 +1,6 @@
 package com.globeop.riskfeed.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,5 +90,21 @@ public class ClientOnboardService implements CommonService<ClientOnboardTable> {
 	
 	public List<TestDto> getOverAllDetails() {
 		return theClientOnboardRepository.getOveraAllDetails();
+	}
+	
+	public List<TestDto> getClientOnBoardBillDetails() {
+		
+		List<TestDto> t =new ArrayList<TestDto>();
+		
+		try {
+			t = theClientOnboardRepository.getClientOnBoardBillDetails();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println("===============");
+		System.out.println(t);
+		return t;
+		//return theClientOnboardRepository.getClientOnBoardBillDetails();		
 	}
 }
