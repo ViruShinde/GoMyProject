@@ -2,7 +2,7 @@ package com.globeop.riskfeed.service;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,8 +95,7 @@ public void saveDetails( OnBordDto onBordDto,MultipartFile file) {
 	String fileName="";
 	 try {
 		 fileName = StringUtils.cleanPath(file.getOriginalFilename());
-
-   System.out.println(">>>>>>>>>>>>>>>>>> "+fileName);
+   
 		 
         // Check if the file's name contains invalid characters
         if(fileName.contains("..")) {
@@ -110,12 +109,12 @@ public void saveDetails( OnBordDto onBordDto,MultipartFile file) {
         developmentTable.setDevelopmentHours(onBordDto.getDevelopmentHours());
         developmentTable.setDevelopmentCost(onBordDto.getDevelopmentCost());
         developmentTable.setIsWaivedOff(IsWaivedOff.valueOf(onBordDto.getIsWaivedOff()));
-        developmentTable.setStartDate(GenricUtil.convertStringToDate(onBordDto.getStartDate()));
-        developmentTable.setEndDate(GenricUtil.convertStringToDate(onBordDto.getEndDate()));
+        developmentTable.setStartDate(LocalDate.parse(onBordDto.getStartDate()));
+        developmentTable.setEndDate(LocalDate.parse(onBordDto.getEndDate()));
         developmentTable.setDevelopmentComments(onBordDto.getComments());
         developmentTable.setClient(client);
         developmentTable.setRiskAggregator(riskAggregator);
-        developmentTable.setModified_date(new Date());
+        developmentTable.setModified_date(LocalDate.now());
         
         System.out.println(developmentTable);
         
