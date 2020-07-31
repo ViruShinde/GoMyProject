@@ -1,5 +1,6 @@
 package com.globeop.riskfeed.web;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -109,7 +110,7 @@ public class MainController {
 	public String saveUpdateDetails (@ModelAttribute("client") ClientTable theClientTable,Model model) {		
 		try {
 			System.out.println(" >>> "+theClientTable.getClientShortName());
-			theClientTable.setModified_date(new Date());
+			theClientTable.setModified_date(LocalDate.now());
 			theClientTable.setClientShortName(theClientTable.getClientShortName().toUpperCase());
 			boolean result = clientService.checkClientAlreadyExist(theClientTable.getClientShortName().toUpperCase());
 			if(result==false) {
@@ -148,7 +149,7 @@ public class MainController {
 	public String saveRiskAggregator (@ModelAttribute("riskAggregator") RiskAggregator theRiskAggregator,Model model) {		
 		try {
 			System.out.println(" >>> "+theRiskAggregator);
-			theRiskAggregator.setModified_date(new Date());
+			theRiskAggregator.setModified_date(LocalDate.now());
 			theRiskAggregator.setRiskAggregatorName(theRiskAggregator.getRiskAggregatorName().toUpperCase());
 			boolean result = riskAggregatorService.checkRiskAggregatorAlreadyExist(theRiskAggregator.getRiskAggregatorName().toUpperCase());			
 			if(result==false) {
