@@ -58,22 +58,22 @@ public interface ClientOnboardRepository extends JpaRepository<ClientOnboardTabl
 	
 	  @Query(value=
 	  "SELECT NEW com.globeop.riskfeed.dto.TestDto("
-	  + "c.riskAggregator.id, c.riskAggregator.riskAggregatorName, c.riskAggregator.riskAggregatorContact, "
-	  + "c.client.ClientID, c.client.clientShortName, "
-	  + "c.fund.FundID, c.fund.fundShortName,"
-	  + "c.ClientOnboardId, c.SetUpDate, c.EndDate, c.automationProcess, c.isActive, c.Comments, c.Frequency,"
+	  + "c.riskAggregator.riskAggregatorId, c.riskAggregator.riskAggregatorName, c.riskAggregator.riskAggregatorContact, "
+	  + "c.client.clientID, c.client.clientShortName, "
+	  + "c.fund.fundID, c.fund.fundShortName,"
+	  + "c.clientOnboardId, c.setUpDate, c.endDate, c.automationProcess, c.isActive, c.comments, c.frequency,"
 	  + "b.billId , b.setupFee, b.monthlyFee, b.devlopementFee, b.isClientPayingOldCharges, b.isWaivedOff, b.billStartDate, b.billEndDate, b.crmName, b.crmailID, b.billingComments, b.goCheckNoteId, b.fundcount,"	  
 	  + "d.developmentId , d.developmentHours, d.developmentCost, d.isWaivedOff, d.startDate, d.endDate, d.developmentComments ) "
 	  
 	  + " from ClientOnboardTable AS c "
 	  
 	  + " RIGHT JOIN BillTable AS b " 
-	  + " on c.client.ClientID = b.client.ClientID " 
-	  + " AND c.riskAggregator.id = b.riskAggregator.id "	  
+	  + " on c.client.clientID = b.client.clientID " 
+	  + " AND c.riskAggregator.riskAggregatorId = b.riskAggregator.riskAggregatorId "	  
 	
 	  + " LEFT JOIN DevelopmentTable AS d " 
-	  + " on c.client.ClientID = d.client.ClientID " 
-	  + " AND c.riskAggregator.id = d.riskAggregator.id "
+	  + " on c.client.clientID = d.client.clientID " 
+	  + " AND c.riskAggregator.riskAggregatorId = d.riskAggregator.riskAggregatorId "
 	 
 	 )
 	
@@ -89,56 +89,87 @@ public interface ClientOnboardRepository extends JpaRepository<ClientOnboardTabl
 			  + "c.client.clientShortName) "
 			  
 			  + " from ClientOnboardTable AS c "
-			  + " where c.riskAggregator.id Not in ( select b.riskAggregator.id from BillTable AS b ) " 
-			  + " and c.client.ClientID Not in ( select b.client.ClientID from BillTable AS b) " )
+			  + " where c.riskAggregator.riskAggregatorId Not in ( select b.riskAggregator.riskAggregatorId from BillTable AS b ) " 
+			  + " and c.client.clientID Not in ( select b.client.clientID from BillTable AS b) " )
 	  
 	public List<TestDto> getAllPendingBillingDetails(); 
 	  
 	  
 	  @Query(value=
 			  "SELECT NEW com.globeop.riskfeed.dto.TestDto("
-			  + "c.riskAggregator.id,  "
+			  + "c.riskAggregator.riskAggregatorId,  "
 			  + "c.riskAggregator.riskAggregatorName,  "
 			  + "COUNT( DISTINCT c.client ) ) "
 			  
 			  + " from ClientOnboardTable AS c "
+			  +" WHERE c.isActive = 'Active' "
 			  +" GROUP BY c.riskAggregator"
 			  +" ORDER BY c.riskAggregator.riskAggregatorName asc"
 			 )
 	  
 	public List<TestDto> getOveraAllDetails(); 
 	  
+	  
+	  
 	  @Query(value=
 			  "SELECT NEW com.globeop.riskfeed.dto.TestDto("
-			  + "c.client.ClientID,  "
+			  + "c.client.clientID,  "
 			  + "c.client.clientShortName, "
-			  + "c.client.Modified_date  )"	
+			  + "b.billStartDate  )"	
 			  
 			  + " from ClientOnboardTable AS c "
-			  + " where c.riskAggregator.id =?1"
-			  +" GROUP BY c.client.ClientID"			  
+			  + " left JOIN BillTable AS b on " 
+ 			  + " b.riskAggregator.riskAggregatorId = c.riskAggregator.riskAggregatorId "
+			  + " where c.riskAggregator.riskAggregatorId =?1"
+			  + " and c.isActive = 'Active' "
+			  +" GROUP BY c.client.clientID"			  
 			 )
 	  public List<TestDto> findByRiskAggregator2(int theAggregatorId);
 	  
 	  
 	  @Query(value=
 			  "SELECT NEW com.globeop.riskfeed.dto.TestDto("
-			  + "c.ClientOnboardId,  "
-			  + "c.client.ClientID,  "
+			  + "c.clientOnboardId,  "
+			  + "c.client.clientID,  "
 			  + "c.client.clientShortName, "
 			  + "c.fund.fundShortName, "
-			  + "c.SetUpDate, "
+			  + "c.setUpDate, "
 			  + "c.isActive, "
-			  + "c.Frequency, "
+			  + "c.frequency, "
 			  + "c.automationProcess, "
-			  + "c.Comments, "
-			  + "c.Modified_date )"
+			  + "c.comments, "
+			  + "c.modified_date )"
 			  
 			  + " from ClientOnboardTable AS c "
-			  + " where c.riskAggregator.id =?1"
-			  + " and c.client.ClientID =?2"
+			  + " where c.riskAggregator.riskAggregatorId =?1"
+			  + " and c.client.clientID =?2"
 			  + " and c.isActive = 'Active'"
 			  //+" GROUP BY c.client.ClientID"			  
 			 )
 	  public List<TestDto> findFundsDetailsByClientAndRiskAggregator(int riskAggregatorId,int clientId);
+	  
+	  
+
+			  
+	  @Query(value=
+			  "SELECT NEW com.globeop.riskfeed.dto.TestDto("
+			  + "c.riskAggregator.riskAggregatorId,  "
+			  + "c.riskAggregator.riskAggregatorName,  "
+			  + "c.client.clientID,  "
+			  + "c.client.clientShortName, "
+			  + "b.billId, "
+			  + "b.billStartDate, "
+			  + "b.billEndDate )"
+			  
+			  + " from ClientOnboardTable AS c "
+			  
+ 			  + " LEFT JOIN BillTable AS b " 
+ 			  + " on b.client.clientID = c.client.clientID " 
+ 			  + " AND b.riskAggregator.riskAggregatorId = c.riskAggregator.riskAggregatorId "
+ 			  + " GROUP BY c.riskAggregator, c.client"
+			  + " ORDER BY c.riskAggregator.riskAggregatorName asc"
+ 			  
+			 )
+	  
+	public List<TestDto> getClientOnBoardBillDetails(); 
 }
