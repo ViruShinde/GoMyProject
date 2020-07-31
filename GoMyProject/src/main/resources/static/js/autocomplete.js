@@ -6,7 +6,7 @@ $(function(){
 
 jQuery(document).ready(function($) {
 
-	// to get the client list in drop down.
+	/*// to get the client list in drop down.
 	jQuery("#client").autocomplete({
 		source : "\clientList",
 		minLength : 0,
@@ -34,10 +34,28 @@ jQuery(document).ready(function($) {
 			});
 			return false;
 		}
-	});
+	});*/	
 	
-	//label	value
-			
+	//let riskAggregatorId = jQuery("#riskAggregator").val();
+	/*if(typeof(riskAggregatorId)  === "undefined") 
+		riskAggregatorId =-1;*/
+	
+	
+	jQuery('#client').empty();
+	//getClientList(riskAggregatorId);
+		
+	
+	jQuery('#riskAggregator').change(
+			function(){	
+				jQuery('#client').val("");
+				$('#info').hide();
+				let riskAggregatorId = jQuery("#riskAggregator").val();
+				//console.log(riskAggregatorId);
+				// to get the client list in drop down.								
+				getClientList(riskAggregatorId);							
+			});
+
+	
 	$("#funds").select2({
 		  maximumSelectionLength: 2
 	});
@@ -48,14 +66,14 @@ jQuery(document).ready(function($) {
 	});
 	
 	
-	// its check if clien field is blank then blank clientId as well
+	/*// its check if clien field is blank then blank clientId as well
 	jQuery('#client').change(function(event) {		
 		//let clientLength = $('#client').val().length;
 		//console.log(clientLength);
 		if( $('#client').val() == "" ){
 			$("#clientId").val("");
 		}	
-	}); 
+	}); */
 	
 	
 	jQuery.getJSON("riskAggregatorList", function(responseData) {
@@ -71,4 +89,43 @@ jQuery(document).ready(function($) {
 		});
 
 	});
+	
+	
+	
+	
 });
+
+
+function getClientList(riskAggregatorId) {
+	
+	// to get the client list in drop down.
+	//console.log(riskAggregatorId);
+	jQuery("#client").autocomplete({
+		source : "\clientList\?riskAggregatorId="+riskAggregatorId,
+		minLength : 0,
+		scroll : true,
+		select : function(event, ui) {
+			this.value = ui.item.label;
+			$("#client").val(ui.item.label);
+			//console.log(this.value);
+			//console.log(ui.item.label);
+			//console.log(ui.item.value);
+			$("#clientId").val(ui.item.value);
+			jQuery.getJSON("getFundsFromClient", {
+				p1 : ui.item.label
+			}, function(responseData) {
+				//console.log(responseData);
+				//var clientFunds = jQuery('#clientFunds');
+				jQuery('#funds').empty();
+				var clientFunds = jQuery('#funds');
+				jQuery.each(responseData, function(key, value) {
+					//console.log(value.label + " >> "+value.value);										
+					jQuery('<option id =' +value.value+'>').val(value.value)
+            	    .text(value.label).appendTo(clientFunds);			
+				});
+
+			});
+			return false;
+		}
+	});
+}
