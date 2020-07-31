@@ -1,6 +1,7 @@
 package com.globeop.riskfeed.entity;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;  
 
@@ -30,13 +33,14 @@ public class ClientTable implements Serializable{
 	@Id   
 	@Column(name = "ClientID")
 	@GeneratedValue(strategy=GenerationType.IDENTITY) 	
-	private int ClientID;
+	private int clientID;
 	
 	@Column(name = "ClientShortName")
 	private String clientShortName;
 	
 	@Column(name = "Modified_date")
-    private Date Modified_date;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate modified_date;
 
 	@JsonManagedReference
 	@OneToMany(targetEntity = FundTable.class, cascade = CascadeType.ALL, mappedBy="client")
@@ -83,11 +87,11 @@ public class ClientTable implements Serializable{
 	}
 
 	public int getClientID() {
-		return ClientID;
+		return clientID;
 	}
 
 	public void setClientID(int clientID) {
-		ClientID = clientID;
+		this.clientID = clientID;
 	}
 
 	public String getClientShortName() {
@@ -98,12 +102,12 @@ public class ClientTable implements Serializable{
 		this.clientShortName = clientShortName;
 	}
 
-	public Date getModified_date() {
-		return Modified_date;
+	public LocalDate getModified_date() {
+		return modified_date;
 	}
 
-	public void setModified_date(Date modified_date) {
-		Modified_date = modified_date;
+	public void setModified_date(LocalDate modified_date) {
+		this.modified_date = modified_date;
 	}
 
 
@@ -133,8 +137,8 @@ public class ClientTable implements Serializable{
 
 	@Override
 	public String toString() {
-		return "ClientTable [ClientID=" + ClientID + ", ClientShortName=" + clientShortName + ", Modified_date="
-				+ Modified_date + ", funds=" + funds + ", clientOnboardSet=" + clientOnboardSet + "]";
+		return "ClientTable [clientID=" + clientID + ", ClientShortName=" + clientShortName + ", Modified_date="
+				+ modified_date + ", funds=" + funds + ", clientOnboardSet=" + clientOnboardSet + "]";
 	}
 
 
