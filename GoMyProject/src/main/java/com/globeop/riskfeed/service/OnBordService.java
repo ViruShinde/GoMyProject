@@ -1,6 +1,6 @@
 package com.globeop.riskfeed.service;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import com.globeop.riskfeed.entity.OnBordDto;
 import com.globeop.riskfeed.entity.RiskAggregator;
 import com.globeop.riskfeed.enums.AutomationProcess;
 import com.globeop.riskfeed.enums.IsActive;
-import com.globeop.riskfeed.util.GenricUtil;
 
 @Service
 public class OnBordService {
@@ -38,7 +37,7 @@ public class OnBordService {
 		System.out.println("@@@@@@@@@@@@@ "+client.getClientShortName());
 		FundTable fund = new FundTable();
 		fund.setFundShortName(onBordDto.getFundName());
-		fund.setModified_date(new Date());
+		fund.setModified_date(LocalDate.now());
 		//fund.setClient(client);
 		
 		client.addFund(fund);
@@ -59,7 +58,7 @@ public class OnBordService {
 		for(String s: Funds) {
 			FundTable fund = new FundTable();
 			System.out.println("@@@ "+s);
-			fund.setModified_date(new Date());
+			fund.setModified_date(LocalDate.now());
 			fund.setFundShortName(s);
 			client.addFund(fund);
 		}		
@@ -82,23 +81,23 @@ public class OnBordService {
 		for(OnBoardFunds funds: onBoardFundsList) {
 			System.out.println("11111111 "+funds.getFundName());
 			FundTable fundTable = fundService.findByFundShortName(funds.getFundName());
-			System.out.println("22222222 "+fundTable.getFundShortName());
+			System.out.println("22222222 "+fundTable.getFundShortName() + " >> "+ onBordDto.getSetUpDate() + " >> "+onBordDto.getEndDate());
 			ClientOnboardTable theClientOnboardTable = new ClientOnboardTable();
 			//theClientOnboardTable.setSetUpDate(new Date());//(GenricUtil.convertStringToDate(onBordDto.getSetUpDate()));
-			theClientOnboardTable.setSetUpDate(GenricUtil.convertStringToDate(onBordDto.getSetUpDate()));
-			theClientOnboardTable.setEndDate(GenricUtil.convertStringToDate(onBordDto.getEndDate()));
+			theClientOnboardTable.setSetUpDate(LocalDate.parse(onBordDto.getSetUpDate()));
+			theClientOnboardTable.setEndDate(LocalDate.parse(onBordDto.getEndDate()));
 			theClientOnboardTable.setAutomationProcess(AutomationProcess.valueOf(onBordDto.getAutomationProcess()));
 			theClientOnboardTable.setIsActive(IsActive.valueOf(onBordDto.getIsActive() ));
 			theClientOnboardTable.setComments(onBordDto.getComments());
 			theClientOnboardTable.setFrequency(funds.getFrequency());
-			theClientOnboardTable.setModified_date(new Date());
+			theClientOnboardTable.setModified_date(LocalDate.now());
 			
 			client.addClientOnboard(theClientOnboardTable);
 			
 			riskAggregator.addClientOnboard(theClientOnboardTable);
 			fundTable.addClientOnboard(theClientOnboardTable);
 			
-			fundService.save(fundTable);
+			//fundService.save(fundTable);
 			
 			
 		}
