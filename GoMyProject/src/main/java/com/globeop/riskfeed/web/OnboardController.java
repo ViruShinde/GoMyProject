@@ -1,5 +1,6 @@
 package com.globeop.riskfeed.web;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -160,7 +161,7 @@ public class OnboardController {
 		}
 	}
     
-    
+        
     @GetMapping("/OnBordedDetails/client/{clientId}/riskAggregator/{riskAggregatorId}")
     public String getOnBordedDetails(@PathVariable Integer clientId,@PathVariable Integer riskAggregatorId ,Model model) {    
     	ClientTable theClientTable = clientService.findById(clientId);
@@ -174,8 +175,8 @@ public class OnboardController {
 	 public String getDevelopmentDetails(Model model) {    
 	    	//ClientTable theClientTable = clientService.findById(clientId);
 	    	//RiskAggregator theAggregator = riskAggregatorService.findById(riskAggregatorId);
-	    	List<ClientOnboardTable> clientOnboardList= theClientOnboardService.findAll();  	    	
-	    	model.addAttribute("clientOnboardList", clientOnboardList);
+	    	List<TestDto> clientOnboardList= theClientOnboardService.getClientOnBoardBillDetails();  	    	
+	    	model.addAttribute("clientOnboardList", clientOnboardList);	    	
 	    	return "OnBordDetails";
 	    }
     
@@ -183,19 +184,19 @@ public class OnboardController {
     public String getFundById(@PathVariable Integer id,Model model) {    
     	RiskAggregator theAggregator = riskAggregatorService.findById(id);
     	//List<ClientOnboardTable> clientOnboardList= theClientOnboardService.getClientsOfRiskAggregator(theAggregator);
-    	List<TestDto> clientOnboardList=	theClientOnboardService.findByRiskAggregator2(theAggregator.getId());
+    	List<TestDto> clientOnboardList=	theClientOnboardService.findByRiskAggregator2(theAggregator.getRiskAggregatorId());
     	List<ClientTable> clientList=new ArrayList<ClientTable>();
     	for(TestDto c : clientOnboardList) {
     		//System.out.println(c.getClientID()+">>"+c.getClientName());
     		ClientTable c2 = new ClientTable();
     		c2.setClientID(c.getClientID());
     		c2.setClientShortName(c.getClientName());
-    		c2.setModified_date(c.getModified_date());
+    		c2.setModified_date(c.getSetUpDate());
     		clientList.add(c2);    		
     	}
     	
     	model.addAttribute("riskAggregator", theAggregator.getRiskAggregatorName());
-    	model.addAttribute("riskAggregatorId", theAggregator.getId());
+    	model.addAttribute("riskAggregatorId", theAggregator.getRiskAggregatorId());
     	model.addAttribute("clients", clientList);    	
     	return "client";
     }
@@ -210,32 +211,28 @@ public class OnboardController {
 	 */
     
     @GetMapping("/editClientOnboard")
-   	public String editClientOnboard(@RequestParam("ClientOnboardId") int clientOnboardId, Model model) {
-   		
-       	System.out.println("Inside delete editClientOnboard"+clientOnboardId);
+   	public String editClientOnboard(@RequestParam("ClientOnboardId") int clientOnboardId, Model model) {   		
+       	System.out.println("Inside editClientOnboard"+clientOnboardId);
    		// delete the fund
        	ClientOnboardTable clientOnboardTable = theClientOnboardService.findById(clientOnboardId);
+       	//clientOnboardTable.setDateTime(LocalDateTime.now());
        	model.addAttribute("clientOnboardTable",clientOnboardTable);
        	model.addAttribute("riskAggregatorName",clientOnboardTable.getRiskAggregator().getRiskAggregatorName());
        	model.addAttribute("clientShortName",clientOnboardTable.getClient().getClientShortName());
-       	model.addAttribute("fundShortName",clientOnboardTable.getFund().getFundShortName());
-   		
+       	model.addAttribute("fundShortName",clientOnboardTable.getFund().getFundShortName());       	
    		// redirect to /getFund/{}
        	//return "redirect:/getFund/"+clientOnboardTable.getRiskAggregator().getId()+"/"+clientOnboardTable.getClient().getClientID();
    		return "editFundDetails";
    	}
     
     @PostMapping("/editClientOnboard")
-   	public String editClientOnboard(  @ModelAttribute("clientOnboardTable") ClientOnboardTable clientOnboardTable, Errors errors, Model model) {	
-    	System.out.println("INSIDE POST METHOD" +clientOnboardTable.getClientOnboardId());
-    	ClientOnboardTable clientOnboardTable2 = theClientOnboardService.findById(clientOnboardTable.getClientOnboardId());
-    	clientOnboardTable2.setIsActive(clientOnboardTable.getIsActive());
-    	clientOnboardTable2.setAutomationProcess(clientOnboardTable.getAutomationProcess());
-    	clientOnboardTable2.setFrequency(clientOnboardTable.getFrequency());
-    	clientOnboardTable2.setComments(clientOnboardTable.getComments());
-    	theClientOnboardService.save(clientOnboardTable2);
-    	
-    	return "redirect:/getFund/"+clientOnboardTable2.getRiskAggregator().getId()+"/"+clientOnboardTable2.getClient().getClientID();
-    	//return "editFundDetails";
+   	public String editClientOnboard(  @ModelAttribute("clientOnboardTable") ClientOnboardTable clientOnboardTable, Model model) {
+    	System.out.println("Inside editClientOnboard"+clientOnboardTable.getClientOnboardId());
+    	clientOnboardTable.setModified_date(LocalDate.now());
+	   	theClientOnboardService.save(clientOnboardTable);
+		 return "redirect:/getFund/"+clientOnboardTable.getRiskAggregator().getRiskAggregatorId()+"/"+clientOnboardTable.getClient().getClientID();
+		     	//return "editFundDetails";
     }
+    
+      
 }
