@@ -1,7 +1,7 @@
 package com.globeop.riskfeed.service;
 
 import java.io.FileNotFoundException;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,7 +74,7 @@ public class BillService implements CommonService<BillTable> {
 		String waiverMailName = GenricUtil.getFileName(waiverMail);
 		String clientApprovalMailName = GenricUtil.getFileName(clientApprovalMail);
 		String terminationMailName = GenricUtil.getFileName(terminationMail);
-		
+		System.out.println(onBordDto.getStartDate() + " >> "+onBordDto.getEndDate());
 		try {
 			BillTable bill = new BillTable(waiverMail.getBytes(), waiverMailName, clientApprovalMail.getBytes(), clientApprovalMailName,terminationMail.getBytes(), terminationMailName);
 			bill.setSetupFee(onBordDto.getSetupFee());
@@ -82,8 +82,12 @@ public class BillService implements CommonService<BillTable> {
 			bill.setDevlopementFee(onBordDto.getDevlopementFee());	
 			bill.setIsClientPayingOldCharges(IsClientPayingOldCharges.valueOf(onBordDto.getIsClientPayingOldCharges()));
 			bill.setIsWaivedOff(IsWaivedOff.valueOf(onBordDto.getIsWaivedOff()));	
-			bill.setBillStartDate(GenricUtil.convertStringToDate(onBordDto.getStartDate()));
-			bill.setBillEndDate(GenricUtil.convertStringToDate(onBordDto.getEndDate()));
+			
+			bill.setBillStartDate(LocalDate.parse(onBordDto.getStartDate()));
+			if( !("".equals(onBordDto.getEndDate()) || null==onBordDto.getEndDate()) ) {
+				bill.setBillEndDate(LocalDate.parse(onBordDto.getEndDate()));
+			}
+			
 			bill.setClient(client);
 			bill.setRiskAggregator(riskAggregator);
 			bill.setCrmName(onBordDto.getCrmName());
@@ -96,7 +100,7 @@ public class BillService implements CommonService<BillTable> {
 			List<TestDto> fundList = theClientOnboardRepository.findFundsDetailsByClientAndRiskAggregator(onBordDto.getRiskAggregatorId(),onBordDto.getClientId());
 			bill.setFundcount(fundList.size());
 		
-			bill.setModified_date(new Date());
+			bill.setModified_date(LocalDate.now());
 			
 			billRepository.save(bill);
 		} catch (Exception e) {
@@ -107,6 +111,52 @@ public class BillService implements CommonService<BillTable> {
 		
 	}
 
+	
+	public void updateDetails(BillTable billTable,MultipartFile waiverMail,MultipartFile clientApprovalMail, MultipartFile terminationMail) {
+		
+		try {
+			
+		String waiverMailName = GenricUtil.getFileName(waiverMail);
+		String clientApprovalMailName = GenricUtil.getFileName(clientApprovalMail);
+		String terminationMailName = GenricUtil.getFileName(terminationMail);
+				
+			/*
+			 * BillTable billTable2 = findById(billTable.getBillId());
+			 * 
+			 * billTable2.setSetupFee(billTable.getSetupFee());
+			 * billTable2.setMonthlyFee(billTable.getMonthlyFee());
+			 * billTable2.setDevlopementFee(billTable.getDevlopementFee());
+			 * billTable2.setIsClientPayingOldCharges(billTable.getIsClientPayingOldCharges(
+			 * )); billTable2.setIsWaivedOff(billTable.getIsWaivedOff());
+			 * 
+			 * billTable2.setBillStartDate(billTable.getBillStartDate());
+			 * billTable2.setBillEndDate(billTable.getBillEndDate()); if(
+			 * !("".equals(billTable2.getBillEndDate()) ||
+			 * null==billTable2.getBillEndDate()) ) {
+			 * billTable2.setBillEndDate(billTable2.getBillEndDate()); }
+			 * 
+			 * billTable2.setCrmName(billTable.getCrmName());
+			 * billTable2.setCrmailID(billTable.getCrmailID());
+			 * billTable2.setBillingComments(billTable.getBillingComments());
+			 * billTable2.setGoCheckNoteId(billTable.getGoCheckNoteId());
+			 */
+		  
+		  billTable.setWaiverMail(waiverMail.getBytes());
+		  billTable.setWaiverFileName(waiverMailName);
+		  billTable.setClientApprovalMail(clientApprovalMail.getBytes());
+		  billTable.setClientApprovalMailName(clientApprovalMailName);
+		  billTable.setTerminationMail(terminationMail.getBytes());
+		  billTable.setTerminationMailName(terminationMailName);
+		  billTable.setModified_date(LocalDate.now());
+			
+			billRepository.save(billTable);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		
+		
+	}
 	
 	public List<BillTable> findByClientAndRiskAggregator(ClientTable theClientTable, RiskAggregator theAggregator){
 		return billRepository.findByClientAndRiskAggregator(theClientTable, theAggregator);
