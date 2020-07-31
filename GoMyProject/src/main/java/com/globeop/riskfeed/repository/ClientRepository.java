@@ -18,6 +18,6 @@ public interface ClientRepository extends JpaRepository<ClientTable, Integer> {
 	
 	public List<ClientTable> findByClientShortNameLike(String clientShortName);
 	
-	@Query(value= "SELECT NEW com.globeop.riskfeed.dto.TestDto(c.ClientID) from ClientTable AS c ")
+	@Query(value= "SELECT NEW com.globeop.riskfeed.dto.TestDto(c.clientID) from ClientTable AS c ")
 	public List<TestDto> testQuery();
 }
