@@ -6,8 +6,11 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import com.globeop.riskfeed.dto.OnBoardFunds;
+import com.globeop.riskfeed.entity.BillTable;
 import com.globeop.riskfeed.entity.ClientOnboardTable;
 import com.globeop.riskfeed.entity.OnBordDto;
+import com.globeop.riskfeed.web.BillController;
+import com.globeop.riskfeed.web.DevelopmentController;
 
 @Component
 public class OnBordValidator implements Validator {
@@ -15,10 +18,19 @@ public class OnBordValidator implements Validator {
 	@Override
 	public boolean supports(Class<?> clazz) {
 		if(ClientOnboardTable.class.equals(clazz)) {
-			return ClientOnboardTable.class.equals(clazz);
+			return true;
+		}else if(DevelopmentController.class.equals(clazz)){
+			return true;
+		}else if(OnBordDto.class.equals(clazz)) {
+			return true;
+		}else if(BillTable.class.equals(clazz)) {
+			return true;
+		}else if(String.class.equals(clazz)) {
+			return true;
 		}else {
-			return OnBordDto.class.equals(clazz);
+			return false;
 		}
+		
 	}
 
 	@Override
@@ -36,6 +48,9 @@ public class OnBordValidator implements Validator {
 	    	  validateForm2(onBordDto, errors);
 	      }else if(onBordDto.getOnBoardForm().equals("billForm")) {
 	    	  billFormValidator(onBordDto, errors);
+	      }else if(onBordDto.getOnBoardForm().equals("developmentForm")) {
+	    	  System.out.println("developmentForm validator");
+	    	  developmentFormValidator(onBordDto, errors);
 	      }
 		/*
 		 * 
@@ -108,5 +123,21 @@ public class OnBordValidator implements Validator {
 	    	  errors.rejectValue("isWaivedOff", "OnBordDto.isWaivedOff.empty");
 	      }
 	}
+	
+	
+	private static void developmentFormValidator(OnBordDto onBordDto,Errors errors) {
+		if(onBordDto.getRiskAggregatorId() == -1) {
+	    	  errors.rejectValue("riskAggregatorId", "OnBordDto.riskAggregatorId.empty");	  
+	      }
+	      
+	      if(onBordDto.getClientId() == 0) {
+	    	  errors.rejectValue("clientId", "OnBordDto.clientId.empty");
+	      }
+	      	      
+	      if(onBordDto.getIsWaivedOff().equals("-1")) {
+	    	  errors.rejectValue("isWaivedOff", "OnBordDto.isWaivedOff.empty");
+	      }
+	}
+
 
 }
