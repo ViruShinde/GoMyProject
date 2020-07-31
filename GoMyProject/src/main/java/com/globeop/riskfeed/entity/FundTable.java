@@ -1,7 +1,7 @@
 package com.globeop.riskfeed.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,14 +22,14 @@ public class FundTable implements Serializable{
 	//@GeneratedValue	//(strategy=GenerationType.AUTO)  
 	@GeneratedValue	(strategy=GenerationType.IDENTITY)
 	//@GeneratedValue	
-	private int FundID;
+	private int fundID;
 
 
 	@Column(name = "FundShortName")
 	private String fundShortName;
 	
 	@Column(name = "Modified_date")
-	private Date Modified_date;
+	private LocalDate modified_date;
 
 		
 	
@@ -52,13 +52,22 @@ public class FundTable implements Serializable{
 	public void setClient(ClientTable client) {
 		this.client = client;
 	}
+	
 
 	public int getFundID() {
-		return FundID;
+		return fundID;
 	}
 
 	public void setFundID(int fundID) {
-		FundID = fundID;
+		this.fundID = fundID;
+	}
+
+	public LocalDate getModified_date() {
+		return modified_date;
+	}
+
+	public void setModified_date(LocalDate modified_date) {
+		this.modified_date = modified_date;
 	}
 
 	public String getFundShortName() {
@@ -68,14 +77,6 @@ public class FundTable implements Serializable{
 	public void setFundShortName(String theFundShortName) {
 		fundShortName = theFundShortName;
 	}
-
-	public Date getModified_date() {
-		return Modified_date;
-	}
-
-	public void setModified_date(Date modified_date) {
-		Modified_date = modified_date;
-	}	
 	
 	public Set<ClientOnboardTable> getClientOnboardSet() {
 		return clientOnboardSet;
@@ -95,7 +96,7 @@ public class FundTable implements Serializable{
 
 	@Override
 	public String toString() {
-		return "FundTable [FundID=" + FundID + ", FundShortName=" + fundShortName + ", Modified_date=" + Modified_date
+		return "FundTable [fundID=" + fundID + ", FundShortName=" + fundShortName + ", modified_date=" + modified_date
 				+ ", clientOnboardSet=" + clientOnboardSet + "]";
 	}
 	
