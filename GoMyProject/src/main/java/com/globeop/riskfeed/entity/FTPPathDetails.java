@@ -1,5 +1,6 @@
 package com.globeop.riskfeed.entity;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity  
 @Table(name="FTPPathDetails")  
 public class FTPPathDetails {
@@ -19,16 +22,17 @@ public class FTPPathDetails {
 	@Id   
 	@Column(name = "FTPPathId")
 	@GeneratedValue	(strategy=GenerationType.IDENTITY)  
-	private int FTPPathId;
+	private int ftpPathId;
 	
 	@Column(name = "FTPPath")
-	private String FTPPath;	
+	private String ftpPath;	
 	
 	@Column(name = "Comments")
-	private String Comments;
+	private String comments;
 	
 	@Column(name = "Modified_date")
-	private Date Modified_date;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate modified_date;
 	
 	
 	@ManyToOne(cascade=CascadeType.ALL)
@@ -38,43 +42,56 @@ public class FTPPathDetails {
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="RiskAggregatorId")
 	private RiskAggregator riskAggregator;
-	
+
+	public int getFtpPathId() {
+		return ftpPathId;
+	}
+
+	public void setFtpPathId(int ftpPathId) {
+		this.ftpPathId = ftpPathId;
+	}
+
+	public String getFtpPath() {
+		return ftpPath;
+	}
+
+	public void setFtpPath(String ftpPath) {
+		this.ftpPath = ftpPath;
+	}
+
 	public String getComments() {
-		return Comments;
+		return comments;
 	}
+
 	public void setComments(String comments) {
-		Comments = comments;
+		this.comments = comments;
 	}
-	public Date getModified_date() {
-		return Modified_date;
+
+	public LocalDate getModified_date() {
+		return modified_date;
 	}
-	public void setModified_date(Date modified_date) {
-		Modified_date = modified_date;
+
+	public void setModified_date(LocalDate modified_date) {
+		this.modified_date = modified_date;
 	}
-	public int getFTPPathId() {
-		return FTPPathId;
-	}
-	public void setFTPPathId(int fTPPathId) {
-		FTPPathId = fTPPathId;
-	}
-	public String getFTPPath() {
-		return FTPPath;
-	}
-	public void setFTPPath(String fTPPath) {
-		FTPPath = fTPPath;
-	}
+
 	public ClientTable getClient() {
 		return client;
 	}
+
 	public void setClient(ClientTable client) {
 		this.client = client;
 	}
+
 	public RiskAggregator getRiskAggregator() {
 		return riskAggregator;
 	}
+
 	public void setRiskAggregator(RiskAggregator riskAggregator) {
 		this.riskAggregator = riskAggregator;
 	}
+	
+	
 	
 
 }
