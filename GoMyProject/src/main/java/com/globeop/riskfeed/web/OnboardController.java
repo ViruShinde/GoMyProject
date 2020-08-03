@@ -144,8 +144,10 @@ public class OnboardController {
 				onBordService.addOnboardDetails(onBordDto);
 				//model.addAttribute("onBordDto",onBordDto);
 				//return "OnBord1";
-				return "redirect:/OnBordedDetails/client/"+onBordDto.getClientId()+"/riskAggregator/"+onBordDto.getRiskAggregatorId();
 				
+				//System.out.println("link = /OnBordedDetails/client/"+onBordDto.getClientId()+"/riskAggregator/"+onBordDto.getRiskAggregatorId());
+				//return "redirect:/OnBordedDetails/client/"+onBordDto.getClientId()+"/riskAggregator/"+onBordDto.getRiskAggregatorId();
+				return "redirect:/getFund/"+onBordDto.getRiskAggregatorId()+"/"+onBordDto.getClientId();
 			}
 						
 			/*
@@ -161,12 +163,30 @@ public class OnboardController {
 		}
 	}
     
+    @GetMapping("/OnBordFund")
+    public String OnBordFund(OnBordDto onBordDto) { 
+    	onBordDto.setOnBoardForm("onBoardForm1");
+    	return "OnBord1";
+    }
+
+    @GetMapping("/OnBordFund/{riskAggregatorId}/{clientId}")
+    public String OnBordFund(OnBordDto onBordDto,@PathVariable Integer riskAggregatorId,@PathVariable Integer clientId,Model model) { 
+    	ClientTable clientTable = clientService.findById(clientId);
+    	RiskAggregator riskAggregator = riskAggregatorService.findById(riskAggregatorId);
+    	onBordDto.setClientId(clientTable.getClientID());
+    	onBordDto.setClientName(clientTable.getClientShortName());
+    	onBordDto.setRiskAggregatorId(riskAggregator.getRiskAggregatorId());
+    	onBordDto.setRiskAggregatorName(riskAggregator.getRiskAggregatorName());
+    	onBordDto.setOnBoardForm("OnBordFundForm");
+    	return "OnBord1";
+    }
         
     @GetMapping("/OnBordedDetails/client/{clientId}/riskAggregator/{riskAggregatorId}")
     public String getOnBordedDetails(@PathVariable Integer clientId,@PathVariable Integer riskAggregatorId ,Model model) {    
     	ClientTable theClientTable = clientService.findById(clientId);
     	RiskAggregator theAggregator = riskAggregatorService.findById(riskAggregatorId);
-    	List<ClientOnboardTable> clientOnboardList= theClientOnboardService.findByClientAndRiskAggregator(theClientTable, theAggregator);    	    
+    	List<ClientOnboardTable> clientOnboardList= theClientOnboardService.findByClientAndRiskAggregator(theClientTable, theAggregator);
+    	System.out.println("clientOnboardList >> "+clientOnboardList);
     	model.addAttribute("clientOnboardList", clientOnboardList);
     	return "OnBordDetails";
     }
