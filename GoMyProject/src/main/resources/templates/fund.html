@@ -31,14 +31,14 @@
 
 <hr>
 
-<a th:href="@{/AddClient}" class="btn btn-primary btn-sm mb-3">Add Client</a>
-<a th:href="@{/AddFunds}" class="btn btn-primary btn-sm mb-3">Add Funds</a>
-<a th:href="@{/OnBordClient}" class="btn btn-primary btn-sm mb-3">OnBord Client</a>
+
 
 <br>
 
 	<div class="" th:if="${client}">
 	
+	<a th:href="@{/OnBordFund}" class="btn btn-primary btn-sm mb-3">OnBordFund</a>
+	<br>
 	<table border="1" class="table table-bordered table-hover">
 		<thead class="thead-dark">
 			<!-- <th>Id</th>	 -->
@@ -68,6 +68,11 @@
 	</div> 
 	
 	<div class="" th:if="${clientDto}">
+	
+	<a th:href="@{|/OnBordFund/${riskAggregatorId}/${clientId}| } " class="btn btn-primary btn-sm mb-3">OnBordFund</a>
+	
+	<h3 th:text="${riskAggregatorId} +' ' +${clientId} +' Active Fund Details'"> </h3>
+	<br>
 	
 	<table border="1" class="table table-bordered table-hover">
 		<thead class="thead-dark">			
