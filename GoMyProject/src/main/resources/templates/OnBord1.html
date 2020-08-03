@@ -39,22 +39,71 @@
 
 <script type="text/javascript">
 
+
+
  jQuery(document).ready(function($) {
 
-	// to get the client list in drop down \clientList\?riskAggregatorId=-1 to get all clients.
-	jQuery("#client").autocomplete({
-		source : "\clientList\?riskAggregatorId=-1",
-		minLength : 0,
-		scroll : true,
-		select : function(event, ui) {
-			this.value = ui.item.label;
-			$("#client").val(ui.item.label);
-			//console.log(this.value);
-			//console.log(ui.item);
-			$("#clientId").val(ui.item.value);
-			//alert("INSID");
-			jQuery.getJSON("getFundsFromClient", {
-				p1 : ui.item.label
+	 var form = $('#onBoardForm1').val();
+	 console.log("form = "+form);
+	 
+	 if(form=="onBoardForm1"){
+		 console.log("onBoardForm1");
+		 
+
+		 
+			// to get the client list in drop down \clientList\?riskAggregatorId=-1 to get all clients.
+			jQuery("#client").autocomplete({
+				source : "\clientList\?riskAggregatorId=-1",
+				minLength : 0,
+				scroll : true,
+				select : function(event, ui) {
+					this.value = ui.item.label;
+					$("#client").val(ui.item.label);
+					//console.log(this.value);
+					//console.log(ui.item);
+					$("#clientId").val(ui.item.value);
+					//alert("INSID");
+					jQuery.getJSON("getFundsFromClient", {
+						p1 : ui.item.label
+					}, function(responseData) {
+						console.log(responseData);
+						//var clientFunds = jQuery('#clientFunds');
+						jQuery('#funds').empty();
+						var clientFunds = jQuery('#funds');
+						jQuery.each(responseData, function(key, value) {
+							console.log(value.label + " >> "+value.value);										
+							jQuery('<option id =' +value.value+'>').val(value.value)
+		            	    .text(value.label).appendTo(clientFunds);			
+						});
+
+					});
+					return false;
+				}
+			}); 
+			
+			
+			jQuery.getJSON("riskAggregatorList", function(responseData) {
+				//console.log(responseData);
+				//var clientFunds = jQuery('#clientFunds');
+				jQuery('#riskAggregatorId').empty();
+				let ra =jQuery('#riskAggregatorId');
+				jQuery('<option>').val(-1).text("Select RiskAggregator").appendTo(ra);
+				jQuery.each(responseData, function(key, value) {
+					//console.log(value.label + " >> "+value.value);				
+					jQuery('<option id =' +value.value+'>').val(value.value)
+		    	    .text(value.label).appendTo(ra);			
+				});
+
+			});
+			 
+		 
+	 }else if(form=="OnBordFundForm"){
+		 console.log("OnBordFundForm");
+		 console.log($('#clientId').val())
+		 let client = $('#clientId').val();
+		 
+		 jQuery.getJSON("/getFundsFromClient", {
+				p1 : client
 			}, function(responseData) {
 				console.log(responseData);
 				//var clientFunds = jQuery('#clientFunds');
@@ -63,29 +112,15 @@
 				jQuery.each(responseData, function(key, value) {
 					console.log(value.label + " >> "+value.value);										
 					jQuery('<option id =' +value.value+'>').val(value.value)
-            	    .text(value.label).appendTo(clientFunds);			
+         	    .text(value.label).appendTo(clientFunds);			
 				});
 
 			});
-			return false;
-		}
-	}); 
-	
-	
-	jQuery.getJSON("riskAggregatorList", function(responseData) {
-		//console.log(responseData);
-		//var clientFunds = jQuery('#clientFunds');
-		jQuery('#riskAggregatorId').empty();
-		let ra =jQuery('#riskAggregatorId');
-		jQuery('<option>').val(-1).text("Select RiskAggregator").appendTo(ra);
-		jQuery.each(responseData, function(key, value) {
-			//console.log(value.label + " >> "+value.value);				
-			jQuery('<option id =' +value.value+'>').val(value.value)
-    	    .text(value.label).appendTo(ra);			
-		});
-
-	});
+		 
+	 }
 	 
+	 
+	
 	//label	value
 			
 	$("#funds").select2({
@@ -133,37 +168,11 @@
 	<div  th:replace="fragments/nav :: navbar"></div>
 	
 	<br>
-	<div class="container">
-
-		<!-- 	<form action="#" th:action="@{/AddOnBordDetails}" th:object="${onBordDto}" method="post">
-		
-		<input id="client" type="text" class="form-control mb-4 col-4">
-		
-		<input type="text" id="clientId" th:field="*{clientId}" placeholder="clientId" class="form-control mb-4 col-4" readonly>
-		
-		<input list="client_search" class="form-control mb-4 col-4" type="search" placeholder="search" aria-label="Search" name="search">
-		<datalist id="client_search">
-			<option>A</option>
-			<option>B</option>
-			<option>C</option>
-			<option>X</option>
-		</datalist>
-		</input>
-					
-		<input type="text" th:field="*{fundName}" placeholder="Fund Short Name"
-		class="form-control mb-4 col-4">
-		<input type="text" th:field="*{}" placeholder="">
-		<input type="text" th:field="*{}" placeholder="">
-		<button type="submit" class="btn btn-info col-2">Save</button>
-	</form> -->
+	<div class="container" th:if="${onBordDto.onBoardForm == 'onBoardForm1'}">
 
 	<h3>Client Onboard</h3>
 	<hr>
-	
-
-	<!-- Testing
-	<hr> -->
-
+		
 	<form action="#" th:action="@{/AddOnBordDetails1}" th:object="${onBordDto}" method="post">
 		<input type="hidden" id="onBoardForm1" th:field="*{onBoardForm}"	class="form-control mb-4 col-4" value="onBoardForm1" readonly>
 		RiskAggregator
@@ -249,6 +258,40 @@
 	</form>
 
 </div>
+
+
+<div class="container" th:if="${onBordDto.onBoardForm == 'OnBordFundForm'}">
+
+		<h3>Fund Onboarding for </h3>
+		<h3 th:text="${onBordDto.riskAggregatorName} +' ' +${onBordDto.clientName} "> </h3>
+		<hr>
+		
+		<form action="#" th:action="@{/AddOnBordDetails1}" th:object="${onBordDto}" method="post">
+		<input type="text" id="onBoardForm1" th:field="*{onBoardForm}"	class="form-control mb-4 col-4" value="onBoardForm1" readonly>
+		RiskAggregator
+		<input type="text" id="riskAggregatorName" th:field="*{riskAggregatorName}" placeholder="riskAggregatorName" class="form-control mb-4 col-4" readonly>
+		<input type="text" id="riskAggregatorId" th:field="*{riskAggregatorId}" placeholder="riskAggregatorId" class="form-control mb-4 col-4" readonly>
+		Client
+		<input type="text" id="clientName" th:field="*{clientName}" placeholder="clientName" class="form-control mb-4 col-4" readonly>
+		<input type="text" id="clientId" th:field="*{clientId}" placeholder="clientId" class="form-control mb-4 col-4" readonly>				
+
+		
+		 Funds
+		<br>
+		<select class="form-control mb-4 col-4" id ="funds" multiple="multiple" th:field="*{fundName}" >
+  		</select>			
+		
+  		
+  		<br>  		
+  		<br>  	
+		<button type="submit" class="btn btn-info col-2">Next</button>
+	</form>
+	
+	
+	
+	
+
+	</div>
 
 
 
