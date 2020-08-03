@@ -165,10 +165,10 @@ public class ClientOnboardTable implements Serializable{
 	
 	
 	
-	  @Override public String toString() { return
-	  "ClientOnboardTable [clientOnboardId=" + clientOnboardId + ", client=" +
-	  client.getClientID() + ", riskAggregator=" +
-	  riskAggregator.getRiskAggregatorId() + ","
+	  @Override public String toString() { 
+		  return
+	  "ClientOnboardTable [clientOnboardId=" + clientOnboardId + ", clientId=" +client.getClientID() +  ", clientName=" +client.getClientShortName() +
+	  ", riskAggregatorId=" +riskAggregator.getRiskAggregatorId() + ", riskAggregatorName=" +riskAggregator.getRiskAggregatorName() + ","
 	  		+ " fund=" + fund.getFundID() +
 	  ", setUpDate=" + setUpDate + ", endDate=" + endDate + ", automationProcess="
 	  + automationProcess + ", isActive=" + isActive + ", comments=" + comments +
