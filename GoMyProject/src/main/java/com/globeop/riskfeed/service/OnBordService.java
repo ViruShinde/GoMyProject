@@ -81,28 +81,34 @@ public class OnBordService {
 		for(OnBoardFunds funds: onBoardFundsList) {
 			System.out.println("11111111 "+funds.getFundName());
 			FundTable fundTable = fundService.findByFundShortName(funds.getFundName());
-			System.out.println("22222222 "+fundTable.getFundShortName() + " >> "+ onBordDto.getSetUpDate() + " >> "+onBordDto.getEndDate());
+			System.out.println("22222222 "+fundTable.getFundShortName() + " >> "+ onBordDto.getSetUpDate() );
 			ClientOnboardTable theClientOnboardTable = new ClientOnboardTable();
 			//theClientOnboardTable.setSetUpDate(new Date());//(GenricUtil.convertStringToDate(onBordDto.getSetUpDate()));
 			theClientOnboardTable.setSetUpDate(LocalDate.parse(onBordDto.getSetUpDate()));
-			theClientOnboardTable.setEndDate(LocalDate.parse(onBordDto.getEndDate()));
+			if( !("".equalsIgnoreCase(onBordDto.getEndDate()) || null==onBordDto.getEndDate()) ) {
+				System.out.println("TRUE ");
+				theClientOnboardTable.setEndDate(LocalDate.parse(onBordDto.getEndDate()));
+			}			
 			theClientOnboardTable.setAutomationProcess(AutomationProcess.valueOf(onBordDto.getAutomationProcess()));
 			theClientOnboardTable.setIsActive(IsActive.valueOf(onBordDto.getIsActive() ));
 			theClientOnboardTable.setComments(onBordDto.getComments());
 			theClientOnboardTable.setFrequency(funds.getFrequency());
 			theClientOnboardTable.setModified_date(LocalDate.now());
 			
-			client.addClientOnboard(theClientOnboardTable);
+			theClientOnboardTable.setClient(client);
+			theClientOnboardTable.setRiskAggregator(riskAggregator);
+			theClientOnboardTable.setFund(fundTable);
 			
-			riskAggregator.addClientOnboard(theClientOnboardTable);
-			fundTable.addClientOnboard(theClientOnboardTable);
+			//client.addClientOnboard(theClientOnboardTable);			
+			//riskAggregator.addClientOnboard(theClientOnboardTable);
+			//fundTable.addClientOnboard(theClientOnboardTable);
 			
 			//fundService.save(fundTable);
 			
-			
+			theClientOnboardService.save(theClientOnboardTable);
 		}
-		clientService.save(client);
-		riskAggregatorService.save(riskAggregator);
+		//clientService.save(client);
+		//riskAggregatorService.save(riskAggregator);
 		
 	}
 	
