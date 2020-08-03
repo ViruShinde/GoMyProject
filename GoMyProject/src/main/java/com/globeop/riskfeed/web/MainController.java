@@ -230,6 +230,8 @@ public class MainController {
     	//System.out.println("######### "+testDto);
     	model.addAttribute("riskAggregator", riskAggregator.getRiskAggregatorName());
     	model.addAttribute("clientName", clientTable.getClientShortName());
+    	model.addAttribute("riskAggregatorId", riskAggregator.getRiskAggregatorId());
+    	model.addAttribute("clientId", clientTable.getClientID());
     	model.addAttribute("clientDto", testDto);
     	return "fund";
     }
