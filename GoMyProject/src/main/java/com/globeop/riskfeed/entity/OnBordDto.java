@@ -26,6 +26,8 @@ public class OnBordDto implements Serializable{
 	//@NotNull(message = "Please select RiskAggregator")
 	private int riskAggregatorId;
 	
+	private String riskAggregatorName;
+	
 	//@NotEmpty(message = "Please select funds")
 	private String fundName;
 
@@ -34,7 +36,7 @@ public class OnBordDto implements Serializable{
 	//@NotEmpty(message = "Please select setup Date")
 	private String setUpDate;
 	
-	private String endDate;
+	private String endDate="";
 	
 	//@NotEmpty(message = "Please select atleast one")	
 	private String automationProcess;
@@ -100,6 +102,16 @@ public class OnBordDto implements Serializable{
 	
 	
 	
+	public String getRiskAggregatorName() {
+		return riskAggregatorName;
+	}
+
+
+	public void setRiskAggregatorName(String riskAggregatorName) {
+		this.riskAggregatorName = riskAggregatorName;
+	}
+
+
 	public int getSetupFee() {
 		return setupFee;
 	}
