@@ -91,35 +91,49 @@ table.cart th, #main-content table.cart th, table.cart td, #main-content table.c
 
 <input type="hidden" id="request" value="firstRequest" />
 
-<div class="container">
+<!-- <div class="container"> -->
 
-<h3>Select Additional fields:</h3>
-        <label><input type="checkbox" value="automationProcess" name="sport"> Automation Process</label>
-        <label><input type="checkbox" value="isActive" name="sport">Is Active</label>
-        <label><input type="checkbox" value="isWaivedOff" name="sport">Is WaivedOff</label>
-        <label><input type="checkbox" value="setUpDate" name="sport">SetUp Date</label>
-        <label><input type="checkbox" value="endDate" name="sport">End Date</label>
-        <label><input type="checkbox" value="billEndDate" name="sport">Bill End Date</label>
-        <label><input type="checkbox" value="billingComments" name="sport">Billing Comments</label>
-        <label><input type="checkbox" value="isDevelopmentWaivedOff" name="sport">Is DevelopmentWaivedOff</label>
-        <label><input type="checkbox" value="developmentHours" name="sport">Development Hours</label>
-        <label><input type="checkbox" value="developmentCost" name="sport">Development Cost</label>
+	<div class="container-fluid ">
+		<div class="row content">
+			<div class="col-sm-2 sidenav">
+				<h7>Select Additional fields:</h7>
+				<hr>										       
+        		<div id="select"  class="btn btn-info btn-sm" >Select All</div>              
+        		<button type="button" id="add" class="btn btn-info btn-sm"  >Add Headers</button>       
+        		<br>
+        		<br>
+        		<label><input type="checkbox" value="automationProcess" name="sport"> Automation Process</label><br>
+        		<label><input type="checkbox" value="isActive" name="sport">Is Active</label><br>
+        		<label><input type="checkbox" value="isWaivedOff" name="sport">Is WaivedOff</label><br>
+        		<label><input type="checkbox" value="setUpDate" name="sport">SetUp Date</label><br>
+        		<label><input type="checkbox" value="endDate" name="sport">End Date</label><br>
+        		<label><input type="checkbox" value="billEndDate" name="sport">Bill End Date</label><br>
+        		<label><input type="checkbox" value="billingComments" name="sport">Billing Comments</label><br>
+        		<label><input type="checkbox" value="isDevelopmentWaivedOff" name="sport">Is DevelopmentWaivedOff</label><br>
+        		<label><input type="checkbox" value="developmentHours" name="sport">Development Hours</label><br>
+        		<label><input type="checkbox" value="developmentCost" name="sport">Development Cost</label><br>
         
-        <!-- <label><input type="checkbox" value="" name="sport"> </label> -->
+        		<!-- <label><input type="checkbox" value="" name="sport"> </label> -->
+        		
         
-        <br>
+			</div>
+			
+			<div class="col-sm-10 text-left">
+				<h5>All Details:</h5> 
+				<hr>
+				<div id="tableDiv"></div>
+			</div>
+		</div>	  
+	</div>
+
+
         
-        <div id="select"  class="btn btn-info col-2" >Select All</div>
-        
-        <button type="button" id="add" class="btn btn-info col-2"  >Add Headers</button>
-        <br>
         
                 
         
-        <hr>
-<div id="tableDiv"></div>
 
-</div>
+
+<!-- </div> -->
 
 
 </body>
