@@ -267,13 +267,13 @@
 		<hr>
 		
 		<form action="#" th:action="@{/AddOnBordDetails1}" th:object="${onBordDto}" method="post">
-		<input type="text" id="onBoardForm1" th:field="*{onBoardForm}"	class="form-control mb-4 col-4" value="onBoardForm1" readonly>
+		<input type="hidden" id="onBoardForm1" th:field="*{onBoardForm}"	class="form-control mb-4 col-4" value="onBoardForm1" readonly>
 		RiskAggregator
 		<input type="text" id="riskAggregatorName" th:field="*{riskAggregatorName}" placeholder="riskAggregatorName" class="form-control mb-4 col-4" readonly>
-		<input type="text" id="riskAggregatorId" th:field="*{riskAggregatorId}" placeholder="riskAggregatorId" class="form-control mb-4 col-4" readonly>
+		<input type="hidden" id="riskAggregatorId" th:field="*{riskAggregatorId}" placeholder="riskAggregatorId" class="form-control mb-4 col-4" readonly>
 		Client
 		<input type="text" id="clientName" th:field="*{clientName}" placeholder="clientName" class="form-control mb-4 col-4" readonly>
-		<input type="text" id="clientId" th:field="*{clientId}" placeholder="clientId" class="form-control mb-4 col-4" readonly>				
+		<input type="hidden" id="clientId" th:field="*{clientId}" placeholder="clientId" class="form-control mb-4 col-4" readonly>				
 
 		
 		 Funds
