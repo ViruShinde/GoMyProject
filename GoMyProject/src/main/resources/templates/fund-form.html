@@ -23,7 +23,71 @@
 <link href="/multi-select/css/select2.css" rel="stylesheet" />
 <script src="/multi-select/js/select2.js"></script>
 
-<script src="/js/autocomplete.js"></script>
+<!-- <script src="/js/autocomplete.js"></script> -->
+
+<script type="text/javascript">
+
+
+
+ jQuery(document).ready(function($) {
+		 
+			// to get the client list in drop down \clientList\?riskAggregatorId=-1 to get all clients.
+			jQuery("#client").autocomplete({
+				source : "\clientList\?riskAggregatorId=-1",
+				minLength : 0,
+				scroll : true,
+				select : function(event, ui) {
+					this.value = ui.item.label;
+					$("#client").val(ui.item.label);
+					//console.log(this.value);
+					//console.log(ui.item);
+					$("#clientId").val(ui.item.value);
+					//alert("INSID");
+					jQuery.getJSON("getFundsFromClient", {
+						p1 : ui.item.label
+					}, function(responseData) {
+						console.log(responseData);
+						//var clientFunds = jQuery('#clientFunds');
+						jQuery('#funds').empty();
+						var clientFunds = jQuery('#funds');
+						jQuery.each(responseData, function(key, value) {
+							console.log(value.label + " >> "+value.value);										
+							jQuery('<option id =' +value.value+'>').val(value.value)
+		            	    .text(value.label).appendTo(clientFunds);			
+						});
+
+					});
+					return false;
+				}
+			}); 			
+	 
+	
+	//label	value
+			
+	$("#funds").select2({
+		  maximumSelectionLength: 2
+		});
+
+	$("#funds").select2({
+		  placeholder: 'Select Funds',
+		  allowClear: true
+		});
+	
+	
+	// its check if clien field is blank then blank clientId as well
+	jQuery('#client').change(function(event) {		
+		//let clientLength = $('#client').val().length;
+		//console.log(clientLength);
+		if( $('#client').val() == "" ){
+			$("#clientId").val("");
+		}	
+	});
+			
+	
+	 
+});
+
+</script>
 
 <head>
 <meta charset="ISO-8859-1">
@@ -39,7 +103,7 @@
 
 	<form action="#" th:action="@{/AddFunds}" th:object="${onBordDto}" method="post">	
 		<input id="client" type="text" class="form-control mb-4 col-4">		
-		<input type="text" id="clientId" th:field="*{clientId}" placeholder="clientId" class="form-control mb-4 col-4" readonly>									
+		<input type="hidden" id="clientId" th:field="*{clientId}" placeholder="clientId" class="form-control mb-4 col-4" readonly>									
 		<input type="text" th:field="*{fundName}" placeholder="Fund Short Name"	class="form-control mb-4 col-4">
 		
 <!-- 		<select multiple="multiple" th:field="*{clientFunds}" id="clientFunds" name="clientFunds[]">
