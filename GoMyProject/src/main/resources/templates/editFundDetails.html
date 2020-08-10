@@ -67,10 +67,10 @@ $("#frequency").select2({
 
 	<form action="#" th:action="@{/editClientOnboard}" th:object="${clientOnboardTable}" method="post">			
 			
-		<input type="text" id="clientOnboardId" th:field="*{clientOnboardId}" placeholder="clientOnboardId" class="form-control mb-4 col-4" readonly>		
-		<input type="text" id="clientId" th:field="*{client}" placeholder="clientId" class="form-control mb-4 col-4" readonly>				
-		<input type="text" id="fundID" th:field="*{fund}" placeholder="fundId" class="form-control mb-4 col-4" readonly>
-		<input type="text" id="riskAggregatorId" th:field="*{riskAggregator}" placeholder="riskAggregatorId" class="form-control mb-4 col-4" readonly>
+		<input type="hidden" id="clientOnboardId" th:field="*{clientOnboardId}" placeholder="clientOnboardId" class="form-control mb-4 col-4" readonly>		
+		<input type="hidden" id="clientId" th:field="*{client}" placeholder="clientId" class="form-control mb-4 col-4" readonly>				
+		<input type="hidden" id="fundID" th:field="*{fund}" placeholder="fundId" class="form-control mb-4 col-4" readonly>
+		<input type="hidden" id="riskAggregatorId" th:field="*{riskAggregator}" placeholder="riskAggregatorId" class="form-control mb-4 col-4" readonly>
 								
 		
 		Client Name
@@ -88,9 +88,9 @@ $("#frequency").select2({
 			<option value="-1">Select is Active</option>
 			<option th:each="opt : ${T(com.globeop.riskfeed.enums.IsActive).values()}" th:value="${opt}" th:text="${opt.displayValue}" th:selected="${opt == clientOnboardTable.isActive}" ></option>
 		</select>
-		<hr> 
+		<!-- <hr> 
 		<h3 th:text="${clientOnboardTable.frequency}" ></h3>
-		<hr>
+		<hr> -->
 		Frequency
 		<br>
 		<select class="frequency form-control mb-4 col-4" id="frequency" multiple="multiple" name="frequency">
@@ -116,7 +116,7 @@ $("#frequency").select2({
 	
 		
 		End Date
-		<input type="text" th:field="*{endDate}" class="form-control mb-4 col-4" readonly>
+		<input type="date" th:field="*{endDate}" class="form-control mb-4 col-4">
 		
 		<br>
 		<br>
