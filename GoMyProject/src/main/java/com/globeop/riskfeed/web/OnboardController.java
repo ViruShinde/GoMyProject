@@ -97,6 +97,8 @@ public class OnboardController {
 				return "OnBord1";								
 			}else{
 				onBordDto.setOnBoardForm("onBoardForm2");
+				RiskAggregator riskAggregator =  riskAggregatorService.findById(onBordDto.getRiskAggregatorId());
+				onBordDto.setRiskAggregatorName(riskAggregator.getRiskAggregatorName());
 				model.addAttribute("OnBordDto", onBordDto);  
 				System.out.println(onBordDto);
 				String[] selectedFunds=onBordDto.getFundName().substring(0,onBordDto.getFundName().length()).split(",");
