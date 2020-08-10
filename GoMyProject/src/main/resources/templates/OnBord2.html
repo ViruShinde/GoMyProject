@@ -165,16 +165,15 @@ table, td, th {
 	<form action="#" th:action="@{/AddOnBordDetails2}" th:object="${onBordDto}" method="post">
 		<input type="text" id="onBoardForm2" th:field="*{onBoardForm}"	class="form-control mb-4 col-4" value="onBoardForm2" readonly="readonly">
 		 RiskAggregator
-		
-		<input class="border-0" id="riskAggregator" th:field="*{riskAggregatorId}" readonly/>
+		<input type="hidden" class="form-control mb-4 col-4" id="riskAggregatorId" th:field="*{riskAggregatorId}" readonly/>
+		<input class="form-control mb-4 col-4" id="riskAggregator" th:field="*{riskAggregatorName}" readonly/>
 		<br>
 		<p th:if="${#fields.hasErrors('riskAggregatorId')}" th:errors="*{riskAggregatorId}" class="alert alert-danger mb-4 col-4"></p>	
-		<br>
 		Client	
 		<!-- <input id="client" type="text" class="form-control mb-4 col-4"> -->
-		<input class="form-control mb-4 col-4" th:field="*{clientName}"/>
+		<input class="form-control mb-4 col-4" th:field="*{clientName}" readonly/>
 		<!-- class="border-0"  -->
-		<input type="text"  id="clientId" th:field="*{clientId}"	placeholder="clientId" class="form-control mb-4 col-4" readonly>
+		<input type="hidden"  id="clientId" th:field="*{clientId}"	placeholder="clientId" class="form-control mb-4 col-4" readonly>
 		
 		<br>
 		<p th:if="${#fields.hasErrors('clientId')}" th:errors="*{clientId}" class="alert alert-danger mb-4 col-4"></p> 		
