@@ -157,12 +157,11 @@
 	<hr>
 	
 	<form action="#" th:action="@{/editBillDetails}" th:object="${billTable}" method="post" enctype="multipart/form-data">
-	
-		<!-- <input type="hidden" id="billForm" th:field="*{onBoardForm}"	class="form-control mb-4 col-4" value="billForm" readonly> -->
+			
+		<input type="hidden" id="billId" th:field="*{billId}" placeholder="billId" class="form-control mb-4 col-4" readonly>		
+		<input type="hidden" id="riskAggregatorId" th:field="*{riskAggregator.riskAggregatorId}" placeholder="riskAggregatorId" class="form-control mb-4 col-4" readonly>
 		
-		<input type="text" id="billId" th:field="*{billId}" placeholder="billId" class="form-control mb-4 col-4" readonly>
 		
-		<input type="text" id="riskAggregatorId" th:field="*{riskAggregator.riskAggregatorId}" placeholder="riskAggregatorId" class="form-control mb-4 col-4" readonly>
 		RiskAggregator
 		<!-- <select id="riskAggregator" class="form-control mb-4 col-4" th:field="*{riskAggregatorId}">
 			<option value="0">Select RiskAggregator</option>			
@@ -172,7 +171,7 @@
 		<!-- <p th:if="${#fields.hasErrors('riskAggregatorId')}" th:errors="*{riskAggregatorId}" class="alert alert-danger mb-4 col-4"></p> -->
 			
 		
-		<input type="text" id="clientId" th:field="*{client.clientID}" placeholder="clientId" class="form-control mb-4 col-4" readonly>									
+		<input type="hidden" id="clientId" th:field="*{client.clientID}" placeholder="clientId" class="form-control mb-4 col-4" readonly>									
 		
 		Client Name
 		<input type="text" id="clientShortName" th:field="*{client.clientShortName}" placeholder="clientShortName" class="form-control mb-4 col-4" readonly>
