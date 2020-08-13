@@ -28,9 +28,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/SecurityFetcherJar/gocheck-api-1-301.jar"/>
-	<classpathentry kind="lib" path="D:/SecurityFetcherJar/mail.jar"/>
-	<classpathentry kind="lib" path="D:/SecurityFetcherJar/riskutil-2-28.jar"/>
-	<classpathentry kind="lib" path="D:/SecurityFetcherJar/xerces-2.3.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

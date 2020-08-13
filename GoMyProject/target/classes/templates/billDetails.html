@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" mlns:th="http://www.thymeleaf.org">
+<head>
+
+<title>Bill Details</title>
+
+<!-- working for navbar dropdowns -->
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+<script src="/jquery/jquery-3.4.1.js"></script>
+<link rel="stylesheet" type="text/css"  th:href="@{/css/bootstrap.min.css}"/>
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}" />
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" th:href="@{/webjars/bootstrap/4.4.1/js/bootstrap.min.js}" ></script>
+ -->
+
+<!-- for fontawesome -->
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/font-awesome/5.12.0/css/fontawesome.min.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/css/fontawesome.min.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/css/brands.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/css/solid.css}"/> 
+<link rel="stylesheet" type="text/css" th:href="@{/css/all.css}"/>  
+
+</head>
+
+<body>
+<!-- to include the Navbar from fragments/nav.html -->
+<div  th:replace="fragments/nav :: navbar"></div>
+<div class="container">
+
+<br>
+
+<h3>Bill Details</h3>
+
+<hr>
+
+<a th:href="@{/AddClient}" class="btn btn-primary btn-sm mb-3">Add Client</a>
+<a th:href="@{/AddFunds}" class="btn btn-primary btn-sm mb-3">Add Funds</a>
+<a th:href="@{/OnBordClient}" class="btn btn-primary btn-sm mb-3">OnBord Client</a>
+
+<br>
+</div>
+	
+	<table border="1" class="table table-bordered table-hover" style="font-size:12px;">
+		<thead class="thead-dark">
+			<!-- <th>Id</th>	 -->
+			<!-- <th>Sr NO.</th>		 -->
+			<th>Bill Id</th>	
+			<th>RiskAggregator Name</th>
+			<th>Client Name</th>					
+			<th>Is waidOff</th>	
+			<th>Setup Fee</th>
+			<th>Monthly Fee</th>					
+			<th>Development Fee</th>
+			<th>Bill Start Date</th>
+			<th>Bill End Date</th>
+			<th>fundcount </th>
+			<th>goCheckNoteId</th>
+			<th>crmName</th>
+			<th>clientApprovalMail </th>
+			<th>waiverMail</th>			
+			<th>terminationMail</th>
+			<th>billingComments</th>
+			<th>Modified_date</th>
+			<th>Action</th>			
+		</thead>
+		
+		<tbody>
+			<tr th:each="bill , iterationStatus : ${billList}">			
+			<!-- <tr th:each="fund, iterationStatus : ${client.funds}"> -->			
+			<!-- <td th:text="${iterationStatus.count}"> -->	
+			<td th:text="${bill.billId}">		
+			<td th:text="${bill.riskAggregator.RiskAggregatorName}">	
+			<td th:text="${bill.client.clientShortName}">
+			<td th:text="${bill.isWaivedOff}">
+			<td th:text="${bill.setupFee}">
+			<td th:text="${bill.monthlyFee}">
+			<td th:text="${bill.devlopementFee}">
+			<td th:text="${bill.billStartDate}">
+			<td th:text="${bill.billEndDate}">
+			<td th:text="${bill.fundcount}">
+			<td th:text="${bill.goCheckNoteId}">
+			<td th:text="${bill.crmName}">
+	
+			<td><!-- <a th:text="${development.downloadUrl}"></a> -->
+				<a th:href="${bill.clientApprovalMailUrl}" class="btn btn-link">	          			 
+          			<i class="fa fa-envelope" style="font-size:24px"></i>            			      		
+        		</a>
+			</td>
+			<td><!-- <a th:text="${development.downloadUrl}"></a> -->
+				<a th:href="${bill.waiverMailUrl}" class="btn btn-link">	          			 
+          			<i class="fa fa-envelope" style="font-size:24px"></i>            			      		
+        		</a>
+			</td>
+			<td><!-- <a th:text="${development.downloadUrl}"></a> -->
+				<a th:href="${bill.terminationMailUrl}" class="btn btn-link">	          			 
+          			<i class="fa fa-envelope" style="font-size:24px"></i>            			      		
+        		</a>
+			</td>
+			<td th:text="${bill.billingComments}">
+			<td th:text="${bill.Modified_date}">
+				
+			<td>			
+        		<a th:href="@{/editBillDetails/(billId=${bill.billId})}"
+					   class="btn btn-danger"
+					   onclick="if (!(confirm('Are you sure you want to Edit this Bill details ?'))) return false">
+						Edit <span class="fa fa-edit"></span>
+					</a>
+			</td>
+		</tbody>
+	</table>
+	
+	<button type="submit" class="btn btn-primary"><span class="fa fa-search"></span> Search</button>
+    <button type="submit" class="btn btn-danger"><span class="fa fa-trash"></span> Search</button>	
+	
+
+
+
+</body>
+
+
+</html>

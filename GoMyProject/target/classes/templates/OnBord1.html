@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en" mlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Onbord client form1</title>
+
+ <!-- working for navbar dropdowns -->
+ 
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+<script src="/jquery/jquery-3.4.1.js"></script>
+<link rel="stylesheet" type="text/css"  th:href="@{/css/bootstrap.min.css}"/>
+<script src="/js/bootstrap.min.js"></script>
+
+<script src="/jquery/jquery-3.4.1.js"></script>
+
+<!-- Working for auto complete-->
+
+<link href="/jquery/jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet" type="text/css" />
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script	src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script type="text/javascript" th:href="@{/webjars/popper.js/1.14.3/popper.js}"></script>
+
+
+<!-- for multi select --> 
+<!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+<script type="text/javascript" src="/js/autocomplete.js"></script>
+
+ -->
+<!-- Working for multi select -->
+
+<link href="/multi-select/css/multi-select.css" rel="stylesheet" />
+<script src="/multi-select/js/jquery.multi-select.js"></script>
+
+<link href="/multi-select/css/select2.css" rel="stylesheet" />
+<script src="/multi-select/js/select2.js"></script>
+
+<!-- <script src="/js/autocomplete.js"></script> -->
+
+<script type="text/javascript">
+
+
+
+ jQuery(document).ready(function($) {
+
+	 var form = $('#onBoardForm1').val();
+	 console.log("form = "+form);
+	 
+	 if(form=="onBoardForm1"){
+		 console.log("onBoardForm1");
+		 
+
+		 
+			// to get the client list in drop down \clientList\?riskAggregatorId=-1 to get all clients.
+			jQuery("#client").autocomplete({
+				source : "\clientList\?riskAggregatorId=-1",
+				minLength : 0,
+				scroll : true,
+				select : function(event, ui) {
+					this.value = ui.item.label;
+					$("#client").val(ui.item.label);
+					//console.log(this.value);
+					//console.log(ui.item);
+					$("#clientId").val(ui.item.value);
+					//alert("INSID");
+					jQuery.getJSON("getFundsFromClient", {
+						p1 : ui.item.label
+					}, function(responseData) {
+						console.log(responseData);
+						//var clientFunds = jQuery('#clientFunds');
+						jQuery('#funds').empty();
+						var clientFunds = jQuery('#funds');
+						jQuery.each(responseData, function(key, value) {
+							console.log(value.label + " >> "+value.value);										
+							jQuery('<option id =' +value.value+'>').val(value.value)
+		            	    .text(value.label).appendTo(clientFunds);			
+						});
+
+					});
+					return false;
+				}
+			}); 
+			
+			
+			jQuery.getJSON("riskAggregatorList", function(responseData) {
+				//console.log(responseData);
+				//var clientFunds = jQuery('#clientFunds');
+				jQuery('#riskAggregatorId').empty();
+				let ra =jQuery('#riskAggregatorId');
+				jQuery('<option>').val(-1).text("Select RiskAggregator").appendTo(ra);
+				jQuery.each(responseData, function(key, value) {
+					//console.log(value.label + " >> "+value.value);				
+					jQuery('<option id =' +value.value+'>').val(value.value)
+		    	    .text(value.label).appendTo(ra);			
+				});
+
+			});
+			 
+		 
+	 }else if(form=="OnBordFundForm"){
+		 console.log("OnBordFundForm");
+		 console.log($('#clientId').val())
+		 let client = $('#clientId').val();
+		 
+		 jQuery.getJSON("/getFundsFromClient", {
+				p1 : client
+			}, function(responseData) {
+				console.log(responseData);
+				//var clientFunds = jQuery('#clientFunds');
+				jQuery('#funds').empty();
+				var clientFunds = jQuery('#funds');
+				jQuery.each(responseData, function(key, value) {
+					console.log(value.label + " >> "+value.value);										
+					jQuery('<option id =' +value.value+'>').val(value.value)
+         	    .text(value.label).appendTo(clientFunds);			
+				});
+
+			});
+		 
+	 }
+	 
+	 
+	
+	//label	value
+			
+	$("#funds").select2({
+		  maximumSelectionLength: 2
+		});
+
+	$("#funds").select2({
+		  placeholder: 'Select Funds',
+		  allowClear: true
+		});
+	
+	
+	
+	
+	$("#frequency").select2({
+		  maximumSelectionLength: 2
+		});
+
+	$("#frequency").select2({
+		  placeholder: 'Select Frequency',
+		  allowClear: true
+		});
+	
+	// its check if clien field is blank then blank clientId as well
+	jQuery('#client').change(function(event) {		
+		//let clientLength = $('#client').val().length;
+		//console.log(clientLength);
+		if( $('#client').val() == "" ){
+			$("#clientId").val("");
+		}	
+	});
+			
+	
+	 
+});
+
+</script>
+
+
+
+</head>
+<body>
+
+	<!-- to include the Navbar from fragments/nav.html -->
+	<div  th:replace="fragments/nav :: navbar"></div>
+	
+	<br>
+	<div class="container" th:if="${onBordDto.onBoardForm == 'onBoardForm1'}">
+
+	<h3>Client Onboard</h3>
+	<hr>
+		
+	<form action="#" th:action="@{/AddOnBordDetails1}" th:object="${onBordDto}" method="post">
+		<input type="hidden" id="onBoardForm1" th:field="*{onBoardForm}"	class="form-control mb-4 col-4" value="onBoardForm1" readonly>
+		RiskAggregator
+		<select id="riskAggregatorId" class="form-control mb-4 col-4" th:field="*{riskAggregatorId}">
+			<option value="0">Select RiskAggregator</option>			
+		</select>
+		
+<!-- 		<div class="alert alert-danger alert-dismissible fade show">
+    		<strong>Error!</strong> 
+    		<button type="button" class="close" data-dismiss="alert">&times;</button>
+		</div> -->
+			
+		<p th:if="${#fields.hasErrors('riskAggregatorId')}" th:errors="*{riskAggregatorId}" class="alert alert-danger mb-4 col-4"></p>
+		
+		Client	
+		<input id="client" type="text" class="form-control mb-4 col-4" th:field="*{clientName}">
+		<input type="hidden" id="clientId" th:field="*{clientId}"	placeholder="clientId" class="form-control mb-4 col-4" readonly>
+		
+		<p th:if="${#fields.hasErrors('clientId')}" th:errors="*{clientId}" class="alert alert-danger mb-4 col-4"></p>
+		
+		 Funds
+		<br>
+		<select class="form-control mb-4 col-4" id ="funds" multiple="multiple" th:field="*{fundName}" >
+  		</select>
+  		
+  		<br>
+  		<br>
+  		<p th:if="${#fields.hasErrors('fundName')}" th:errors="*{fundName}" class="alert alert-danger mb-4 col-4"></p>
+  		
+  		<br>  		
+  		<br>
+  		<!--
+  		Setup Date
+  		<input type="date" class="form-control mb-4 col-4" th:field="*{setUpDate}">
+  		<p th:if="${#fields.hasErrors('setUpDate')}" th:errors="*{setUpDate}"></p>
+  		End Date
+  		<input type="date" class="form-control mb-4 col-4" th:field="*{endDate}">
+  		Automation Process
+  		<select class="form-control mb-4 col-4" th:field="*{automationProcess}">
+			<option value="-1">Select Automation Process</option>
+			<option value="RiskMq">RiskMq</option>
+			<option value="Cron">Cron</option>
+		</select>
+		
+		Automation Process
+  		<select class="form-control mb-4 col-4" th:field="*{automationProcess}">
+  			<option value="-1">Select Automation Process</option>
+			<option th:each="opt : ${T(com.globeop.riskfeed.enums.AutomationProcess).values()}" th:value="${opt}" th:text="${opt.displayValue}"></option>			
+		</select>
+		<p th:if="${#fields.hasErrors('automationProcess')}" th:errors="*{automationProcess}"></p>
+			
+		Is Active
+		<select class="form-control mb-4 col-4" id="isActive" name="isActive">
+			<option value="-1">Select is Active</option>
+			<option value="A" selected="selected">Active</option>
+			<option value="D">Disable</option>
+		</select>
+		Is Active		
+		<select class="form-control mb-4 col-4" id="isActive" name="isActive">
+			<option value="-1">Select is Active</option>
+			<option th:each="opt : ${T(com.globeop.riskfeed.enums.IsActive).values()}" th:value="${opt}" th:text="${opt.displayValue}"></option>
+		</select>
+		<p th:if="${#fields.hasErrors('isActive')}" th:errors="*{isActive}"></p>
+		
+  		Comments
+  		<br>
+  		<textarea rows="4" cols="50" name="comment" placeholder="Comments...." th:field="*{comments}"></textarea>
+  		<p th:if="${#fields.hasErrors('comments')}" th:errors="*{comments}"></p>
+  		<br>
+  		<br>
+  		Frequency
+  		<br>
+  		<select class="form-control mb-4 col-4" id ="frequency" multiple="multiple" th:field="*{frequency}">		
+			<option value="D">Daily</option>
+			<option value="W">Weekly</option>
+			<option value="M">Monthly</option>
+		</select>
+		<p th:if="${#fields.hasErrors('frequency')}" th:errors="*{frequency}"></p>	
+  		<br>
+		<br>
+		<br> -->
+		<button type="submit" class="btn btn-info col-2">Next</button>
+	</form>
+
+</div>
+
+
+<div class="container" th:if="${onBordDto.onBoardForm == 'OnBordFundForm'}">
+
+		<h3>Fund Onboarding for </h3>
+		<h3 th:text="${onBordDto.riskAggregatorName} +' ' +${onBordDto.clientName} "> </h3>
+		<hr>
+		
+		<form action="#" th:action="@{/AddOnBordDetails1}" th:object="${onBordDto}" method="post">
+		<input type="hidden" id="onBoardForm1" th:field="*{onBoardForm}"	class="form-control mb-4 col-4" value="onBoardForm1" readonly>
+		RiskAggregator
+		<input type="text" id="riskAggregatorName" th:field="*{riskAggregatorName}" placeholder="riskAggregatorName" class="form-control mb-4 col-4" readonly>
+		<input type="hidden" id="riskAggregatorId" th:field="*{riskAggregatorId}" placeholder="riskAggregatorId" class="form-control mb-4 col-4" readonly>
+		Client
+		<input type="text" id="clientName" th:field="*{clientName}" placeholder="clientName" class="form-control mb-4 col-4" readonly>
+		<input type="hidden" id="clientId" th:field="*{clientId}" placeholder="clientId" class="form-control mb-4 col-4" readonly>				
+
+		
+		 Funds
+		<br>
+		<select class="form-control mb-4 col-4" id ="funds" multiple="multiple" th:field="*{fundName}" >
+  		</select>			
+		
+  		
+  		<br>  		
+  		<br>  	
+		<button type="submit" class="btn btn-info col-2">Next</button>
+	</form>
+	
+	
+	
+	
+
+	</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" mlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Development Form</title>
+
+<!-- <script type="text/javascript" th:href="@{/webjars/jquery/3.3.1/jquery.min.js}" ></script>
+<script type="text/javascript" scr="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" scr="https://code.jquery.com/jquery-1.12.4.js"></script>
+ -->
+
+<!-- <link rel="stylesheet" type="text/css"	th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}" />
+<script type="text/javascript"	th:href="@{/webjars/bootstrap/4.4.1/js/bootstrap.min.js}"></script>
+<script type="text/javascript"	th:href="@{/webjars/jquery/3.3.1/jquery.js}"></script>
+<script type="text/javascript" th:href="@{/webjars/bootstrap/4.4.1/js/bootstrap.bundle.min.js}" ></script> -->
+
+
+
+<!-- working for navbar dropdowns -->
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+<script src="/jquery/jquery-3.4.1.js"></script>
+<link rel="stylesheet" type="text/css"  th:href="@{/css/bootstrap.min.css}"/>
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Working -->
+
+<link href="/jquery/jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet" type="text/css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script	src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+<script type="text/javascript" th:href="@{/webjars/popper.js/1.14.3/popper.js}"></script>
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script> -->
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+<!-- <script type="text/javascript" src="/js/autocomplete.js"></script> -->
+
+<script src="/js/autocomplete.js"></script>
+
+<script type="text/javascript">
+
+jQuery(document).ready(function($) {
+
+	// to get the client list in drop down.
+	/*jQuery("#client").autocomplete({
+		source : "\clientList",
+		minLength : 0,
+		scroll : true,
+		select : function(event, ui) {
+			this.value = ui.item.label;
+			$("#client").val(ui.item.label);
+			//console.log(this.value);
+			//console.log(ui.item);
+			$("#clientId").val(ui.item.value);
+
+			alert("INSID");
+			jQuery.getJSON("getFundsFromClient", {
+				p1 : ui.item.label
+			}, function(responseData) {
+				console.log(responseData);
+				//var clientFunds = jQuery('#clientFunds');
+				jQuery('#funds').empty();
+				var clientFunds = jQuery('#funds');
+				jQuery.each(responseData, function(key, value) {
+					console.log(value.label + " >> "+value.value);										
+					jQuery('<option id =' +value.value+'>').val(value.value)
+            	    .text(value.label).appendTo(clientFunds);			
+				});
+
+			});
+			return false;
+		}
+	});
+	 */
+	//label	value
+			
+	$("#funds").select2({
+		  maximumSelectionLength: 2
+		});
+
+	$("#funds").select2({
+		  placeholder: 'Select Funds',
+		  allowClear: true
+		});
+	
+	
+	
+	
+	$("#frequency").select2({
+		  maximumSelectionLength: 2
+		});
+
+	$("#frequency").select2({
+		  placeholder: 'Select Frequency',
+		  allowClear: true
+		});
+	
+	// its check if clien field is blank then blank clientId as well
+	jQuery('#client').change(function(event) {		
+		//let clientLength = $('#client').val().length;
+		//console.log(clientLength);
+		if( $('#client').val() == "" ){
+			$("#clientId").val("");
+		}	
+	});
+			
+	
+	 
+});
+
+</script>
+
+
+
+</head>
+<body>
+
+	<!-- <div id="nav-placeholder"></div> -->
+	<div  th:replace="fragments/nav :: navbar"></div>
+	<br>
+	<div class="container">
+
+		<!-- 	<form action="#" th:action="@{/AddOnBordDetails}" th:object="${onBordDto}" method="post">
+		
+		<input id="client" type="text" class="form-control mb-4 col-4">
+		
+		<input type="text" id="clientId" th:field="*{clientId}" placeholder="clientId" class="form-control mb-4 col-4" readonly>
+		
+		<input list="client_search" class="form-control mb-4 col-4" type="search" placeholder="search" aria-label="Search" name="search">
+		<datalist id="client_search">
+			<option>A</option>
+			<option>B</option>
+			<option>C</option>
+			<option>X</option>
+		</datalist>
+		</input>
+					
+		<input type="text" th:field="*{fundName}" placeholder="Fund Short Name"
+		class="form-control mb-4 col-4">
+		<input type="text" th:field="*{}" placeholder="">
+		<input type="text" th:field="*{}" placeholder="">
+		<button type="submit" class="btn btn-info col-2">Save</button>
+	</form> -->
+
+	<h3>Add Development Details</h3>
+	<hr>
+	
+
+	<!-- Testing
+	<hr> -->
+
+	<form action="#" th:action="@{/AddDevelopmentDetails}" th:object="${onBordDto}" method="post" enctype="multipart/form-data">
+	
+		<input type="hidden" id="developmentForm" th:field="*{onBoardForm}"	class="form-control mb-4 col-4" value="developmentForm" readonly>
+		RiskAggregator
+		<select id="riskAggregator" class="form-control mb-4 col-4" th:field="*{riskAggregatorId}">
+			<option value="-1">Select RiskAggregator</option>			
+		</select>
+		<p th:if="${#fields.hasErrors('riskAggregatorId')}" th:errors="*{riskAggregatorId}" class="alert alert-danger mb-4 col-4"></p>	
+		<!-- <p th:unless="${#fields.hasErrors('riskAggregatorId')}" th:text="TEST"></p> -->	
+		Client	
+		<input id="client" type="text" class="form-control mb-4 col-4">
+		
+		<input type="hidden" id="clientId" th:field="*{clientId}"	placeholder="clientId" class="form-control mb-4 col-4" readonly>
+		<p th:if="${#fields.hasErrors('clientId')}" th:errors="*{clientId}" class="alert alert-danger mb-4 col-4"></p>		
+  		<br>
+  		
+  		Is WaivedOff
+  		<select class="form-control mb-4 col-4" th:field="*{isWaivedOff}">
+  			<option value="-1">Select</option>
+			<option th:each="opt : ${T(com.globeop.riskfeed.enums.IsWaivedOff).values()}" th:value="${opt}" th:text="${opt.displayValue}"></option>			
+		</select>
+		
+		<p th:if="${#fields.hasErrors('isWaivedOff')}" th:errors="*{isWaivedOff}" class="alert alert-danger mb-4 col-4"></p>
+		
+		<br>
+		Development Hours
+		<input type="text" th:field="*{developmentHours}" placeholder="Hours" class="form-control mb-4 col-4">
+		<br>
+		Development Cost
+		<input type="text" th:field="*{developmentCost}" placeholder="Cost" class="form-control mb-4 col-4">
+		
+  		Start Date
+  		<input type="date" class="form-control mb-4 col-4" th:field="*{startDate}">
+  		<p th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}"></p>
+  		End Date
+  		<input type="date" class="form-control mb-4 col-4" th:field="*{endDate}">
+  		  					
+  		Comments
+  		<br>
+  		<textarea rows="4" cols="50" name="comment" placeholder="Comments...." th:field="*{comments}"></textarea>
+  		<p th:if="${#fields.hasErrors('comments')}" th:errors="*{comments}" class="alert alert-danger mb-4 col-4"></p>
+  		<br>
+  		Approval Mail
+  		<br>
+  		<input type="file" name="file">  		
+  		<br>
+  		<br>
+  		<p th:if="${#fields.hasErrors('waiverMail')}" th:errors="*{waiverMail}" class="alert alert-danger mb-4 col-4"></p>
+  		
+		<br>
+		<br>
+		<button type="submit" class="btn btn-info col-2">Save</button>
+	</form>
+
+</div>
+
+
+
+</body>
+</html>

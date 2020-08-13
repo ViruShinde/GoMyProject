@@ -10,92 +10,36 @@
 
 <!-- <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" /> -->
 
-<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}" />
 
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+ <!-- working for navbar dropdowns -->
+ 
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+<script src="/jquery/jquery-3.4.1.js"></script>
+<link rel="stylesheet" type="text/css"  th:href="@{/css/bootstrap.min.css}"/>
+<script src="/js/bootstrap.min.js"></script>
 
-<script type="text/javascript" th:href="@{/webjars/bootstrap/4.4.1/js/bootstrap.min.js}" ></script>
+<!--<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}" />
+ <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script type="text/javascript" th:href="@{/webjars/bootstrap/4.4.1/js/bootstrap.min.js}" ></script>  -->
+
+<!--
+	working for dropdown
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"></link>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"></link>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> -->
+
+<!-- <link rel="stylesheet" type="text/css"  th:href="@{/css/bootstrap.min.css}"/>
+<script src="/js/bootstrap.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
 
 
-
-<script type="text/javascript">
-
-$(function(){
-	  $("#nav-placeholder").load("Nav");
-	});
-
-</script>
 
 <title>Home</title>
 </head>
 <body>
 
-	<!-- for Bootstrap 3.3.7 -->
-	<!-- 
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#" th:href="@{/}">Registration and
-					Login Module</a>
-			</div>
-			<div id="navbar" class="collapse navbar-collapse">
-				<ul class="nav navbar-nav">
-					<li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
-				</ul>
-			</div>
-		</div>
-	</nav>
-
- -->
-
-	<!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<a class="navbar-brand" href="#">RiskFeed</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse"
-			data-target="#navbarSupportedContent"
-			aria-controls="navbarSupportedContent" aria-expanded="false"
-			aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active"><a class="nav-link" href="#">Home
-						<span class="sr-only">(current)</span>
-				</a></li>
-				<li class="nav-item"><a class="nav-link" href="#">Link</a></li>
-				<li class="nav-item dropdown"><a
-					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-					role="button" data-toggle="dropdown" aria-haspopup="true"
-					aria-expanded="false"> Dropdown </a>
-					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="#">Action</a> <a
-							class="dropdown-item" href="#">Another action</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="#">Something else here</a>
-					</div></li>
-				<li class="nav-item"><a class="nav-link disabled" href="#"
-					tabindex="-1" aria-disabled="true">Disabled</a></li>
-			</ul>
-
-			<a th:href="@{/logout}" class="btn btn-info btn-lg"> <span
-				class="glyphicon glyphicon-log-out"></span> Log out
-			</a>
-
-		</div>
-	</nav> -->
-	
-	<div id="nav-placeholder"></div>
-	
-
-	<br>
+	<!-- to include the Navbar from fragments/nav.html -->
+	<div  class="container" th:replace="fragments/nav :: navbar"></div>
 	<br>
 	<div class="container">
 		<!-- <h2>User Registration and Login Module using Spring Boot, Spring
@@ -112,9 +56,31 @@ $(function(){
         </div>
         <br>
         
+        <a th:href="@{/AddRiskAggregator}" class="btn btn-primary btn-sm mb-3">Add RiskAggregator</a>
 		<a th:href="@{/AddClient}" class="btn btn-primary btn-sm mb-3">Add Client</a>
 		<a th:href="@{/AddFunds}" class="btn btn-primary btn-sm mb-3">Add Funds</a>
-		<a th:href="@{/OnBordClient}" class="btn btn-primary btn-sm mb-3">OnBord Client</a>
+		<a th:href="@{/AddOnBordDetails1}" class="btn btn-primary btn-sm mb-3">OnBord Client</a>
+		<a th:href="@{/AddDevelopmentDetails}" class="btn btn-primary btn-sm mb-3">Add Development Details</a>
+		<a th:href="@{/DevelopmentDetails}" class="btn btn-primary btn-sm mb-3">Development Details</a>
+	</div>
+	
+	<div class="container">
+	
+	<table class="table table-bordered table-hover">
+		<thead class="thead-dark">
+			<th>Sr No.</th>	
+			<th>RiskAggregator</th>
+			<th>No of Active clients</th>			
+		</thead>
+
+		<tbody>
+			<tr th:each="details, iterationStatus : ${overAllDetails}">				
+			<td th:text="${iterationStatus.count}">				
+			<td><a th:text="${details.riskAggregatorName}" th:href="@{'getClientsOFRisKAggregator/' +${details.riskAggregatorId}}"> </a> </td>
+			<td th:text="${details.count}">
+		</tbody>
+	</table>
+
 	</div>
 
 	<!-- <script type="text/javascript" th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>

@@ -1,27 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" mlns:th="http://www.thymeleaf.org">
-<!-- <link rel="stylesheet" type="text/css"	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
-<script type="text/javascript" th:href="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}" ></script>
- -->
 
+<!-- working for navbar dropdowns -->
 
-<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}" />
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+<script src="/jquery/jquery-3.4.1.js"></script>
+<link rel="stylesheet" type="text/css"  th:href="@{/css/bootstrap.min.css}"/>
+<script src="/js/bootstrap.min.js"></script>
 
-<!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
-
-<script type="text/javascript" th:href="@{/webjars/bootstrap/4.4.1/js/bootstrap.min.js}" ></script>
-<script type="text/javascript" th:href="@{/webjars/jquery/3.3.1/jquery.js}" ></script>
-
-<!-- Working -->
+<!-- Working for auto complete-->
 
 <link href="/jquery/jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet" type="text/css"  />
-    <!-- <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/> -->
-    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
 
-<!-- multi select -->
+<!-- Working for multi select -->
 
 <link href="/multi-select/css/multi-select.css" rel="stylesheet" />
 <script src="/multi-select/js/jquery.multi-select.js"></script>
@@ -29,14 +23,79 @@
 <link href="/multi-select/css/select2.css" rel="stylesheet" />
 <script src="/multi-select/js/select2.js"></script>
 
-<script src="/js/autocomplete.js"></script>
+<!-- <script src="/js/autocomplete.js"></script> -->
+
+<script type="text/javascript">
+
+
+
+ jQuery(document).ready(function($) {
+		 
+			// to get the client list in drop down \clientList\?riskAggregatorId=-1 to get all clients.
+			jQuery("#client").autocomplete({
+				source : "\clientList\?riskAggregatorId=-1",
+				minLength : 0,
+				scroll : true,
+				select : function(event, ui) {
+					this.value = ui.item.label;
+					$("#client").val(ui.item.label);
+					//console.log(this.value);
+					//console.log(ui.item);
+					$("#clientId").val(ui.item.value);
+					//alert("INSID");
+					jQuery.getJSON("getFundsFromClient", {
+						p1 : ui.item.label
+					}, function(responseData) {
+						console.log(responseData);
+						//var clientFunds = jQuery('#clientFunds');
+						jQuery('#funds').empty();
+						var clientFunds = jQuery('#funds');
+						jQuery.each(responseData, function(key, value) {
+							console.log(value.label + " >> "+value.value);										
+							jQuery('<option id =' +value.value+'>').val(value.value)
+		            	    .text(value.label).appendTo(clientFunds);			
+						});
+
+					});
+					return false;
+				}
+			}); 			
+	 
+	
+	//label	value
+			
+	$("#funds").select2({
+		  maximumSelectionLength: 2
+		});
+
+	$("#funds").select2({
+		  placeholder: 'Select Funds',
+		  allowClear: true
+		});
+	
+	
+	// its check if clien field is blank then blank clientId as well
+	jQuery('#client').change(function(event) {		
+		//let clientLength = $('#client').val().length;
+		//console.log(clientLength);
+		if( $('#client').val() == "" ){
+			$("#clientId").val("");
+		}	
+	});
+			
+	
+	 
+});
+
+</script>
 
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Fund Form</title>
 </head>
 <body>
-<div id="nav-placeholder"></div>
+<!-- to include the Navbar from fragments/nav.html -->
+<div  th:replace="fragments/nav :: navbar"></div>
 <div class="container">
 	
 	<h3>Add Funds</h3>
@@ -44,7 +103,7 @@
 
 	<form action="#" th:action="@{/AddFunds}" th:object="${onBordDto}" method="post">	
 		<input id="client" type="text" class="form-control mb-4 col-4">		
-		<input type="text" id="clientId" th:field="*{clientId}" placeholder="clientId" class="form-control mb-4 col-4" readonly>									
+		<input type="hidden" id="clientId" th:field="*{clientId}" placeholder="clientId" class="form-control mb-4 col-4" readonly>									
 		<input type="text" th:field="*{fundName}" placeholder="Fund Short Name"	class="form-control mb-4 col-4">
 		
 <!-- 		<select multiple="multiple" th:field="*{clientFunds}" id="clientFunds" name="clientFunds[]">

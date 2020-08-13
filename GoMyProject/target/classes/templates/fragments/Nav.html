@@ -1,0 +1,74 @@
+<html>
+  <head>    
+  </head>
+  <body>
+<div th:fragment="navbar" style="margin-bottom: 50px;" class="navbar navbar-inverse navbar-fixed-top">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+		<a class="navbar-brand" href="/">RiskFeed</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+					<a class="nav-link" href="/">Home
+						<span class="sr-only">(current)</span>
+					</a>
+				</li>
+				<!-- <li class="nav-item"><a class="nav-link" href="#">Link</a></li> -->
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Add Details </a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+						<a class="dropdown-item" th:href="@{/AddRiskAggregator}">Add RiskAggregator</a> 
+						<a class="dropdown-item" th:href="@{/AddClient}" >Add Client</a>
+						<a class="dropdown-item" th:href="@{/AddFunds}" >Add Funds</a>
+						<a class="dropdown-item" th:href="@{/AddOnBordDetails1}" >OnBord Client</a>
+						<a class="dropdown-item" th:href="@{/AddDevelopmentDetails}" >Add Development Details</a>
+						<a class="dropdown-item" th:href="@{/AddBill}" >Add Bill Details</a>
+					</div>
+				</li>
+
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Get Details </a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" th:href="@{/getClient}">Clients</a>
+						<a class="dropdown-item" th:href="@{/getRiskAggregator}">RiskAggregators</a>
+						<a class="dropdown-item" th:href="@{/getClient}">Clients</a> 
+						<a class="dropdown-item" th:href="@{/getOnBordedDetails}">OnBoard Details</a> 
+						<a class="dropdown-item" th:href="@{/getDevelopmentDetails}">Development Details</a> 
+						<a class="dropdown-item" href="#">Action</a> 
+						<a class="dropdown-item" href="#">Another action</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="#">Something else here</a>
+					</div>
+				</li>
+				
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Billing Details </a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" th:href="@{/BillDetails}">Bill Details</a>
+						<a class="dropdown-item" th:href="@{/allDetails}">All Details</a>
+						<a class="dropdown-item" th:href="@{/getClient}">Clients</a> 
+						<a class="dropdown-item" th:href="@{/getOnBordedDetails}">OnBoard Details</a> 
+						<a class="dropdown-item" th:href="@{/getDevelopmentDetails}">Development Details</a> 
+						<a class="dropdown-item" href="#">Action</a> 
+						<a class="dropdown-item" href="#">Another action</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="#">Something else here</a>
+					</div>
+				</li>
+				<li class="nav-item"><a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a></li>
+			</ul>
+
+			<a th:href="@{/logout}" class="btn btn-info btn-lg"> 
+				<span class="glyphicon glyphicon-log-out"></span> Log out
+			</a>
+			
+		</div>
+		
+	</nav>
+	
+</div>
+</body>
+</html>

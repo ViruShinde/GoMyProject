@@ -1,0 +1,83 @@
+clienttable
+
+CREATE TABLE `clienttable` (
+  `ClientID` int(11) NOT NULL AUTO_INCREMENT,
+  `ClientShortName` varchar(30) NOT NULL,
+  `Modified_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ClientID`),
+  UNIQUE KEY `ClientShortName_UNIQUE` (`ClientShortName`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+fundtable
+
+CREATE TABLE `fundtable` (
+  `FundID` int(11) NOT NULL AUTO_INCREMENT,
+  `FundShortName` varchar(255) DEFAULT NULL,
+  `Modified_date` datetime DEFAULT NULL,
+  `ClientID` int(11) DEFAULT NULL,
+  PRIMARY KEY (`FundID`),
+  KEY `FK1` (`ClientID`),
+  CONSTRAINT `FK1` FOREIGN KEY (`ClientID`) REFERENCES `clienttable` (`ClientID`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+
+riskaggregator
+
+CREATE TABLE `riskaggregator` (
+  `RiskAggregatorId` int(11) NOT NULL AUTO_INCREMENT,
+  `RiskAggregatorName` varchar(255) DEFAULT NULL,
+  `RiskAggregatorContact` varchar(255) DEFAULT NULL,
+  `Modified_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`RiskAggregatorId`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+
+clientonboardtable
+
+drop table if exists clientonboardtable;
+
+CREATE TABLE `clientonboardtable` (
+  `ClientOnboardId` int(11) NOT NULL AUTO_INCREMENT,
+  `ClientID` int(11) NOT NULL,
+  `RiskAggregatorId` int(11) NOT NULL,
+  `FundID` int(11) NOT NULL,
+  `SetUpDate` date DEFAULT NULL,
+  `EndDate` date DEFAULT NULL,
+  `AutomationProcess` ENUM('RiskMQ', 'Cronjob'),
+  `IsActive` varchar(20) NOT NULL,
+  `Comments` varchar(200) DEFAULT NULL,
+  `Frequency` varchar(20) NOT NULL,
+  `Modified_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ClientOnboardId`),
+  KEY `ClientOnboardTable_fk_1` (`ClientID`),
+  KEY `ClientOnboardTable_fk_2` (`FundID`),
+  KEY `ClientOnboardTable_fk_3` (`RiskAggregatorId`),
+  CONSTRAINT `ClientOnboardTable_fk_1` FOREIGN KEY (`ClientID`) REFERENCES `clienttable` (`ClientID`),
+  CONSTRAINT `ClientOnboardTable_fk_2` FOREIGN KEY (`FundID`) REFERENCES `fundtable` (`FundID`),
+  CONSTRAINT `ClientOnboardTable_fk_3` FOREIGN KEY (`RiskAggregatorId`) REFERENCES `riskaggregator` (`RiskAggregatorId`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+
+DevelopmentTable
+
+drop table if exists DevelopmentTable;
+
+CREATE TABLE `DevelopmentTable` (
+  `DevelopmentId` int(11) NOT NULL AUTO_INCREMENT,
+  `DevelopmentHours` int(11) DEFAULT NULL,
+  `DevelopmentCost` int(11) DEFAULT NULL,
+  `IsWaivedOff` varchar(20) DEFAULT NULL,
+  `StartDate` date DEFAULT NULL,
+  `EndDate` date DEFAULT NULL,
+  `DevelopmentComments` varchar(400) DEFAULT NULL,
+  `ApprovalMail` LONGBLOB DEFAULT NULL,
+  `FileName` varchar(50) DEFAULT NULL,
+  `FileType` varchar(50) DEFAULT NULL,
+  `ClientID` int(11) DEFAULT NULL,
+  `RiskAggregatorId` int(11) DEFAULT NULL,
+  `Modified_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`DevelopmentId`),
+  KEY `DevelopmentTable_fk_1` (`ClientID`),
+  KEY `DevelopmentTable_fk_2` (`RiskAggregatorId`),
+  CONSTRAINT `DevelopmentTable_fk_1` FOREIGN KEY (`ClientID`) REFERENCES `ClientTable` (`ClientID`),
+  CONSTRAINT `DevelopmentTable_fk_2` FOREIGN KEY (`RiskAggregatorId`) REFERENCES `RiskAggregator` (`RiskAggregatorId`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;

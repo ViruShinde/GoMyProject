@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
-Implementation-Title: registration-login-springboot-security-thymeleaf
+Implementation-Title: GoMyProject
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: vshinde
-Implementation-Vendor-Id: net.guides.springboot
-Build-Jdk: 1.8.0_152
+Built-By: SuperUser
+Implementation-Vendor-Id: com.globeop.riskfeed
+Build-Jdk: 1.8.0_66
 Implementation-URL: https://projects.spring.io/spring-boot/#/spring-bo
- ot-starter-parent/registration-login-springboot-security-thymeleaf
+ ot-starter-parent/GoMyProject
 Created-By: Maven Integration for Eclipse
 

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" mlns:th="http://www.thymeleaf.org">
+
+<!-- working for navbar dropdowns -->
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+<script src="/jquery/jquery-3.4.1.js"></script>
+<link rel="stylesheet" type="text/css"  th:href="@{/css/bootstrap.min.css}"/>
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}" />
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" th:href="@{/webjars/bootstrap/4.4.1/js/bootstrap.min.js}"></script>
+ -->
+ 
+<script type="text/javascript">
+	
+$(document).ready(function(){
+    $('#riskAggregatorName').keyup(function(){
+        $(this).val($(this).val().toUpperCase());
+    });
+});
+</script>
+
+
+<head>
+<meta charset="ISO-8859-1">
+<title>RiskAggregator Form</title>
+</head>
+<body>
+	<!-- to include the Navbar from fragments/nav.html -->
+	<div  th:replace="fragments/nav :: navbar"></div>
+	<br>
+	
+	<div class="container" th:if="${message}">
+		<div class="alert alert-danger form-control mb-4 col-4" th:text="${message}" ></div>
+	</div>
+					
+	<div class="container">
+		<form action="#" th:action="@{/AddRiskAggregator}" th:object="${riskAggregator}"
+			method="post">
+			<input type="text" th:field="*{riskAggregatorName}" id="riskAggregatorName"
+				placeholder="RiskAggregator Short Name" class="form-control mb-4 col-4">
+				
+				<input type="text" th:field="*{riskAggregatorContact}" id="riskAggregatorContact"
+				placeholder="RiskAggregator Contact" class="form-control mb-4 col-4">
+				
+			<!-- <input type="text" th:field="*{}" placeholder=""> -->
+			<!-- <input type="text" th:field="*{}" placeholder=""> -->
+			<button type="submit" class="btn btn-info col-2">Save</button>
+		</form>
+	</div>
+</body>
+</html>

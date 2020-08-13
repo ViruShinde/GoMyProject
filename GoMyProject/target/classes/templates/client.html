@@ -1,36 +1,40 @@
 <!DOCTYPE html>
 <html lang="en" mlns:th="http://www.thymeleaf.org">
 <head>
-<!-- <link rel="stylesheet" type="text/css"	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
-<script type="text/javascript" th:href="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}" ></script> -->
-
-
+<title>Clients</title>
+<!-- 
 <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}" />
-
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
 <script type="text/javascript" th:href="@{/webjars/bootstrap/4.4.1/js/bootstrap.min.js}" ></script>
 
-<script type="text/javascript">
+ -->
+ 
+<!-- working for navbar dropdowns -->
 
-$(function(){
-	  $("#nav-placeholder").load("Nav");
-	});
-</script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+<script src="/jquery/jquery-3.4.1.js"></script>
+<link rel="stylesheet" type="text/css"  th:href="@{/css/bootstrap.min.css}"/>
+<script src="/js/bootstrap.min.js"></script>
 
-
+<link rel="stylesheet" type="text/css" href="css/all.css"/>
+ 
 </head>
 
 <body>
-<div id="nav-placeholder"></div>
+<!-- to include the Navbar from fragments/nav.html -->
+<div  th:replace="fragments/nav :: navbar"></div>
 <br>
 <div class="container">
 
-<a th:href="@{/showFormForAdd}" class="btn btn-primary btn-sm mb-3">Add Client</a>
+<!-- <a th:href="@{/showFormForAdd}" class="btn btn-primary btn-sm mb-3">Add Client</a>
 
-<a th:href="@{/OnBordClient}" class="btn btn-primary btn-sm mb-3">OnBord Client</a>
+<a th:href="@{/OnBordClient}" class="btn btn-primary btn-sm mb-3">OnBord Client</a> -->
 
+	<div class="container" th:if="${riskAggregator}">		
+		<h3 th:text="${riskAggregator} + ' Clients'"> </h3>
+	</div>
+	<hr>
 	<div class="container">
 	
 	<table class="table table-bordered table-hover">
@@ -38,18 +42,19 @@ $(function(){
 			<th>Sr No.</th>	
 			<th>Client Id</th>
 			<th>Client Name</th>
-			<th>Modified Date</th>
+			<th>Setup Date</th>
 		</thead>
-		
+
 		<tbody>
 			<tr th:each="client, iterationStatus : ${clients}">				
 			<td th:text="${iterationStatus.count}">	
 			<td th:text="${client.ClientID}">
-			<td th:text="${client.ClientShortName}">
+			<td th:if="${riskAggregator}"><a th:text="${client.ClientShortName}" th:href="@{'/getFund/'+${riskAggregatorId}+'/' +${client.ClientID}}"> </a> </td>
+			<td th:unless="${riskAggregator}"><a th:text="${client.ClientShortName}" th:href="@{'/getFund/' +${client.ClientID}}"> </a> </td>
 			<td th:text="${client.Modified_date}">
 		</tbody>
 	</table>
-	
+
 	</div>
 </div>
 

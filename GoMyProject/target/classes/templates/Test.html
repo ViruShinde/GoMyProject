@@ -28,12 +28,150 @@
 <link rel="stylesheet" type="text/css" href="/DataTables/datatables.css"/>
 <script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
 
+<!-- <script type="text/javascript" charset="utf8" src="/DataTables/Buttons-1.6.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" charset="utf8" src="/DataTables/Buttons-1.6.1/js/buttons.flash.min.js"></script>
+<script type="text/javascript" charset="utf8" src="/DataTables/JSZip-2.5.0/jszip.min.js"></script>
+<script type="text/javascript" charset="utf8" src="/DataTables/pdfmake-0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" charset="utf8" src="/DataTables/pdfmake-0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" charset="utf8" src="/DataTables/Buttons-1.6.1/js/buttons.html5.js"></script>
+<script type="text/javascript" charset="utf8" src="/DataTables/Buttons-1.6.1/js/buttons.print.min.js"></script> -->
+
+
+<script type="text/javascript"  src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript"  src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.flash.min.js"></script>
+<script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script type="text/javascript"  src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
+<script type="text/javascript"  src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css"/>
+
+<script src="/js/dataTable.js"></script>
+
+<!-- <script type="text/javascript">
+jQuery(document).ready(function($) {
+	
+	var request = $("#request").val();
+	
+	var col=[""];
+	createDatatTable(request,col);
+
+	
+	$("button").click(function(){
+		request = $("#request").val();
+        var favorite = [""];
+        //var favorite2 = [];
+        $.each($("input[name='sport']:checked"), function(){
+            favorite.push($(this).val());
+        });
+        
+        //console.log(favorite);
+        /* $.each($("input[name='sport']:not(:checked)"), function(){
+            favorite2.push($(this).val());   
+            let removed = $(this).val();
+            favorite = $.grep(favorite, function(value) {
+          	  return value != removed;
+            });
+        }); */
+        
+             
+
+       // alert(favorite+ "  My favourite sports are: " + favorite.join(", "));
+       	//alert(">>"+ favorite2);
+        createDatatTable(request, favorite );
+    });
+	
+});
+
+
+function createDatatTable(request, column ){
+	console.log(column);
+	$.ajax({
+	    "url": '/api/Test/',
+	    "data" : { req : request, columns : column },
+	    "success": function (result) {
+	    	console.log(result);
+	        var tableHeaders;
+	        $.each(result.columns, function (i, val) {
+	            tableHeaders += "<th>" + val + "</th>";
+	        });
+
+	        //console.log(tableHeaders);
+	        
+	         $("#tableDiv").empty();
+	         $("#tableDiv").append('<table id="displayTable" class="display"     cellspacing="0" width="100%"><thead><tr>' + tableHeaders + '</tr></thead></table>');
+
+	         var columns = [];
+	        jQuery.each(result.columns, function (i, value) {
+	            var obj = { data: value };
+	            columns.push(obj);
+	        });
+	        
+	       /*  var obj = { data : "automationProcess"};
+	        columns.push(obj);
+	        
+	        console.log(columns); */
+
+	        var table = $('#displayTable').DataTable({
+	            data: result.data,
+	            columns: columns,
+	            dom: 'Bfrtip',
+	            buttons: [
+	                {
+	                    extend: 'excelHtml5',
+	                    title: 'Data export'
+	                },
+	                {
+	                    extend: 'pdfHtml5',
+	                    title: 'Data export'
+	                }
+	                ,
+	                {
+	                    extend: 'csvHtml5',
+	                    title: 'Data export'
+	                }
+	                ,
+	                {
+	                    extend: 'print',
+	                    title: 'Data export'
+	                }
+	            ]
+	            
+
+	        });
+	        
+	        
+	        // this is handelled in controller.
+	        $("#request").val("secondRequest");
+	        /* var table2 = $('#displayTable');
+	        addColumn(table2, 'automationProcess'); */
+	               
+
+	    },
+	    "dataType": "json"
+	});
+	
+}
+</script> -->
+
+<style type="text/css">
+
+tfoot input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+    
+</style>
 </head>
 <body>
+<input type="hidden" id="request" value="firstRequest" />
 
 <div class="container">
 
-<table id="table_id" class="display">
+<!-- <table id="table_id" class="display">
     <thead>
         <tr>
             <th>Column 1</th>
@@ -60,15 +198,41 @@
             
         </tr>
     </tbody>
-</table>
+</table> -->
+
+<h3>Select your favorite sports:</h3>
+        <label><input type="checkbox" value="automationProcess" name="sport"> Automation Process</label>
+        <label><input type="checkbox" value="isActive" name="sport">Is Active</label>
+        <label><input type="checkbox" value="isWaivedOff" name="sport">Is WaivedOff</label>
+        <label><input type="checkbox" value="endDate" name="sport">EndDate</label>
+        <label><input type="checkbox" value="billingComments" name="sport">Billing Comments</label>
+        <label><input type="checkbox" value="isDevelopmentWaivedOff" name="sport">Is DevelopmentWaivedOff</label>
+        <label><input type="checkbox" value="developmentHours" name="sport">Development Hours</label>
+        <label><input type="checkbox" value="developmentCost" name="sport">Development Cost</label>
+        <!-- <label><input type="checkbox" value="" name="sport"> </label> -->
+        
+        <br>
+        <button type="button">Get Values</button>
+        <br>
+        <hr>
+<div id="tableDiv"></div>
 
 </div>
-<script type="text/javascript">
+
+
+<!-- <script type="text/javascript">
 $(document).ready( function () {
-    $('#table_id').DataTable();
+    $('#table_id').DataTable(
+    		{
+    	        dom: 'Bfrtip',
+    	        buttons: [
+    	            'copy', 'csv', 'excel', 'pdf', 'print'
+    	        ]
+    	    }		
+    );
 } );
 
 </script>
-
+ -->
 </body>
 </html>

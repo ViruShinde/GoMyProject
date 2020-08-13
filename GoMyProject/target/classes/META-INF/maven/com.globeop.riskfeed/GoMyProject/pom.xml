@@ -4,12 +4,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>net.guides.springboot</groupId>
-	<artifactId>registration-login-springboot-security-thymeleaf</artifactId>
+	<groupId>com.globeop.riskfeed</groupId>
+	<artifactId>GoMyProject</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>registration-login-springboot-security-thymeleaf</name>
+	<name>GoMyProject</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
@@ -77,9 +77,14 @@
 			<groupId>org.webjars</groupId>
 			<artifactId>jquery</artifactId>
 			<!-- <version>3.2.1</version> -->
-			<version>3.3.1</version>
-			
+			<version>3.3.1</version>			
 		</dependency>
+		<dependency>
+ 			<groupId>org.webjars</groupId>
+			<artifactId>font-awesome</artifactId>
+ 			<version>5.12.0</version>
+ 		</dependency>
+		
 
 		<!-- mysql connector -->
 		<dependency>

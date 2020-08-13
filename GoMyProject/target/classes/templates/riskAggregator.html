@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" mlns:th="http://www.thymeleaf.org">
+<head>
+<title>RiskAggregators</title>
+<!-- working for navbar dropdowns -->
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+<script src="/jquery/jquery-3.4.1.js"></script>
+<link rel="stylesheet" type="text/css"  th:href="@{/css/bootstrap.min.css}"/>
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- for fontawesome -->
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/font-awesome/5.12.0/css/fontawesome.min.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/css/fontawesome.min.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/css/brands.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/css/solid.css}"/> 
+<link rel="stylesheet" type="text/css" th:href="@{/css/all.css}"/>  
+
+</head>
+
+<body>
+	<!-- to include the Navbar from fragments/nav.html -->
+	<div  th:replace="fragments/nav :: navbar"></div>
+<br>
+<div class="container">
+
+<!-- <a th:href="@{/showFormForAdd}" class="btn btn-primary btn-sm mb-3">Add Client</a>
+
+<a th:href="@{/OnBordClient}" class="btn btn-primary btn-sm mb-3">OnBord Client</a> -->
+
+<!--         <a th:href="@{/AddRiskAggregator}" class="btn btn-primary btn-sm mb-3">Add RiskAggregator</a>
+		<a th:href="@{/AddClient}" class="btn btn-primary btn-sm mb-3">Add Client</a>
+		<a th:href="@{/AddFunds}" class="btn btn-primary btn-sm mb-3">Add Funds</a>
+		<a th:href="@{/OnBordClient}" class="btn btn-primary btn-sm mb-3">OnBord Client</a> -->
+
+	<div class="container">
+	
+	<h3>RiskAggregators </h3>
+	
+	<hr>
+	
+	<table class="table table-bordered table-hover">
+		<thead class="thead-dark">
+			<th>Sr No.</th>	
+			<!-- <th>RiskAggregator Id</th> -->
+			<th>RiskAggregator  Name</th>
+			<th>RiskAggregator  Contact</th>
+			<th>Modified Date</th>
+		</thead>
+		
+		<tbody>
+			<tr th:each="riskAggregator, iterationStatus : ${riskAggreList}">				
+			<td th:text="${iterationStatus.count}">	
+			<!-- <td th:text="${riskAggregator.id}"> -->
+			<!-- <td th:text="${riskAggregator.RiskAggregatorName}"> -->
+			<td><a th:text="${riskAggregator.RiskAggregatorName}" th:href="@{'getClientsOFRisKAggregator/' +${riskAggregator.riskAggregatorId}}"> </a> </td> 
+			<td th:text="${riskAggregator.RiskAggregatorContact}">			
+			<td th:text="${riskAggregator.Modified_date}">
+		</tbody>
+	</table>
+	
+	</div>
+</div>
+
+</body>
+
+
+</html>

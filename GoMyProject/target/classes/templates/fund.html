@@ -1,67 +1,44 @@
 <!DOCTYPE html>
 <html lang="en" mlns:th="http://www.thymeleaf.org">
 <head>
-<!-- <link rel="stylesheet" type="text/css"	th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
-<script type="text/javascript" th:href="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}" ></script> -->
 
+<title>Funds</title>
 
-<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}" />
+<!-- working for navbar dropdowns -->
 
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+<script src="/jquery/jquery-3.4.1.js"></script>
+<link rel="stylesheet" type="text/css"  th:href="@{/css/bootstrap.min.css}"/>
+<script src="/js/bootstrap.min.js"></script>
 
-<script type="text/javascript" th:href="@{/webjars/bootstrap/4.4.1/js/bootstrap.min.js}" ></script>
-
-
-<link rel="stylesheet" type="text/css" th:href="@{/webjars/font-awesome/5.12.0/css/fontawesome.min.css}"/>
-<script type="text/javascript">
-
-$(function(){
-	  $("#nav-placeholder").load("../Nav");
-	});
-</script>
-
+<link rel="stylesheet" type="text/css"  th:href="@{/css/all.css}"/>
 </head>
 
 <body>
-<div id="nav-placeholder"></div>
+<!-- to include the Navbar from fragments/nav.html -->
+<div  th:replace="fragments/nav :: navbar"></div>
 <div class="container">
 
 <br>
+<div class="container" th:if="${riskAggregator}">		
+		<h3 th:text="${riskAggregator} +' ' +${clientName} +' Active Fund Details'"> </h3>
+</div>
 
-<h3>Client and Fund Details</h3>
+
+<div class="container" th:unless="${riskAggregator}">
+	<h3>Client and Fund Details</h3>
+</div>
 
 <hr>
 
-<a th:href="@{/AddClient}" class="btn btn-primary btn-sm mb-3">Add Client</a>
-<a th:href="@{/AddFunds}" class="btn btn-primary btn-sm mb-3">Add Funds</a>
-<a th:href="@{/OnBordClient}" class="btn btn-primary btn-sm mb-3">OnBord Client</a>
+
 
 <br>
 
-	<div class="">
+	<div class="" th:if="${client}">
 	
-<!-- 	
-	Testing
-	<table border="1">
-		<thead>
-			<th>Id</th>			
-			<th>Client Id</th>		
-			<th>Client Name</th>
-			<th>Fund Name</th>			
-			<th>modified Date</th>
-		</thead>
-		
-		<tbody>
-			<tr th:each="client : ${client}">
-			<td th:text="${client.ClientID}">			
-			<td th:text="${client.ClientShortName}">
-			<td th:text="${client.funds}">
-			<td th:text="${client.Modified_date}">
-		</tbody>
-	</table>
-	<br> -->
-	
+	<a th:href="@{/OnBordFund}" class="btn btn-primary btn-sm mb-3">OnBordFund</a>
+	<br>
 	<table border="1" class="table table-bordered table-hover">
 		<thead class="thead-dark">
 			<!-- <th>Id</th>	 -->
@@ -71,7 +48,6 @@ $(function(){
 			<!-- <th>Fund Id</th> -->	
 			<th>Fund Name</th>			
 			<th>Added Date</th>
-			<th>Action</th>
 		</thead>
 		
 		<tbody>
@@ -83,14 +59,52 @@ $(function(){
 			<!-- <td th:text="${fund.FundID}">	 -->
 			<td th:text="${fund.FundShortName}">
 			<td th:text="${fund.Modified_date}">
-			<td><!-- <a th:href="@{'/deleteFund/' + ${fund.FundID}}"class="btn btn-info btn-lg">
+		</tbody>
+	</table>
+	
+	<button type="submit" class="btn btn-primary"><span class="fa fa-search"></span> Search</button>
+    <button type="submit" class="btn btn-danger"><span class="fa fa-trash"></span> Search</button>
+		
+	</div> 
+	
+	<div class="" th:if="${clientDto}">
+	
+	<a th:href="@{|/OnBordFund/${riskAggregatorId}/${clientId}| } " class="btn btn-primary btn-sm mb-3">OnBordFund</a>
+	
+	<h3 th:text="${riskAggregatorId} +' ' +${clientId} +' Active Fund Details'"> </h3>
+	<br>
+	
+	<table border="1" class="table table-bordered table-hover">
+		<thead class="thead-dark">			
+			<th>Sr NO.</th>
+			<th>Client Name</th>			
+			<th>Fund Name</th>
+			<th>Frequency</th>
+			<th>Automation Process</th>					
+			<th>Setup Date</th>
+			<th>Comments</th>
+			<th>Action</th>
+		</thead>
+		
+		<tbody>
+			<tr th:each="client,iterationStatus : ${clientDto}">			
+			<!-- <tr th:each="fund, iterationStatus : ${client.funds}"> -->			
+			<td th:text="${iterationStatus.count}">						
+			<td th:text="${client.clientName}">
+			<!-- <td th:text="${fund.FundID}">	 -->
+			<td th:text="${client.fundName}">
+			<td th:text="${client.frequency}">
+			<td th:text="${client.automationProcess}">
+			<td th:text="${client.setUpDate}">
+			<td th:text="${client.clientOnBoardComments}">			
+			<td><!-- <a th:href="@{'/deleteFund/' + ${client.fundID}}"class="btn btn-info btn-lg">
           			<span class="glyphicon glyphicon-trash"></span>
         		</a> -->
         		
-        		<a th:href="@{/deleteFund/(fundID=${fund.FundID},clientID=${client.ClientID})}"
+        		<a th:href="@{/editClientOnboard/(ClientOnboardId=${client.ClientOnboardId})}"
 					   class="btn btn-danger"
-					   onclick="if (!(confirm('Are you sure you want to delete this Fund?'))) return false">
-						Delete <span class="fa fa-trash"></span>
+					   onclick="if (!(confirm('Are you sure you want to Edit this Fund details ?'))) return false">
+						Edit <span class="fa fa-trash"></span>
 					</a>
 			</td>
 		</tbody>
@@ -98,30 +112,9 @@ $(function(){
 	
 	<button type="submit" class="btn btn-primary"><span class="fa fa-search"></span> Search</button>
     <button type="submit" class="btn btn-danger"><span class="fa fa-trash"></span> Search</button>
-	<!-- <br>
-	Testing
-	<table border="1">
-		<thead>
-			<th>Id</th>
-			<th>Fund Name</th>		
-			<th>Client Id</th>		
-			<th>Client Name</th>	
-			<th>modified Date</th>
-		</thead>
 		
-		<tbody>
-			<tr th:each="fund : ${funds}">
-			<td th:text="${fund.FundID}">			
-			<td th:text="${fund.FundShortName}">
-			<td th:text="${fund.client.ClientID}">
-			<td th:text="${fund.client.ClientShortName}">
-			<td th:text="${fund.Modified_date}">
-		</tbody>
-	</table>
-	 
-	 -->
+	</div> 
 	
-	</div>
 </div>
 
 </body>

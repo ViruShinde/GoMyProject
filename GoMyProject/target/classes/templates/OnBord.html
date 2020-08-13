@@ -52,18 +52,14 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
 <!-- <script type="text/javascript" src="/js/autocomplete.js"></script> -->
 
+<script src="/js/autocomplete.js"></script>
 
 <script type="text/javascript">
- //to load nav bar
- $(function(){
-	  $("#nav-placeholder").load("Nav");
-	});
-	
 
-jQuery(document).ready(function($) {
+ jQuery(document).ready(function($) {
 
 	// to get the client list in drop down.
-	jQuery("#client").autocomplete({
+	/*jQuery("#client").autocomplete({
 		source : "\clientList",
 		minLength : 0,
 		scroll : true,
@@ -92,7 +88,7 @@ jQuery(document).ready(function($) {
 			return false;
 		}
 	});
-	
+	 */
 	//label	value
 			
 	$("#funds").select2({
@@ -104,6 +100,17 @@ jQuery(document).ready(function($) {
 		  allowClear: true
 		});
 	
+	
+	
+	
+	$("#frequency").select2({
+		  maximumSelectionLength: 2
+		});
+
+	$("#frequency").select2({
+		  placeholder: 'Select Frequency',
+		  allowClear: true
+		});
 	
 	// its check if clien field is blank then blank clientId as well
 	jQuery('#client').change(function(event) {		
@@ -125,7 +132,8 @@ jQuery(document).ready(function($) {
 </head>
 <body>
 
-	<div id="nav-placeholder"></div>
+	<!-- to include the Navbar from fragments/nav.html -->
+	<div  th:replace="fragments/nav :: navbar"></div>
 	
 	<br>
 	<div class="container">
@@ -158,14 +166,72 @@ jQuery(document).ready(function($) {
 
 	<!-- Testing
 	<hr> -->
-	Client
+
 	<form action="#" th:action="@{/AddOnBordDetails}" th:object="${onBordDto}" method="post">
+		RiskAggregator
+		<select id="riskAggregator" class="form-control mb-4 col-4" th:field="*{riskAggregatorId}">
+			<option value="0">Select RiskAggregator</option>			
+		</select>
+		<p th:if="${#fields.hasErrors('riskAggregatorId')}" th:errors="*{riskAggregatorId}"></p>	
+		<!-- <p th:unless="${#fields.hasErrors('riskAggregatorId')}" th:text="TEST"></p> -->	
+		Client	
 		<input id="client" type="text" class="form-control mb-4 col-4">
 		<input type="text" id="clientId" th:field="*{clientId}"	placeholder="clientId" class="form-control mb-4 col-4" readonly>
+		<p th:if="${#fields.hasErrors('clientId')}" th:errors="*{clientId}"></p>
 		Funds
 		<br>
 		<select class="form-control mb-4 col-4" id ="funds" multiple="multiple" th:field="*{fundName}" >
   		</select>
+  		<p th:if="${#fields.hasErrors('fundName')}" th:errors="*{fundName}"></p>
+  		<br>
+  		<br>
+  		Setup Date
+  		<input type="date" class="form-control mb-4 col-4" th:field="*{setUpDate}">
+  		<p th:if="${#fields.hasErrors('setUpDate')}" th:errors="*{setUpDate}"></p>
+  		End Date
+  		<input type="date" class="form-control mb-4 col-4" th:field="*{endDate}">
+  		<!-- Automation Process
+  		<select class="form-control mb-4 col-4" th:field="*{automationProcess}">
+			<option value="-1">Select Automation Process</option>
+			<option value="RiskMq">RiskMq</option>
+			<option value="Cron">Cron</option>
+		</select> -->
+		
+		Automation Process
+  		<select class="form-control mb-4 col-4" th:field="*{automationProcess}">
+  			<option value="-1">Select Automation Process</option>
+			<option th:each="opt : ${T(com.globeop.riskfeed.enums.AutomationProcess).values()}" th:value="${opt}" th:text="${opt.displayValue}"></option>			
+		</select>
+		<p th:if="${#fields.hasErrors('automationProcess')}" th:errors="*{automationProcess}"></p>
+			
+		<!-- Is Active
+		<select class="form-control mb-4 col-4" id="isActive" name="isActive">
+			<option value="-1">Select is Active</option>
+			<option value="A" selected="selected">Active</option>
+			<option value="D">Disable</option>
+		</select> -->
+		Is Active		
+		<select class="form-control mb-4 col-4" id="isActive" name="isActive">
+			<option value="-1">Select is Active</option>
+			<option th:each="opt : ${T(com.globeop.riskfeed.enums.IsActive).values()}" th:value="${opt}" th:text="${opt.displayValue}"></option>
+		</select>
+		<p th:if="${#fields.hasErrors('isActive')}" th:errors="*{isActive}"></p>
+		
+  		Comments
+  		<br>
+  		<textarea rows="4" cols="50" name="comment" placeholder="Comments...." th:field="*{comments}"></textarea>
+  		<p th:if="${#fields.hasErrors('comments')}" th:errors="*{comments}"></p>
+  		<br>
+  		<br>
+  		Frequency
+  		<br>
+  		<select class="form-control mb-4 col-4" id ="frequency" multiple="multiple" th:field="*{frequency}">		
+			<option value="D">Daily</option>
+			<option value="W">Weekly</option>
+			<option value="M">Monthly</option>
+		</select>
+		<p th:if="${#fields.hasErrors('frequency')}" th:errors="*{frequency}"></p>	
+  		<br>
 		<br>
 		<br>
 		<button type="submit" class="btn btn-info col-2">Save</button>
