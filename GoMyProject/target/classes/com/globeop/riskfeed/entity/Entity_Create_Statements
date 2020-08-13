@@ -1,4 +1,33 @@
-clienttable
+create database userdatabase;
+use userdatabase;
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `user_name` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` char(80) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1; 
+
+CREATE TABLE `role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1;
+
+
+CREATE TABLE `users_roles` (
+  `user_id` bigint(20) NOT NULL,
+  `role_id` bigint(20) NOT NULL,
+  KEY `FKt4v0rrweyk393bdgt107vdx0x` (`role_id`),
+  KEY `FKgd3iendaoyh04b95ykqise6qh` (`user_id`)
+) ENGINE=InnoDB;
+
+
+create database springdb;
+use springdb;
 
 CREATE TABLE `clienttable` (
   `ClientID` int(11) NOT NULL AUTO_INCREMENT,
@@ -6,9 +35,7 @@ CREATE TABLE `clienttable` (
   `Modified_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`ClientID`),
   UNIQUE KEY `ClientShortName_UNIQUE` (`ClientShortName`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-
-fundtable
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `fundtable` (
   `FundID` int(11) NOT NULL AUTO_INCREMENT,
@@ -18,9 +45,8 @@ CREATE TABLE `fundtable` (
   PRIMARY KEY (`FundID`),
   KEY `FK1` (`ClientID`),
   CONSTRAINT `FK1` FOREIGN KEY (`ClientID`) REFERENCES `clienttable` (`ClientID`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-riskaggregator
 
 CREATE TABLE `riskaggregator` (
   `RiskAggregatorId` int(11) NOT NULL AUTO_INCREMENT,
@@ -28,12 +54,7 @@ CREATE TABLE `riskaggregator` (
   `RiskAggregatorContact` varchar(255) DEFAULT NULL,
   `Modified_date` datetime DEFAULT NULL,
   PRIMARY KEY (`RiskAggregatorId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
-
-
-clientonboardtable
-
-drop table if exists clientonboardtable;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `clientonboardtable` (
   `ClientOnboardId` int(11) NOT NULL AUTO_INCREMENT,
@@ -42,7 +63,7 @@ CREATE TABLE `clientonboardtable` (
   `FundID` int(11) NOT NULL,
   `SetUpDate` date DEFAULT NULL,
   `EndDate` date DEFAULT NULL,
-  `AutomationProcess` ENUM('RiskMQ', 'Cronjob'),
+  `AutomationProcess` enum('RiskMQ','Cronjob') DEFAULT NULL,
   `IsActive` varchar(20) NOT NULL,
   `Comments` varchar(200) DEFAULT NULL,
   `Frequency` varchar(20) NOT NULL,
@@ -56,12 +77,7 @@ CREATE TABLE `clientonboardtable` (
   CONSTRAINT `ClientOnboardTable_fk_3` FOREIGN KEY (`RiskAggregatorId`) REFERENCES `riskaggregator` (`RiskAggregatorId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
-
-DevelopmentTable
-
-drop table if exists DevelopmentTable;
-
-CREATE TABLE `DevelopmentTable` (
+CREATE TABLE `developmenttable` (
   `DevelopmentId` int(11) NOT NULL AUTO_INCREMENT,
   `DevelopmentHours` int(11) DEFAULT NULL,
   `DevelopmentCost` int(11) DEFAULT NULL,
@@ -69,7 +85,7 @@ CREATE TABLE `DevelopmentTable` (
   `StartDate` date DEFAULT NULL,
   `EndDate` date DEFAULT NULL,
   `DevelopmentComments` varchar(400) DEFAULT NULL,
-  `ApprovalMail` LONGBLOB DEFAULT NULL,
+  `ApprovalMail` longblob,
   `FileName` varchar(50) DEFAULT NULL,
   `FileType` varchar(50) DEFAULT NULL,
   `ClientID` int(11) DEFAULT NULL,
@@ -78,6 +94,64 @@ CREATE TABLE `DevelopmentTable` (
   PRIMARY KEY (`DevelopmentId`),
   KEY `DevelopmentTable_fk_1` (`ClientID`),
   KEY `DevelopmentTable_fk_2` (`RiskAggregatorId`),
-  CONSTRAINT `DevelopmentTable_fk_1` FOREIGN KEY (`ClientID`) REFERENCES `ClientTable` (`ClientID`),
-  CONSTRAINT `DevelopmentTable_fk_2` FOREIGN KEY (`RiskAggregatorId`) REFERENCES `RiskAggregator` (`RiskAggregatorId`)
+  CONSTRAINT `DevelopmentTable_fk_1` FOREIGN KEY (`ClientID`) REFERENCES `clienttable` (`ClientID`),
+  CONSTRAINT `DevelopmentTable_fk_2` FOREIGN KEY (`RiskAggregatorId`) REFERENCES `riskaggregator` (`RiskAggregatorId`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `billtable` (
+  `BillId` int(11) NOT NULL AUTO_INCREMENT,
+  `SetupFee` int(11) DEFAULT NULL,
+  `MonthlyFee` int(11) DEFAULT NULL,
+  `DevlopementFee` int(11) DEFAULT NULL,
+  `IsClientPayingOldCharges` varchar(5) NOT NULL,
+  `IsWaivedOff` varchar(5) NOT NULL,
+  `WaiverMail` longblob,
+  `WaiverFileName` varchar(50) DEFAULT NULL,
+  `BillStartDate` date DEFAULT NULL,
+  `BillEndDate` date DEFAULT NULL,
+  `ClientId` int(11) DEFAULT NULL,
+  `RiskAggregatorId` int(11) DEFAULT NULL,
+  `CRMName` varchar(30) DEFAULT NULL,
+  `CRMEmailId` varchar(50) DEFAULT NULL,
+  `ClientApprovalMail` longblob,
+  `ClientApprovalMailName` varchar(50) DEFAULT NULL,
+  `BillingComments` varchar(400) DEFAULT NULL,
+  `GoCheckNoteId` varchar(45) NOT NULL,
+  `TerminationMail` longblob,
+  `TerminationMailName` varchar(50) DEFAULT NULL,
+  `Fundcount` int(11) DEFAULT NULL,
+  `Modified_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`BillId`),
+  KEY `BillTable_fk_1` (`ClientId`),
+  KEY `BillTable_fk_2` (`RiskAggregatorId`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `FTPPathDetails` (
+  `FTPPathId` int(11) NOT NULL AUTO_INCREMENT,
+  `ClientID` int(11) NOT NULL,
+  `RiskAggregatorId` int(11) NOT NULL,
+  `FTPPath` varchar(50) NOT NULL,
+  `Comments` varchar(200) DEFAULT NULL,
+  `Modified_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`FTPPathId`),
+  KEY `FTPPathDetails_fk_1` (`ClientID`),
+  KEY `FTPPathDetails_fk_2` (`RiskAggregatorId`),
+  CONSTRAINT `FTPPathDetails_fk_1` FOREIGN KEY (`ClientID`) REFERENCES `clienttable` (`ClientID`),
+  CONSTRAINT `FTPPathDetails_fk_2` FOREIGN KEY (`RiskAggregatorId`) REFERENCES `riskaggregator` (`RiskAggregatorId`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+
+
+CREATE TABLE `FtpServerDetails` (
+  `FTPDetailID` int(11) NOT NULL AUTO_INCREMENT,
+`RiskAggregatorId` int(11) NOT NULL,
+  `FTPName` varchar(50) NOT NULL,
+`FTPUserName` varchar(50) NOT NULL,
+`FTPPassword` varchar(50) NOT NULL,
+`FTPType` varchar(5) NOT NULL,
+  `Comments` varchar(200) DEFAULT NULL,
+  `Modified_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`FTPDetailID`),
+  KEY `FtpServerDetails_fk_1` (`RiskAggregatorId`),
+  CONSTRAINT `FtpServerDetails_fk_1` FOREIGN KEY (`RiskAggregatorId`) REFERENCES `riskaggregator` (`RiskAggregatorId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
