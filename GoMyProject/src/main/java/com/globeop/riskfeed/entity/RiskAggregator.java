@@ -53,10 +53,24 @@ public class RiskAggregator implements Serializable{
 	@OneToMany(targetEntity = BillTable.class, cascade = CascadeType.ALL, mappedBy="riskAggregator") 	
     private Set<BillTable> billSet;
 
+	@JsonManagedReference
+	@JsonIgnore
+	@OneToMany(targetEntity = FtpServerDetails.class, cascade = CascadeType.ALL, mappedBy="riskAggregator") 	
+    private Set<FtpServerDetails> ftpServerDetailsSet;
 	public RiskAggregator() {		
 	}
 	
 	
+	public Set<FtpServerDetails> getFtpServerDetailsSet() {
+		return ftpServerDetailsSet;
+	}
+
+
+	public void setFtpServerDetailsSet(Set<FtpServerDetails> ftpServerDetailsSet) {
+		this.ftpServerDetailsSet = ftpServerDetailsSet;
+	}
+
+
 	public int getRiskAggregatorId() {
 		return riskAggregatorId;
 	}
@@ -117,6 +131,13 @@ public class RiskAggregator implements Serializable{
 		this.billSet.add(theBillTable);
     }
 
+	public void addFtpServerDetails(FtpServerDetails theFtpServerDetails) {
+		if(theFtpServerDetails==null) {
+			ftpServerDetailsSet = new HashSet<FtpServerDetails>();
+		}
+		theFtpServerDetails.setRiskAggregator(this);
+		this.ftpServerDetailsSet.add(theFtpServerDetails);
+    }
 
 	@Override
 	public String toString() {
