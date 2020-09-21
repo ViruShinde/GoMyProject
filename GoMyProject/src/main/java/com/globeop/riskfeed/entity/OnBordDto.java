@@ -2,6 +2,7 @@ package com.globeop.riskfeed.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -99,9 +100,93 @@ public class OnBordDto implements Serializable{
 	
 	private int fundcount;
 	
+	// For FTP details
+	private int ftpPathId;
+	
+	private String ftpPath;	
+	
+	private int ftpDetailID;
+	
+	private String ftpName;
+	
+	private String ftpUserName;
+	
+	private String ftpPassword;
+	
+	private String ftpType;
 	
 	
 	
+	public int getFtpPathId() {
+		return ftpPathId;
+	}
+
+
+	public void setFtpPathId(int ftpPathId) {
+		this.ftpPathId = ftpPathId;
+	}
+
+
+	public String getFtpPath() {
+		return ftpPath;
+	}
+
+
+	public void setFtpPath(String ftpPath) {
+		this.ftpPath = ftpPath;
+	}
+
+
+	public int getFtpDetailID() {
+		return ftpDetailID;
+	}
+
+
+	public void setFtpDetailID(int ftpDetailID) {
+		this.ftpDetailID = ftpDetailID;
+	}
+
+
+	public String getFtpName() {
+		return ftpName;
+	}
+
+
+	public void setFtpName(String ftpName) {
+		this.ftpName = ftpName;
+	}
+
+
+	public String getFtpUserName() {
+		return ftpUserName;
+	}
+
+
+	public void setFtpUserName(String ftpUserName) {
+		this.ftpUserName = ftpUserName;
+	}
+
+
+	public String getFtpPassword() {
+		return ftpPassword;
+	}
+
+
+	public void setFtpPassword(String ftpPassword) {
+		this.ftpPassword = ftpPassword;
+	}
+
+
+	public String getFtpType() {
+		return ftpType;
+	}
+
+
+	public void setFtpType(String ftpType) {
+		this.ftpType = ftpType;
+	}
+
+
 	public String getRiskAggregatorName() {
 		return riskAggregatorName;
 	}
@@ -397,6 +482,26 @@ public class OnBordDto implements Serializable{
 	@Override
 	public String toString() {
 		return "OnBordDto [onBoardForm=" + onBoardForm + ", clientName=" + clientName + ", clientId=" + clientId
+				+ ", riskAggregatorId=" + riskAggregatorId + ", riskAggregatorName=" + riskAggregatorName
+				+ ", fundName=" + fundName + ", fundIds=" + fundIds + ", setUpDate=" + setUpDate + ", endDate="
+				+ endDate + ", automationProcess=" + automationProcess + ", isActive=" + isActive + ", comments="
+				+ comments + ", frequency=" + frequency + ", onBoardFundsList=" + onBoardFundsList
+				+ ", developmentHours=" + developmentHours + ", developmentCost=" + developmentCost + ", isWaivedOff="
+				+ isWaivedOff + ", startDate=" + startDate + ", developmentComments=" + developmentComments
+				+ ", ApprovalMail=" + Arrays.toString(ApprovalMail) + ", setupFee=" + setupFee + ", monthlyFee="
+				+ monthlyFee + ", devlopementFee=" + devlopementFee + ", isClientPayingOldCharges="
+				+ isClientPayingOldCharges + ", waiverMail=" + Arrays.toString(waiverMail) + ", crmName=" + crmName
+				+ ", crmailID=" + crmailID + ", clientApprovalMail=" + Arrays.toString(clientApprovalMail)
+				+ ", goCheckNoteId=" + goCheckNoteId + ", terminationMail=" + Arrays.toString(terminationMail)
+				+ ", fundcount=" + fundcount + ", ftpPathId=" + ftpPathId + ", ftpPath=" + ftpPath + ", ftpDetailID="
+				+ ftpDetailID + ", ftpName=" + ftpName + ", ftpUserName=" + ftpUserName + ", ftpPassword=" + ftpPassword
+				+ ", ftpType=" + ftpType + "]";
+	}
+
+
+	/*	@Override
+	public String toString() {
+		return "OnBordDto [onBoardForm=" + onBoardForm + ", clientName=" + clientName + ", clientId=" + clientId
 				+ ", riskAggregatorId=" + riskAggregatorId + ", fundName=" + fundName + ", fundIds=" + fundIds
 				+ ", setUpDate=" + setUpDate + ", endDate=" + endDate + ", automationProcess=" + automationProcess
 				+ ", isActive=" + isActive + ", comments=" + comments + ", frequency=" + frequency
@@ -406,20 +511,10 @@ public class OnBordDto implements Serializable{
 				+ monthlyFee + ", devlopementFee=" + devlopementFee + ", isClientPayingOldCharges="
 				+ isClientPayingOldCharges + ", crmName=" + crmName + ", crmailID=" + crmailID + ", goCheckNoteId="
 				+ goCheckNoteId + ", fundcount=" + fundcount + "]";
-	}
+	}*/
 	
 	
 	
-//old to String
-	/*
-	 * @Override public String toString() { return "OnBordDto [onBoardForm=" +
-	 * onBoardForm + ", clientName=" + clientName + ", clientId=" + clientId +
-	 * ", riskAggregatorId=" + riskAggregatorId + ", fundName=" + fundName +
-	 * ", fundIds=" + fundIds + ", setUpDate=" + setUpDate + ", endDate=" + endDate
-	 * + ", automationProcess=" + automationProcess + ", isActive=" + isActive +
-	 * ", comments=" + comments + ", frequency=" + frequency + ", onBoardFundsList="
-	 * + onBoardFundsList + "]"; }
-	 */
 
 
 
