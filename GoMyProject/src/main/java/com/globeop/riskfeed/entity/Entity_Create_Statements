@@ -145,7 +145,7 @@ CREATE TABLE `FTPPathDetails` (
 CREATE TABLE `FtpServerDetails` (
   `FTPDetailID` int(11) NOT NULL AUTO_INCREMENT,
 `RiskAggregatorId` int(11) NOT NULL,
-  `ClientID` int(11) NOT NULL,
+  `ClientID` int(11) DEFAULT NULL,
   `FTPName` varchar(50) NOT NULL,
 `FTPUserName` varchar(50) NOT NULL,
 `FTPPassword` varchar(50) NOT NULL,
