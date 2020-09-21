@@ -43,6 +43,32 @@ public class FTPPathDetails {
 	@JoinColumn(name="RiskAggregatorId")
 	private RiskAggregator riskAggregator;
 
+	public FTPPathDetails() {
+		
+	}
+	public FTPPathDetails(int ftpPathId, String ftpPath, String comments, LocalDate modified_date, ClientTable client,
+			RiskAggregator riskAggregator) {
+		this.ftpPathId = ftpPathId;
+		this.ftpPath = ftpPath;
+		this.comments = comments;
+		this.modified_date = modified_date;
+		this.client = client;
+		this.riskAggregator = riskAggregator;
+	}
+	
+	
+
+	public FTPPathDetails(String ftpPath, String comments, LocalDate modified_date, ClientTable client,
+			RiskAggregator riskAggregator) {		
+		this.ftpPath = ftpPath;
+		this.comments = comments;
+		this.modified_date = modified_date;
+		this.client = client;
+		this.riskAggregator = riskAggregator;
+	}
+
+
+
 	public int getFtpPathId() {
 		return ftpPathId;
 	}
