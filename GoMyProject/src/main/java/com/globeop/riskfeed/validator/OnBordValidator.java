@@ -11,6 +11,7 @@ import com.globeop.riskfeed.entity.ClientOnboardTable;
 import com.globeop.riskfeed.entity.OnBordDto;
 import com.globeop.riskfeed.web.BillController;
 import com.globeop.riskfeed.web.DevelopmentController;
+import com.globeop.riskfeed.web.FtpController;
 
 @Component
 public class OnBordValidator implements Validator {
@@ -26,6 +27,8 @@ public class OnBordValidator implements Validator {
 		}else if(BillTable.class.equals(clazz)) {
 			return true;
 		}else if(String.class.equals(clazz)) {
+			return true;
+		}else if(FtpController.class.equals(clazz)) {
 			return true;
 		}else {
 			return false;
@@ -51,6 +54,9 @@ public class OnBordValidator implements Validator {
 	      }else if(onBordDto.getOnBoardForm().equals("developmentForm")) {
 	    	  System.out.println("developmentForm validator");
 	    	  developmentFormValidator(onBordDto, errors);
+	      }else if(onBordDto.getOnBoardForm().equals("ftp-form")) {
+	    	  System.out.println("FTP validator");
+	    	  ftpFormValidator(onBordDto, errors);
 	      }
 		/*
 		 * 
@@ -139,5 +145,25 @@ public class OnBordValidator implements Validator {
 	      }
 	}
 
+	private static void ftpFormValidator(OnBordDto onBordDto,Errors errors) {
+		if(onBordDto.getRiskAggregatorId() == -1) {
+	    	  errors.rejectValue("riskAggregatorId", "OnBordDto.riskAggregatorId.empty");	  
+	      }
+	      
+			/*
+			 * if(onBordDto.getClientId() == 0) { errors.rejectValue("clientId",
+			 * "OnBordDto.clientId.empty"); }
+			 */
+	      	      
+	      if(onBordDto.getFtpType().equals("")) {
+	    	  errors.rejectValue("ftpType", "OnBordDto.ftpType.empty");
+	      }
+	      if(onBordDto.getFtpName().equals("")) {
+	    	  errors.rejectValue("ftpName", "OnBordDto.ftpName.empty");
+	      }
+	      if(onBordDto.getFtpUserName().equals("")) {
+	    	  errors.rejectValue("ftpUserName", "OnBordDto.ftpUserName.empty");
+	      }
+	}
 
 }
