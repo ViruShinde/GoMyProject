@@ -38,14 +38,82 @@ public class FtpServerDetails {
 	@Column(name = "FTPType")
 	private String ftpType;
 	
+	@Column(name = "FTPPath")
+	private String ftpPath;	
+	
+	@Column(name = "Comments")
+	private String comments;	
+	
 	@Column(name = "Modified_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate modified_date;
 	
 	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="ClientID")
+	private ClientTable client;
+	
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="RiskAggregatorId")
 	private RiskAggregator riskAggregator;
 
+	public FtpServerDetails() {
+		
+	}
+	public FtpServerDetails(int ftpDetailID, String ftpName, String ftpUserName, String ftpPassword, String ftpType,
+			LocalDate modified_date, RiskAggregator riskAggregator) {		
+		this.ftpDetailID = ftpDetailID;
+		this.ftpName = ftpName;
+		this.ftpUserName = ftpUserName;
+		this.ftpPassword = ftpPassword;
+		this.ftpType = ftpType;
+		this.modified_date = modified_date;
+		this.riskAggregator = riskAggregator;
+	}
+
+	public FtpServerDetails(String ftpName, String ftpUserName, String ftpPassword, String ftpType,String ftpPath,String comments,ClientTable client,
+			 RiskAggregator riskAggregator,LocalDate modified_date) {		
+		this.ftpName = ftpName;
+		this.ftpUserName = ftpUserName;
+		this.ftpPassword = ftpPassword;
+		this.ftpType = ftpType;
+		this.ftpPath = ftpPath;
+		this.comments= comments;
+		this.client= client;
+		this.riskAggregator = riskAggregator;
+		this.modified_date = modified_date;
+	}
+	
+	public FtpServerDetails(String ftpName, String ftpUserName, String ftpPassword, String ftpType,String ftpPath,String comments,
+			 RiskAggregator riskAggregator,LocalDate modified_date) {		
+		this.ftpName = ftpName;
+		this.ftpUserName = ftpUserName;
+		this.ftpPassword = ftpPassword;
+		this.ftpType = ftpType;
+		this.ftpPath = ftpPath;
+		this.comments= comments;		
+		this.riskAggregator = riskAggregator;
+		this.modified_date = modified_date;
+	}
+	
+	
+	public String getComments() {
+		return comments;
+	}
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+	public String getFtpPath() {
+		return ftpPath;
+	}
+	public void setFtpPath(String ftpPath) {
+		this.ftpPath = ftpPath;
+	}	
+	public ClientTable getClient() {
+		return client;
+	}
+	public void setClient(ClientTable client) {
+		this.client = client;
+	}
 	public int getFtpDetailID() {
 		return ftpDetailID;
 	}
@@ -101,6 +169,15 @@ public class FtpServerDetails {
 	public void setRiskAggregator(RiskAggregator riskAggregator) {
 		this.riskAggregator = riskAggregator;
 	}
+	@Override
+	public String toString() {
+		return "FtpServerDetails [ftpDetailID=" + ftpDetailID + ", ftpName=" + ftpName + ", ftpUserName=" + ftpUserName
+				+ ", ftpPassword=" + ftpPassword + ", ftpType=" + ftpType + ", ftpPath=" + ftpPath + ", comments="
+				+ comments + ", modified_date=" + modified_date + ", client=" + client.getClientShortName() + ", riskAggregator="
+				+ riskAggregator.getRiskAggregatorName() + "]";
+	}
+
+
 
 		
 }
