@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" mlns:th="http://www.thymeleaf.org">
+<head>
+<title>FTP Details</title>
+<!-- 
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}" />
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" th:href="@{/webjars/bootstrap/4.4.1/js/bootstrap.min.js}" ></script>
+
+ -->
+ 
+<!-- working for navbar dropdowns -->
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+<script src="/jquery/jquery-3.4.1.js"></script>
+<link rel="stylesheet" type="text/css"  th:href="@{/css/bootstrap.min.css}"/>
+<script src="/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="css/all.css"/>
+ 
+</head>
+
+<body>
+<!-- to include the Navbar from fragments/nav.html -->
+<div  th:replace="fragments/nav :: navbar"></div>
+<br>
+<div class="container">
+
+	<div class="container" th:if="${message}">		
+		<h3 th:text="${message}"> </h3>
+		<a th:href="@{/getFtpDetails}">View All FTP Details</a>
+	</div> 
+	
+	<hr>
+	<div class="container">
+	
+	<table class="table table-bordered table-hover">
+		<thead class="thead-dark">
+			<th>Sr No.</th>	
+			<th>Risk Aggregator</th>
+			<th>Client</th>
+			<th>Type</th>
+			<th>FTP Server Name</th>
+			<th>User Name</th>
+			<th>Password</th>
+			<th>Ftp Path</th>
+			<th>Comments</th>
+			<th>Modified Date</th>			
+		</thead>
+
+		<tbody>
+			<tr th:each="ftpDetail, iterationStatus : ${ftpDetails}">				
+			<td th:text="${iterationStatus.count}">	
+			<td th:text="${ftpDetail.riskAggregator.riskAggregatorName}">
+		<!-- 	<div th:if= "${ftpDetail.client = null}">
+			<td> </td> 
+			</div>
+			<div th:unless= "${ftpDetail.client}">			
+			<td th:text="${ftpDetail.client.clientShortName}">
+			</div> -->
+			<td th:text="${ftpDetail?.client?.clientShortName}">
+			<td th:text="${ftpDetail.ftpType}">
+			<td th:text="${ftpDetail.ftpName}">
+			<td th:text="${ftpDetail.ftpUserName}">
+			<td th:text="${ftpDetail.ftpPassword}">
+			<td th:text="${ftpDetail.ftpPath}">
+			<td th:text="${ftpDetail.comments}">
+			<td th:text="${ftpDetail.modified_date}">	
+			<!-- <td th:if="${riskAggregator}"><a th:text="${client.ClientShortName}" th:href="@{'/getFund/'+${riskAggregatorId}+'/' +${client.ClientID}}"> </a> </td>
+			<td th:unless="${riskAggregator}"><a th:text="${client.ClientShortName}" th:href="@{'/getFund/' +${client.ClientID}}"> </a> </td>
+			<td th:text="${client.Modified_date}"> -->
+		</tbody>
+	</table>
+
+	</div>
+</div>
+
+</body>
+
+
+</html>
