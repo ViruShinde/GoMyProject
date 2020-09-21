@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" mlns:th="http://www.thymeleaf.org">
+
+<!-- working for navbar dropdowns -->
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+<script src="/jquery/jquery-3.4.1.js"></script>
+<link rel="stylesheet" type="text/css"  th:href="@{/css/bootstrap.min.css}"/>
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Working for auto complete-->
+
+<link href="/jquery/jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet" type="text/css"  />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+
+<!-- Working for multi select -->
+
+<link href="/multi-select/css/multi-select.css" rel="stylesheet" />
+<script src="/multi-select/js/jquery.multi-select.js"></script>
+
+<link href="/multi-select/css/select2.css" rel="stylesheet" />
+<script src="/multi-select/js/select2.js"></script>
+
+ <script src="/js/autocomplete.js"></script> 
+
+<!-- <script type="text/javascript">
+
+
+
+ jQuery(document).ready(function($) {
+		 
+			/* // to get the client list in drop down \clientList\?riskAggregatorId=-1 to get all clients.
+			jQuery("#client").autocomplete({
+				source : "\clientList\?riskAggregatorId=-1",
+				minLength : 0,
+				scroll : true,
+				select : function(event, ui) {
+					this.value = ui.item.label;
+					$("#client").val(ui.item.label);
+					//console.log(this.value);
+					//console.log(ui.item);
+					$("#clientId").val(ui.item.value);
+					//alert("INSID");
+					jQuery.getJSON("getFundsFromClient", {
+						p1 : ui.item.label
+					}, function(responseData) {
+						console.log(responseData);
+						//var clientFunds = jQuery('#clientFunds');
+						jQuery('#funds').empty();
+						var clientFunds = jQuery('#funds');
+						jQuery.each(responseData, function(key, value) {
+							console.log(value.label + " >> "+value.value);										
+							jQuery('<option id =' +value.value+'>').val(value.value)
+		            	    .text(value.label).appendTo(clientFunds);			
+						});
+
+					});
+					return false;
+				}
+			}); 			
+	  */
+	
+	//label	value
+			
+	$("#funds").select2({
+		  maximumSelectionLength: 2
+		});
+
+	$("#funds").select2({
+		  placeholder: 'Select Funds',
+		  allowClear: true
+		});
+	
+	
+	// its check if clien field is blank then blank clientId as well
+	jQuery('#client').change(function(event) {		
+		//let clientLength = $('#client').val().length;
+		//console.log(clientLength);
+		if( $('#client').val() == "" ){
+			$("#clientId").val("");
+		}	
+	});
+			
+	
+	 
+});
+
+</script>
+ -->
+<head>
+<meta charset="ISO-8859-1">
+<title>FTP Form</title>
+</head>
+<body>
+<!-- to include the Navbar from fragments/nav.html -->
+<div  th:replace="fragments/nav :: navbar"></div>
+<div class="container">
+	
+	<h3>Add FTP Details</h3>
+	<hr>	
+
+	<form action="#" th:action="@{/AddFtp}" th:object="${onBordDto}" method="post">	
+		<input type="text" id="ftpFormId" th:field="*{onBoardForm}"	class="form-control mb-4 col-4" value="ftp-form" readonly>
+		RiskAggregator
+		<select id="riskAggregator" class="form-control mb-4 col-4" th:field="*{riskAggregatorId}">
+			<option value="0">Select RiskAggregator</option>			
+		</select>
+			
+		<p th:if="${#fields.hasErrors('riskAggregatorId')}" th:errors="*{riskAggregatorId}" class="alert alert-danger mb-4 col-4"></p>
+		
+		Client
+		<input id="client" type="text" class="form-control mb-4 col-4">		
+		<input type="hidden" id="clientId" th:field="*{clientId}" placeholder="clientId" class="form-control mb-4 col-4" readonly>	
+		
+		<p th:if="${#fields.hasErrors('clientId')}" th:errors="*{clientId}" class="alert alert-danger mb-4 col-4"></p>
+	
+		FTPType
+		<input id="ftpType" type="text" th:field="*{ftpType}" placeholder="ftpType" class="form-control mb-4 col-4">
+		<p th:if="${#fields.hasErrors('ftpType')}" th:errors="*{ftpType}" class="alert alert-danger mb-4 col-4"></p>
+		
+		ftpName
+		<input id="ftpName" type="text" th:field="*{ftpName}" placeholder="ftpName" class="form-control mb-4 col-4">
+		<p th:if="${#fields.hasErrors('ftpName')}" th:errors="*{ftpName}" class="alert alert-danger mb-4 col-4"></p>
+		
+		ftpUserName
+		<input id="ftpUserName" type="text" th:field="*{ftpUserName}" placeholder="ftpUserName" class="form-control mb-4 col-4">
+		<p th:if="${#fields.hasErrors('ftpUserName')}" th:errors="*{ftpUserName}" class="alert alert-danger mb-4 col-4"></p>
+			
+		ftpPassword
+		<input id="ftpPassword" type="text" th:field="*{ftpPassword}" placeholder="ftpPassword" class="form-control mb-4 col-4">
+		
+		ftpPath
+		<input id="ftpPath" type="text" th:field="*{ftpPath}" placeholder="ftpPath" class="form-control mb-4 col-4">										
+		<br>		
+		Comments
+  		<br>
+  		<textarea rows="4" cols="50" name="comment" placeholder="Comments...." th:field="*{comments}"></textarea>
+		<br>
+		<button type="submit" class="btn btn-info col-2">Save</button>
+	</form>
+</div>	
+</body>
+</html>
