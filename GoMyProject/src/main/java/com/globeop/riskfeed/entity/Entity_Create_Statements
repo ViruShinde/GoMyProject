@@ -145,13 +145,18 @@ CREATE TABLE `FTPPathDetails` (
 CREATE TABLE `FtpServerDetails` (
   `FTPDetailID` int(11) NOT NULL AUTO_INCREMENT,
 `RiskAggregatorId` int(11) NOT NULL,
+  `ClientID` int(11) NOT NULL,
   `FTPName` varchar(50) NOT NULL,
 `FTPUserName` varchar(50) NOT NULL,
 `FTPPassword` varchar(50) NOT NULL,
 `FTPType` varchar(5) NOT NULL,
+  `FTPPath` varchar(50) NOT NULL,
   `Comments` varchar(200) DEFAULT NULL,
   `Modified_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`FTPDetailID`),
   KEY `FtpServerDetails_fk_1` (`RiskAggregatorId`),
-  CONSTRAINT `FtpServerDetails_fk_1` FOREIGN KEY (`RiskAggregatorId`) REFERENCES `riskaggregator` (`RiskAggregatorId`)
+  KEY ` FtpServerDetails_fk_2` (`ClientID`),
+  CONSTRAINT `FtpServerDetails_fk_1` FOREIGN KEY (`RiskAggregatorId`) REFERENCES `riskaggregator` (`RiskAggregatorId`),
+  CONSTRAINT ` FtpServerDetails_fk_2` FOREIGN KEY (`ClientID`) REFERENCES `clienttable` (`ClientID`)
+
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
