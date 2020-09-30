@@ -48,7 +48,7 @@ function createDatatTable(request, column ){
 	console.log(column);
 	$.ajax({
 	    //"url": '/api/Test/', //for testing
-		"url": '/api/allBillingDetails/',
+		"url": '/GoMyProject/api/allBillingDetails/',
 	    "data" : { req : request, columns : column },
 	    "success": function (result) {
 	    	//console.log("result >> " +result.columns);
