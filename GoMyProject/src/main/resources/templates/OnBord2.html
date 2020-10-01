@@ -4,33 +4,29 @@
 <meta charset="ISO-8859-1">
 <title>Onbord client form2</title>
 
-<!-- <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}" />
-<script type="text/javascript" th:href="@{/webjars/bootstrap/4.4.1/js/bootstrap.min.js}"></script>
-<script type="text/javascript" th:href="@{/webjars/jquery/3.3.1/jquery.js}"></script>
- -->
-<!-- working for navbar dropdowns -->
 
+ <!-- working for navbar dropdowns -->
+ 
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
-<script src="/jquery/jquery-3.4.1.js"></script>
+<script th:src="@{/webjars/jquery/jquery.js}"></script>
 <link rel="stylesheet" type="text/css"  th:href="@{/css/bootstrap.min.css}"/>
-<script src="/js/bootstrap.min.js"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
 
-<!-- Working for autocompete-->
 
-<link href="/jquery/jquery-ui-1.12.1/jquery-ui.css" rel="stylesheet" type="text/css" />
-<script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script	src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<script type="text/javascript" th:href="@{/webjars/popper.js/1.14.3/popper.js}"></script>
+<!-- Working for auto complete-->
 
+<link th:href="@{/jquery/jquery-ui-1.12.1/jquery-ui.css}" rel="stylesheet" type="text/css" />
+<script th:src="@{/jquery/jquery-ui-1.12.1/jquery-ui.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/popper.js/popper.js}"></script>
 
 <!-- Working for multi select -->
-<script src="/js/autocomplete.js"></script>
 
-<link href="/multi-select/css/multi-select.css" rel="stylesheet" />
-<script src="/multi-select/js/jquery.multi-select.js"></script>
+<link th:href="@{/multi-select/css/multi-select.css}" rel="stylesheet" />
+<script th:src="@{/multi-select/js/jquery.multi-select.js}"></script>
 
-<link href="/multi-select/css/select2.css" rel="stylesheet" />
-<script src="/multi-select/js/select2.js"></script>
+<link th:href="@{/multi-select/css/select2.css}" rel="stylesheet" />
+<script th:src="@{/multi-select/js/select2.js}"></script>
+
 
 <!-- <style>
 table {
