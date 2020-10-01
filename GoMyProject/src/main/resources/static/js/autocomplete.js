@@ -6,7 +6,7 @@ $(function(){
 
 jQuery(document).ready(function($) {
 
-	/*// to get the client list in drop down.
+	// to get the client list in drop down.
 	jQuery("#client").autocomplete({
 		source : "\clientList",
 		minLength : 0,
@@ -76,7 +76,7 @@ jQuery(document).ready(function($) {
 	}); */
 	
 	
-	jQuery.getJSON("riskAggregatorList", function(responseData) {
+	jQuery.getJSON("/GoMyProject/riskAggregatorList", function(responseData) {
 		//console.log(responseData);
 		//var clientFunds = jQuery('#clientFunds');
 		jQuery('#riskAggregator').empty();
