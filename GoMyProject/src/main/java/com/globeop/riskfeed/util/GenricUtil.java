@@ -3,6 +3,7 @@ package com.globeop.riskfeed.util;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -30,8 +31,8 @@ public class GenricUtil {
 
 public static List<LabelValueDto> getClientFundList(String clientShortname){
 		
-		List<LabelValueDto> list=new ArrayList<LabelValueDto>(); 
-		try{ 
+		List<LabelValueDto> list=new ArrayList<LabelValueDto>();
+		try{
 			Class<?> clazz = Class.forName("org.apache.xerces.parsers.SAXParser");
             XMLReader reader = (XMLReader) clazz.newInstance();
             GoCheckApiConfigParser goCheckApiConfigParser = new GoCheckApiConfigParser(reader);
@@ -140,6 +141,11 @@ public static List<LabelValueDto> getClientFundList(String clientShortname){
 			e.printStackTrace();
 		}		  
 		return date1;
+	}
+	
+	public static String decode(String input) {
+		byte[] decodedBytes = Base64.getDecoder().decode(input);
+	    return new String(decodedBytes);
 	}
 	
 	public static String  getFileName(MultipartFile file) {
