@@ -22,6 +22,7 @@ import com.globeop.riskfeed.entity.OnBordDto;
 import com.globeop.riskfeed.entity.RiskAggregator;
 import com.globeop.riskfeed.service.ClientOnboardService;
 import com.globeop.riskfeed.service.ClientService;
+import com.globeop.riskfeed.service.DatabasedetailsService;
 import com.globeop.riskfeed.service.FundService;
 import com.globeop.riskfeed.service.OnBordService;
 import com.globeop.riskfeed.service.RiskAggregatorService;
@@ -43,6 +44,9 @@ public class MainController {
 
 	@Autowired
 	private ClientOnboardService theClientOnboardService;
+	
+	@Autowired
+	private DatabasedetailsService theDatabasedetailsService;
 	
     @GetMapping("/")
     public String root(Model model) {    	
@@ -76,6 +80,27 @@ public class MainController {
 		return "index";
 		
 	} 
+    @RequestMapping("/Database")
+	public String Database () {		
+		return "Database";		
+	}
+    
+    @RequestMapping("/g2o-UAT")
+	public String g2OUat (Model model) {	
+    	model.addAttribute("database", "G2O");
+    	model.addAttribute("env", "G2O-UAT");
+    	model.addAttribute("servers", theDatabasedetailsService.findByEnvironment("G2O-UAT"));
+		return "Database";		
+	}
+    
+    @RequestMapping("/g2o-PRD")
+   	public String g2OPRD (Model model) {	
+       	model.addAttribute("database", "G2O");
+       	model.addAttribute("env", "G2O-PRD");
+       	model.addAttribute("servers", theDatabasedetailsService.findByEnvironment("G2O-PRD"));
+   		return "Database";		
+   	}
+       
     
     @GetMapping("/Test")
     public String test() {
