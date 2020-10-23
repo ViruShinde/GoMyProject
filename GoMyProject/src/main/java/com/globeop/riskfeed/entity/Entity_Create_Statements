@@ -160,3 +160,16 @@ CREATE TABLE `FtpServerDetails` (
   CONSTRAINT ` FtpServerDetails_fk_2` FOREIGN KEY (`ClientID`) REFERENCES `clienttable` (`ClientID`)
 
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `databasedetails` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `ServerName` varchar(45) DEFAULT NULL,
+  `Environment` varchar(45) DEFAULT NULL,
+  `Driver` varchar(100) DEFAULT NULL,
+  `Url` varchar(100) DEFAULT NULL,
+  `Port` varchar(10) DEFAULT NULL,
+  `UserName` varchar(45) DEFAULT NULL,
+  `Password` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB;
