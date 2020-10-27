@@ -34,7 +34,7 @@ jQuery(document).ready(function($) {
 			});
 			return false;
 		}
-	});*/	
+	});
 	
 	//let riskAggregatorId = jQuery("#riskAggregator").val();
 	/*if(typeof(riskAggregatorId)  === "undefined") 
