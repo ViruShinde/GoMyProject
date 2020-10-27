@@ -1,6 +1,7 @@
 package com.globeop.riskfeed.util;
 
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -9,7 +10,6 @@ import java.util.List;
 
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
 import com.globeop.gocheck.api.ClientRetriever;
@@ -28,16 +28,25 @@ import com.globeop.riskfeed.dto.OnBoardFunds;
 
 
 public class GenricUtil {
+	
+    public static final String SERVER_FILE="/home/rskmtrx/etc/gocheck-api-config.xml";
+    public static final String LOCAL_FILE="D:\\datafiles\\gocheck-api-config.xml";
 
 public static List<LabelValueDto> getClientFundList(String clientShortname){
 		
-		List<LabelValueDto> list=new ArrayList<LabelValueDto>();
-		try{
+		List<LabelValueDto> list=new ArrayList<LabelValueDto>(); 
+		try{ 
 			Class<?> clazz = Class.forName("org.apache.xerces.parsers.SAXParser");
             XMLReader reader = (XMLReader) clazz.newInstance();
             GoCheckApiConfigParser goCheckApiConfigParser = new GoCheckApiConfigParser(reader);
             reader.setContentHandler(goCheckApiConfigParser);
-			reader.parse(new InputSource(Resources.getResourceAsStream("templates/gocheck-api-config.xml"))); 
+            File file = new File(SERVER_FILE);
+            if(file.exists()) {            	
+            	reader.parse(SERVER_FILE);
+            }else {
+            	reader.parse(LOCAL_FILE);
+            }
+			//reader.parse(new InputSource(Resources.getResourceAsStream("templates/gocheck-api-config.xml"))); 
 			GoCheckApiConfig config = goCheckApiConfigParser.getGoCheckClientConfig();
 			FundRetriever fundRetriever = FundRetrieverFactory.newInstance(config);
 			ClientRetriever clientRetriever = ClientRetrieverFactory.newInstance(config);
@@ -152,8 +161,8 @@ public static List<LabelValueDto> getClientFundList(String clientShortname){
 		return StringUtils.cleanPath(file.getOriginalFilename());		
 	}
 	
-	  public static void main(String[] args) throws Exception {
-	  getClientFundList2("BFAM");
+	//  public static void main(String[] args) throws Exception {
+	//  System.out.println(getClientFundList("BFAM"));
 	  
 	  //System.out.println(convertStringToDate("2020-04-04"));
 	  
@@ -164,6 +173,6 @@ public static List<LabelValueDto> getClientFundList(String clientShortname){
 	  //Enum automationProcess=AutomationProcess.getEnum("RiskMQ");
 	  //System.out.println(AutomationProcess.valueOf("RiskMQ")); 
 	  
-	  }
+	 // }
 	 
 }
