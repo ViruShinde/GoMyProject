@@ -8,6 +8,7 @@ jQuery(document).ready(function($){
 	
 	jQuery('#server').change(
 			function(){	
+				showLoading();
 				jQuery('#databaseId').empty();
 				let serverId = jQuery('#server').val();				
 				if(serverId != -1){							
@@ -32,7 +33,8 @@ jQuery(document).ready(function($){
 						$('.'+classValue).addClass("panel-collapsed");
 						$('.fa').addClass("fa-caret-down");
 					});					
-					createTablesList();					
+					createTablesList();	
+					hideLoading();				
 					});
 				}									
 			});
@@ -40,7 +42,7 @@ jQuery(document).ready(function($){
 	
 $(document).on("click", ".tables", function() {
 //$(.database).unbind().click(function(){
-
+	showLoading();
     let selectedTable = $(this).attr('value');
     jQuery.getJSON("tabledesc", {
     	p1 : selectedTable
@@ -55,11 +57,11 @@ $(document).on("click", ".tables", function() {
     		jQuery('<li id =' +value+' class=database value =' +value+ ' >').text(value).appendTo(parentUl);                
     	});
     });
+    hideLoading();
 });
 
-$("#submit").click(function(){
-	jQuery('#myGrid').empty();
-	
+$("#submit").click(function(){	
+	jQuery('#myGrid').empty();	
 	let database = jQuery('#database').val();
 	let serverId = jQuery('#server').val();	
 	let env = jQuery('#env').val();
@@ -67,6 +69,7 @@ $("#submit").click(function(){
 	
 	console.log(" query :  "+query);
 	confirm(selectedDb+ " Are you sure ? "+query);
+	showLoading();
     jQuery.getJSON("getresult", {
     	p1 : database,
     	p2 : serverId,
@@ -84,7 +87,9 @@ $("#submit").click(function(){
     		console.log( " >> "+value);
     		//jQuery('<li id =' +value+' class=database value =' +value+ ' >').text(value).appendTo(parentUl);                
     	});
+    	hideLoading();
     });
+    
 });
  
 });
@@ -108,7 +113,7 @@ $(".confirmLink").click(function(e) {
 
 function createTablesList(){	
 	$('.active a.clickable').each( function(){
-		$(this).click(function(){
+		$(this).click(function(){			
 			selectedDb = $(this).attr('value');
 			//console.log(">>>clicked on >>>"+selectedDb) ;  
 			let val=document.getElementById(selectedDb).getAttribute('value');    
@@ -121,7 +126,7 @@ function createTablesList(){
 				let database = jQuery('#database').val();
 				let serverId = jQuery('#server').val();	
 				let env = jQuery('#env').val();
-				
+				showLoading();
 				jQuery.getJSON("tablelist", {
 					p1 : serverId,
 			    	p2 : selectedDb
@@ -139,7 +144,7 @@ function createTablesList(){
 	    				jQuery('<li id =' +value+'> <span class=font-weight-normal value=' +value+ ' </span> </li>').text(value).appendTo(parentUl); 
 					});
 					map[selectedDb]=selectedDb;
-
+					hideLoading();
 				});							
  			}
 			
@@ -192,4 +197,12 @@ function createGrid(responseData){
 	}else{		
 		$("#myGrid").html("<p class='alert alert-danger mb-12 col-12' > Error : "+responseData.error+"</p>");
 	}
+}
+
+function showLoading(){
+ 	 document.getElementById("loading").style.display='block';
+}
+
+function hideLoading(){
+	document.getElementById("loading").style.display='none';
 }
