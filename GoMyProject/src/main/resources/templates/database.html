@@ -32,31 +32,47 @@
     display: none;
 }
 
+.parent_list{
+
+margin :0;
+padding :0;
+}
+
+.loading{
+position:fixed;
+top:50%;
+left:50%;
+transform: translate(-50%,-50%);
+display:none;
+}
 </style>
 </head>
 <body>
 	<!-- to include the Navbar from fragments/nav.html -->
 	<div th:replace="fragments/nav :: navbar"></div>
 	<br>
-	<div th:if="${database}">		
+	<div class="row content" th:if="${database}">
+		<div class="col-sm-2 sidenav" > 
+					<select class="form-control" id="server">
+    						<option value="-1">select server</option>
+    						<option th:each="server : ${servers}" th:value="${server.id}" th:text="${server.serverName}"></option>
+    				</select>
+		</div>
+		<div class="col-sm-10 sidenav" >		
 							<!-- <h3 th:text="${database} +' ' +${env} " align="center"> </h3> -->
 							<h3 th:text="${env} " align="center"> </h3>
 							<input type="hidden" class="form-control mb-4 col-4" id="database" th:value="*{database}" readonly/>
 							<input type="hidden" class="form-control mb-4 col-4" id="env" th:value="*{env}" readonly/>
 	</div>
+	</div>
 	<div class="">
 		<div class="container-fluid ">
-			<div class="row content">
-				<div class="col-sm-2 sidenav">
-					<select class="form-control" id="server">
-    						<option value="-1">select server</option>
-    						<option th:each="server : ${servers}" th:value="${server.id}" th:text="${server.serverName}"></option>
-    				</select>
-					<div id="databaseId"><br></div>
+			<div class="row content">				
+				<div id="databaseId" class="col-sm-3 sidenav" style="height:500px; overflow:scroll" >								
 						
 				</div>
 
-				<div class="col-sm-10 text-left">
+				<div class="col-sm-9 text-left">
 					<!-- Nav tabs -->
 					<ul class="nav nav-tabs">
 						<li class="nav-item"><a class="nav-link active" href="#query">Query</a>
@@ -91,6 +107,13 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	 
+	<div id="loading" class="loading text-primary">
+		<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;">		
+		</div>
+		<br>
+		Loading..
 	</div>
 </body>
 </html>
