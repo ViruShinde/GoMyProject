@@ -6,11 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.jpa.spi.HibernateEntityManagerImplementor.QueryOptions.ResultMetadataValidator;
+
 import org.springframework.stereotype.Repository;
 
 import com.globeop.riskfeed.dto.GirdData;
@@ -97,9 +98,9 @@ public class DatabaseRepository {
 	
 	public List getDatabaseDetails(Databasedetails dbDetails) {
 		// for Mysql DB
-		String query="show databases";
+		//String query="show databases";
 		//for sybase
-		//String query="sp_helpdb";
+		String query="sp_databases";
 		
 		List databaseList=new ArrayList();
 		try {
@@ -107,7 +108,7 @@ public class DatabaseRepository {
 		PreparedStatement pstmt=conn.prepareStatement(query);
 		ResultSet rs=pstmt.executeQuery();
 		while(rs.next()) {
-			databaseList.add(rs.getString("Database"));
+			databaseList.add(rs.getString("database_name"));
 		}
 		}catch (Exception e) {
 			// TODO: handle exception
@@ -120,9 +121,9 @@ public class DatabaseRepository {
 	
 	public List getTableDetails(Databasedetails dbDetails,String dbName) {
 		//for Mysql db
-		String query="show tables";
+		//String query="show tables";
 		//for sybase
-		//String query="sp_help";
+		String query="sp_tables";
 		List databaseList=new ArrayList();
 		try {
 			System.out.println(dbDetails);
@@ -130,7 +131,8 @@ public class DatabaseRepository {
 		PreparedStatement pstmt=conn.prepareStatement(query);
 		ResultSet rs=pstmt.executeQuery();
 		while(rs.next()) {
-			databaseList.add(rs.getString("Tables_in_"+dbName));
+			// mysql databaseList.add(rs.getString("Tables_in_"+dbName));
+			databaseList.add(rs.getString("table_name"));
 		}
 		}catch (Exception e) {
 			// TODO: handle exception
@@ -138,6 +140,7 @@ public class DatabaseRepository {
 		}finally {
 			closeConnection();
 		}
+		Collections.sort(databaseList);
 		return databaseList;
 	}
 	
