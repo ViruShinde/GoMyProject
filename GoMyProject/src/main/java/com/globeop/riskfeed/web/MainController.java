@@ -82,7 +82,7 @@ public class MainController {
 	} 
     @RequestMapping("/Database")
 	public String Database () {		
-		return "Database";		
+		return "database";		
 	}
     
     @RequestMapping("/g2o-UAT")
@@ -90,7 +90,7 @@ public class MainController {
     	model.addAttribute("database", "G2O");
     	model.addAttribute("env", "G2O-UAT");
     	model.addAttribute("servers", theDatabasedetailsService.findByEnvironment("G2O-UAT"));
-		return "Database";		
+		return "database";		
 	}
     
     @RequestMapping("/g2o-PRD")
@@ -98,7 +98,7 @@ public class MainController {
        	model.addAttribute("database", "G2O");
        	model.addAttribute("env", "G2O-PRD");
        	model.addAttribute("servers", theDatabasedetailsService.findByEnvironment("G2O-PRD"));
-   		return "Database";		
+   		return "database";		
    	}
        
     
