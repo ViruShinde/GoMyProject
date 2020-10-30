@@ -28,11 +28,11 @@
 	<h3>Client and Fund Details</h3>
 </div>
 
+<div class="container" th:if="${message}">		
+		<p th:text="${message}"> </p>
+</div> 
+
 <hr>
-
-
-
-<br>
 
 	<div class="" th:if="${client}">
 	
@@ -60,9 +60,6 @@
 			<td th:text="${fund.Modified_date}">
 		</tbody>
 	</table>
-	
-	<button type="submit" class="btn btn-primary"><span class="fa fa-search"></span> Search</button>
-    <button type="submit" class="btn btn-danger"><span class="fa fa-trash"></span> Search</button>
 		
 	</div> 
 	
@@ -109,8 +106,6 @@
 		</tbody>
 	</table>
 	
-	<button type="submit" class="btn btn-primary"><span class="fa fa-search"></span> Search</button>
-    <button type="submit" class="btn btn-danger"><span class="fa fa-trash"></span> Search</button>
 		
 	</div> 
 	
