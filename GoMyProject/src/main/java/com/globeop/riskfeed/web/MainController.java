@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 //import com.globeop.risk.web.util.RecordNotFoundException;
 import com.globeop.riskfeed.dto.TestDto;
@@ -240,7 +241,7 @@ public class MainController {
     	ClientTable clientTable = clientService.findById(id);
     	List<FundTable> fundTables = fundService.findByClient(clientTable);
     	for(FundTable f:fundTables) {
-    		System.out.println(f.getFundID()+">>"+f.getFundShortName());
+    		System.out.println(f.getFundID()+">>"+f.getFundShortName());    		
     	}
     	//model.addAttribute("funds", fundTables);
     	model.addAttribute("client", clientTable);
@@ -269,15 +270,19 @@ public class MainController {
     	return "fund-form";
     }
     
- // Add new client and return list of clients
+ // Add new funds and return list of funds
     @RequestMapping(value="/AddFunds", method=RequestMethod.POST)
-	public String addFunds (@ModelAttribute("fund") OnBordDto onBordDto) {		
+	public String addFunds (@ModelAttribute("fund") OnBordDto onBordDto, RedirectAttributes redirectAttributes) {		
 		try {
 			//System.out.println(theFundTable.getClientID()+" >>> "+theFundTable.getFundShortName());
 			//theFundTable.setModified_date(new Date());
 			//fundService.update(theFundTable);
-			onBordService.addFundDetails(onBordDto);
-			System.out.println(onBordDto);
+			List duplicateList = onBordService.addFundDetails(onBordDto);
+			if(duplicateList.size() > 0) {
+				System.out.println(duplicateList);
+				redirectAttributes.addFlashAttribute("message", "Fund Already exists : "+duplicateList);
+			}
+			//System.out.println(onBordDto);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "error";
