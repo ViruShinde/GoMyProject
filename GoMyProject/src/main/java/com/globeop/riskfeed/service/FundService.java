@@ -89,4 +89,16 @@ public class FundService implements CommonService<FundTable> {
 		return theFund;
 	}
 	
+	public boolean checkFundAlreadyExist(String name) {
+		List<FundTable> funds = fundTableRepository.findByFundShortName(name.toUpperCase());
+		if(funds==null) {
+			return false;
+		}
+		for(FundTable fund : funds) {
+			if(fund.getFundShortName().equals(name)) 
+				return true;						
+		}
+		return false;
+	}
+	
 }
