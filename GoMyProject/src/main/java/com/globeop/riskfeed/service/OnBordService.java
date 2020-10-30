@@ -1,6 +1,7 @@
 package com.globeop.riskfeed.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,8 @@ public class OnBordService {
 	}
 	
 	
-	public void addFundDetails(OnBordDto onBordDto) {
+	public List addFundDetails(OnBordDto onBordDto) {
+		List duplicateList=new ArrayList();
 		ClientTable client=clientService.findById(onBordDto.getClientId());
 		String fundNames=onBordDto.getFundName();
 		if(fundNames.startsWith(",")){
@@ -60,9 +62,17 @@ public class OnBordService {
 			System.out.println("@@@ "+s);
 			fund.setModified_date(LocalDate.now());
 			fund.setFundShortName(s);
-			client.addFund(fund);
+			//check for duplicate entry
+			boolean result = fundService.checkFundAlreadyExist(s);
+			if(result == false) {
+				client.addFund(fund);
+			}else {
+				// duplicate entry dont add.
+				duplicateList.add(s);
+			}
 		}		
 		clientService.save(client);
+		return duplicateList;
 	}
 	
 	public void addOnboardDetails(OnBordDto onBordDto) {
