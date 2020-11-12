@@ -20,7 +20,7 @@
 
 <br>
 <div class="container" th:if="${riskAggregator}">		
-		<h3 th:text="${riskAggregator} +' ' +${clientName} +' Active Fund Details'"> </h3>
+		<h3 th:text="${riskAggregator} +' ' +${clientName} +' Fund Details'"> </h3>
 </div>
 
 
@@ -67,8 +67,8 @@
 	
 	<a th:href="@{|/OnBordFund/${riskAggregatorId}/${clientId}| } " class="btn btn-primary btn-sm mb-3">OnBordFund</a>
 	
-	<h3 th:text="${riskAggregatorId} +' ' +${clientId} +' Active Fund Details'"> </h3>
-	<br>
+<!-- <h3 th:text="${riskAggregatorId} +' ' +${clientId} +' Active Fund Details'"> </h3> -->
+	
 	
 	<table border="1" class="table table-bordered table-hover">
 		<thead class="thead-dark">			
@@ -78,6 +78,7 @@
 			<th>Frequency</th>
 			<th>Automation Process</th>					
 			<th>Setup Date</th>
+			<th>Is Active</th>
 			<th>Comments</th>
 			<th>Action</th>
 		</thead>
@@ -92,6 +93,7 @@
 			<td th:text="${client.frequency}">
 			<td th:text="${client.automationProcess}">
 			<td th:text="${client.setUpDate}">
+			<td th:text="${client.isActive}">
 			<td th:text="${client.clientOnBoardComments}">			
 			<td><!-- <a th:href="@{'/deleteFund/' + ${client.fundID}}"class="btn btn-info btn-lg">
           			<span class="glyphicon glyphicon-trash"></span>
