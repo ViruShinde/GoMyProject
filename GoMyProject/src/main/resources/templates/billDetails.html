@@ -77,18 +77,25 @@
 			<td th:text="${bill.fundcount}">
 			<td th:text="${bill.goCheckNoteId}">
 			<td th:text="${bill.crmName}">
-	
-			<td><!-- <a th:text="${development.downloadUrl}"></a> -->
+			
+			<td th:if="${bill.clientApprovalMailName == ''}"> </td>	
+			<td th:unless="${#strings.isEmpty(bill.clientApprovalMailName)}">
 				<a th:href="${bill.clientApprovalMailUrl}" class="btn btn-link">	          			 
           			<i class="fa fa-envelope" style="font-size:24px"></i>            			      		
-        		</a>
+        		</a>			
 			</td>
-			<td><!-- <a th:text="${development.downloadUrl}"></a> -->
+			
+			
+			<td th:if="${bill.waiverFileName == '' }"> </td>
+			<td th:unless="${#strings.isEmpty(bill.waiverFileName)}">
 				<a th:href="${bill.waiverMailUrl}" class="btn btn-link">	          			 
           			<i class="fa fa-envelope" style="font-size:24px"></i>            			      		
         		</a>
 			</td>
-			<td><!-- <a th:text="${development.downloadUrl}"></a> -->
+			
+			<td th:if="${bill.terminationMailName == ''}">				
+			</td>
+			<td th:unless="${#strings.isEmpty(bill.terminationMailName)}">
 				<a th:href="${bill.terminationMailUrl}" class="btn btn-link">	          			 
           			<i class="fa fa-envelope" style="font-size:24px"></i>            			      		
         		</a>
