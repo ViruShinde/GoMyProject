@@ -143,7 +143,7 @@ public interface ClientOnboardRepository extends JpaRepository<ClientOnboardTabl
 			  + " from ClientOnboardTable AS c "
 			  + " where c.riskAggregator.riskAggregatorId =?1"
 			  + " and c.client.clientID =?2"
-			  + " and c.isActive = 'Active'"
+			  //+ " and c.isActive = 'Active'"
 			  //+" GROUP BY c.client.ClientID"			  
 			 )
 	  public List<TestDto> findFundsDetailsByClientAndRiskAggregator(int riskAggregatorId,int clientId);
