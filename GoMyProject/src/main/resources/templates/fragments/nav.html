@@ -23,7 +23,7 @@
 						<a class="dropdown-item" th:href="@{/AddRiskAggregator}">Add RiskAggregator</a> 
 						<a class="dropdown-item" th:href="@{/AddClient}" >Add Client</a>
 						<a class="dropdown-item" th:href="@{/AddFunds}" >Add Funds</a>
-						<a class="dropdown-item" th:href="@{/AddOnBordDetails1}" >OnBord Client</a>
+						<a class="dropdown-item" th:href="@{/AddOnBordDetails1}" >Add OnBord Details</a>
 						<a class="dropdown-item" th:href="@{/AddDevelopmentDetails}" >Add Development Details</a>
 						<a class="dropdown-item" th:href="@{/AddBill}" >Add Bill Details</a>
 						<a class="dropdown-item" th:href="@{/AddFtp}" >Add FTP Details</a>
@@ -33,16 +33,11 @@
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Get Details </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" th:href="@{/getClient}">Clients</a>
-						<a class="dropdown-item" th:href="@{/getRiskAggregator}">RiskAggregators</a>
-						<a class="dropdown-item" th:href="@{/getClient}">Clients</a> 
-						<a class="dropdown-item" th:href="@{/getOnBordedDetails}">OnBoard Details</a> 
-						<a class="dropdown-item" th:href="@{/getDevelopmentDetails}">Development Details</a> 
-						<a class="dropdown-item" th:href="@{/getFtpDetails}">FTP Details</a> 
-						<a class="dropdown-item" href="#">Action</a> 
-						<a class="dropdown-item" href="#">Another action</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="#">Something else here</a>
+						<a class="dropdown-item" th:href="@{/getClient}">Get Clients</a>
+						<a class="dropdown-item" th:href="@{/getRiskAggregator}">Get RiskAggregators</a>
+						<a class="dropdown-item" th:href="@{/getOnBordedDetails}">Get OnBoard Details</a> 
+						<a class="dropdown-item" th:href="@{/getDevelopmentDetails}">Get Development Details</a> 
+						<a class="dropdown-item" th:href="@{/getFtpDetails}">Get FTP Details</a> 						
 					</div>
 				</li>
 				
@@ -51,13 +46,6 @@
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 						<a class="dropdown-item" th:href="@{/BillDetails}">Bill Details</a>
 						<a class="dropdown-item" th:href="@{/allDetails}">All Details</a>
-						<a class="dropdown-item" th:href="@{/getClient}">Clients</a> 
-						<a class="dropdown-item" th:href="@{/getOnBordedDetails}">OnBoard Details</a> 
-						<a class="dropdown-item" th:href="@{/getDevelopmentDetails}">Development Details</a> 
-						<a class="dropdown-item" href="#">Action</a> 
-						<a class="dropdown-item" href="#">Another action</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="#">Something else here</a>
 					</div>
 				</li>
 				<li class="nav-item dropdown">
@@ -65,8 +53,11 @@
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 						<a class="dropdown-item" th:href="@{/g2o-PRD}">G2o PRD</a>
 						<a class="dropdown-item" th:href="@{/g2o-UAT}">G2o UAT</a>
-						<a class="dropdown-item" th:href="@{/Database}">CSM</a>
-						<a class="dropdown-item" th:href="@{/Database}">Local DB</a> 						
+						<a class="dropdown-item" th:href="@{/Database}">CSM PRD</a>
+						<a class="dropdown-item" th:href="@{/Database}">CSM UAT</a>
+						<a class="dropdown-item" th:href="@{/Database}">GoPricing PRD</a>
+						<a class="dropdown-item" th:href="@{/Database}">GoPricing UAT</a>
+						<a class="dropdown-item" th:href="@{/Database}">MySQL DB</a> 						
 					</div>
 				</li>
 				<li class="nav-item"><a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a></li>
