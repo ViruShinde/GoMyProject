@@ -66,13 +66,14 @@ public static List<LabelValueDto> getClientFundList(String clientShortname){
 		 }catch (Exception e){
 			 
 		 }
-	  
-		 if("Active".equals(status) && f.isTradingEntity()) { 
+		 
+	  //if("Active".equals(status) && f.isTradingEntity()) {
+		 
 			 LabelValueDto labelValueDto = new LabelValueDto();
 			 labelValueDto.setLabel(f.getShortName());
 			 labelValueDto.setValue(f.getShortName()); 
 			 list.add(labelValueDto); 
-		 }
+		// } 
 	 } 	 	
 	 }catch (Exception e){ 
 		 e.printStackTrace();
