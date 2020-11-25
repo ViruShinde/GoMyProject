@@ -181,7 +181,7 @@ public class DatabaseRepository {
 		
 		}catch (Exception e) {
 			// TODO: handle exception
-			System.out.println("############# "+e.getMessage());
+			System.out.println("############# Error"+e.getMessage());
 			gridData.setError(e.getMessage());
 			//e.printStackTrace();			
 		}finally {
