@@ -18,6 +18,7 @@ import com.globeop.riskfeed.service.ClientOnboardService;
 import com.globeop.riskfeed.service.ClientService;
 import com.globeop.riskfeed.service.RiskAggregatorService;
 import com.globeop.riskfeed.util.GenricUtil;
+import com.globeop.riskfeed.util.KDFinder;
 
 @RestController
 public class AutocompleteController {
@@ -111,4 +112,16 @@ public class AutocompleteController {
     	
     	return fundList;        
     }
+    
+    @RequestMapping(value="/fetchKd",method = RequestMethod.GET)
+	@ResponseBody
+	public LabelValueDto fetchKd(@RequestParam (value="p1") String client, @RequestParam (value="p2") String fund ,@RequestParam (value="p3") String cobDate,@RequestParam (value="p4") String frequency ) {
+    	LabelValueDto labelValueDto = new LabelValueDto();
+    	KDFinder kdFinder = new KDFinder();		
+		String value = kdFinder.getValue(client, fund, cobDate, frequency);
+		System.out.println(value);
+		labelValueDto.setLabel("KD");
+		labelValueDto.setValue(value);
+		return labelValueDto;
+	}
 }
