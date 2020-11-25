@@ -40,7 +40,10 @@ public class DataBaseController {
 	@RequestMapping(value="/getresult",method = RequestMethod.GET)
 	@ResponseBody				  
 	public Object getResult(@RequestParam (value="p1") String database, @RequestParam (value="p2") String serverId,@RequestParam (value="p3") String env,@RequestParam (value="p4") String query, @RequestParam (value="p5") String databaseName){
-    	System.out.println(" INSIDE getResult list "+query);		 	   		
-    	return databaseService.getResult(database, serverId, env, query,databaseName);	
+    	System.out.println(" INSIDE getResult list "+query);	
+    	Object obj = databaseService.getResult(database, serverId, env, query,databaseName);	
+    	//System.out.println(obj.toString());
+    	//return databaseService.getResult(database, serverId, env, query,databaseName);
+    	return obj;
 	}
 }
