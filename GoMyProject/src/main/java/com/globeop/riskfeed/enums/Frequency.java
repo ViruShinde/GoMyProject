@@ -2,12 +2,12 @@ package com.globeop.riskfeed.enums;
 
 public enum Frequency {
 	
-	D("Daily"),
-	DE("Daily ESTIMATE"),
-	W("Weekly"),
-	WE("Weekly ESTIMATE"),
-	M("Monthly"),
-	ME("Monthly ESTIMATE");
+	D("DAILY"),
+	DE("DAILY_ESTIMATE"),
+	W("WEEKLY"),
+	WE("WEEKLY_ESTIMATE"),
+	M("MONTHLY"),
+	ME("MONTHLY_ESTIMATE");
 		
 	private final String displayValue;
     
