@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>MIS LOG</title>
+
+
+<!-- working for navbar dropdowns -->
+<script th:src="@{/webjars/jquery/jquery.js}"></script>
+<link rel="stylesheet" type="text/css"  th:href="@{/css/bootstrap.min.css}"/>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+<script src="https://unpkg.com/ag-grid-community/dist/ag-grid-community.min.js"></script>
+<script src="https://unpkg.com/ag-grid-enterprise/dist/ag-grid-enterprise.min.noStyle.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
+    <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-alpine.css">
+    
+<!-- Working for auto complete-->
+
+<link th:href="@{/jquery/jquery-ui-1.12.1/jquery-ui.css}" rel="stylesheet" type="text/css" />
+<script th:src="@{/jquery/jquery-ui-1.12.1/jquery-ui.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/popper.js/popper.js}"></script>
+
+<!-- Working for multi select -->
+
+<link th:href="@{/multi-select/css/multi-select.css}" rel="stylesheet" />
+<script th:src="@{/multi-select/js/jquery.multi-select.js}"></script>
+
+<link th:href="@{/multi-select/css/select2.css}" rel="stylesheet" />
+<script th:src="@{/multi-select/js/select2.js}"></script>
+
+<script th:src="@{/js/mislog.js}"></script>
+
+<style type="text/css">
+
+.loading{
+position:fixed;
+top:50%;
+left:50%;
+transform: translate(-50%,-50%);
+display:none;
+}
+
+</style>
+</head>
+<body>
+<div  th:replace="fragments/nav :: navbar"></div>
+
+		
+	<div class="container register">
+	<br>
+           
+                    
+                    <div class="col-md-12 register-right">
+                                                
+                            <div class="tab-pane fade show active" id="home"  aria-labelledby="home-tab">
+                                
+                                <div class="row register-form">
+                                    
+                                    <div class="col-md-1.5">
+                                        <div class="form-group mb-4 mt-2">
+                                        	RiskAggregator                                            
+                                        </div>
+                                        <div class="form-group mb-4 mt-2">
+                                            Client
+                                        </div>
+                                        <div class="form-group mb-4 mt-2">
+                                            Fund
+                                        </div>                                        
+                                                                                
+                                    </div>
+                                    
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <!-- <input type="text" id="riskAggregator" class="form-control" placeholder="RiskAggregator" value="" /> -->
+                                            <select id="riskAggregatorId" class="form-control">
+												<option value="">Select RiskAggregator</option>			
+											</select>	
+											<input type="hidden" id="riskAggregator"	class="form-control mb-4 col-4" readonly>													
+                                        </div>
+                                        <div class="form-group">
+                                            <!-- <input type="text" id="client" class="form-control" placeholder="Client" value="" /> -->
+                                            <input id="client" type="text" class="form-control" placeholder="Select Client">	
+                                        </div>
+                                       <div class="form-group">
+                                        <!--  <input type="text" id="fund" class="form-control" placeholder="Fund" value="" />-->    
+                                        
+                                        <select class="form-control" id ="fund" >
+											<option value="">Select Fund</option>
+  										</select>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <button id="submit" type="submit" class="btn btn-info col-12">Submit</button>
+                                        </div> 
+                                        
+                                    </div>
+                                    
+                                    <div class="col-md-1.5">
+                                        <div class="form-group mb-4 mt-2">
+                                        	Frequency                                            
+                                        </div>
+                                        <div class="form-group mb-4 mt-8">
+                                            Date
+                                        </div>                                                                                 
+                                                                                                                                                                                           
+                                    </div>
+                                    
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <!-- <input type="text" id="frequency" class="form-control" placeholder="Frequency" value="" /> -->
+                                            <select id="frequencyId" class="form-control">
+  												<option value="-1">Select Frequency</option>
+												<option th:each="opt : ${T(com.globeop.riskfeed.enums.Frequency).values()}" th:value="${opt}" th:text="${opt.displayValue}"></option>			
+											</select>
+											<input type="hidden" id="frequency"	class="form-control" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+												<div class="col-sm-6"> 
+													<div class="">
+														<label>From</label>
+														<input type="date" id="fromDate" class="form-control" >
+													</div>
+												</div>
+												<div class="col-sm-6"> 
+													<div class="">
+														<label>To</label>
+														<input type="date"  id="toDate" class="form-control">
+													</div>
+												</div>
+											</div>
+                                        </div> 
+                                                                                                                                                           
+                                    </div>                                    
+                                </div>
+                            </div>                                                   
+                    </div>                
+
+           
+	
+	<div class="">
+		<div id="myGrid" style="height: 400px; width:100%;" class="ag-theme-alpine"  ></div>
+	</div>
+	
+</div>
+
+<div id="loading" class="loading text-primary">
+		<div class="spinner-border text-primary" style="width: 3rem; height: 3rem;">		
+		</div>
+		<br>
+		Loading..
+</div>
+
+</body>
+</html>
