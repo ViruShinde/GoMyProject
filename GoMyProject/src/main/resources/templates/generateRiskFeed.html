@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Generate Risk Feed</title>
+
+
+<!-- working for navbar dropdowns -->
+<script th:src="@{/webjars/jquery/jquery.js}"></script>
+<link rel="stylesheet" type="text/css"  th:href="@{/css/bootstrap.min.css}"/>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+
+<!-- Working for auto complete-->
+
+<link th:href="@{/jquery/jquery-ui-1.12.1/jquery-ui.css}" rel="stylesheet" type="text/css" />
+<script th:src="@{/jquery/jquery-ui-1.12.1/jquery-ui.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/popper.js/popper.js}"></script>
+
+<!-- Working for multi select -->
+
+<link th:href="@{/multi-select/css/multi-select.css}" rel="stylesheet" />
+<script th:src="@{/multi-select/js/jquery.multi-select.js}"></script>
+
+<link th:href="@{/multi-select/css/select2.css}" rel="stylesheet" />
+<script th:src="@{/multi-select/js/select2.js}"></script>
+
+<script type="text/javascript">
+
+function getClientList(riskAggregatorId) {
+	
+	// to get the client list in drop down.
+	//console.log(riskAggregatorId);
+	jQuery("#client").autocomplete({
+		source : "\clientList\?riskAggregatorId="+riskAggregatorId,
+		minLength : 0,
+		scroll : true,
+		select : function(event, ui) {
+			this.value = ui.item.label;
+			$("#client").val(ui.item.label);
+			//console.log(this.value);
+			//console.log(ui.item.label);
+			//console.log(ui.item.value);
+			//$("#clientId").val(ui.item.value);
+			jQuery.getJSON("getFundsFromClient", {
+				p1 : ui.item.label
+			}, function(responseData) {
+				//console.log(responseData);
+				//var clientFunds = jQuery('#clientFunds');
+				jQuery('#fund').empty();								
+				var clientFunds = jQuery('#fund');
+				jQuery('<option>').val(-1).text("Select Fund").appendTo(clientFunds);
+				jQuery.each(responseData, function(key, value) {
+					//console.log(value.label + " >> "+value.value);										
+					jQuery('<option id =' +value.label+'>').val(value.value)
+            	    .text(value.label).appendTo(clientFunds);			
+				});
+
+			});
+			return false;
+		}
+	});
+}
+
+ jQuery(document).ready(function($) {
+	 
+	 jQuery.getJSON("/GoMyProject/riskAggregatorList", function(responseData) {
+			//console.log(responseData);
+			//var clientFunds = jQuery('#clientFunds');
+			jQuery('#riskAggregatorId').empty();
+			let ra =jQuery('#riskAggregatorId');
+			jQuery('<option>').val(-1).text("Select RiskAggregator").appendTo(ra);
+			jQuery.each(responseData, function(key, value) {
+				//console.log(value.label + " >> "+value.value);				
+				jQuery('<option id =' +value.value+'>').val(value.value)
+	    	    .text(value.label).appendTo(ra);			
+			});
+
+		});
+	 
+	 jQuery('#riskAggregatorId').change(
+				function(){	
+					jQuery('#client').val("");					
+					let riskAggregatorId = jQuery("#riskAggregatorId").val();					
+					// to get the client list in drop down.	
+					//console.log("@@@@@@@@@ "+$("#riskAggregatorId :selected").text());
+					jQuery('#riskAggregator').empty();
+					jQuery('#riskAggregator').val(jQuery("#riskAggregatorId :selected").text());
+					getClientList(riskAggregatorId);							
+				});
+			 		
+	
+	// its check if clien field is blank then blank clientId as well
+	jQuery('#client').change(function(event) {		
+		//let clientLength = $('#client').val().length;
+		//console.log(clientLength);
+		if( $('#client').val() == "" ){
+			$("#clientId").val("");
+		}	
+	});
+			
+	jQuery('#frequencyId').change(function(event) {
+		jQuery('#frequency').empty();
+		$("#frequency").val(jQuery("#frequencyId :selected").text());
+	});
+	
+	$("#getKd").click(function(){	
+		
+		let client = jQuery("#client").val();
+		let fund = jQuery("#fund :selected").text();
+		let cobDate = jQuery('#cobDate').val();	
+		let frequency = jQuery("#frequencyId :selected").text();
+		console.log(client + fund + cobDate + frequency);
+		
+		
+		jQuery.getJSON("fetchKd", {
+			p1 : client,
+			p2 : fund,
+			p3 : cobDate,
+			p4 : frequency
+	    }, function(Data) {
+	    	//console.log("********** "+Data.value);	
+	    	$("#knowledgeDate").val(Data.value);	
+	    });
+		
+	});	
+	
+	 
+});
+
+</script>
+
+
+</head>
+<body>
+
+<div  th:replace="fragments/nav :: navbar"></div>
+<div class="container">
+	<form action="#" th:action="@{/generateRiskFile}" th:object="${riskFileDto}" method="post">
+	<input type="hidden" id="onBoardForm" th:field="*{onBoardForm}"	class="form-control mb-4 col-4" readonly>		
+		RiskAggregator
+		<select id="riskAggregatorId" class="form-control mb-4 col-4" th:field="*{riskAggregatorId}">
+			<option value="0">Select RiskAggregator</option>			
+		</select>
+		<input type="hidden" th:field="*{riskAggregator}"	class="form-control mb-4 col-4" readonly>
+					
+		<p th:if="${#fields.hasErrors('riskAggregator')}" th:errors="*{riskAggregator}" class="alert alert-danger mb-4 col-4"></p>
+		
+		Client	
+		<input id="client" type="text" class="form-control mb-4 col-4" th:field="*{client}">		
+		
+		<p th:if="${#fields.hasErrors('client')}" th:errors="*{client}" class="alert alert-danger mb-4 col-4"></p>
+		
+		 Funds
+		<br>
+		<select class="form-control mb-4 col-4" id ="fund"  th:field="*{fund}" >
+			<option value="0">Select Fund</option>
+  		</select>
+  		  		
+  		<br>
+  		<p th:if="${#fields.hasErrors('fund')}" th:errors="*{fund}" class="alert alert-danger mb-4 col-4"></p>
+  		
+  		 COB Date
+		<input id="cobDate" type="date" class="form-control mb-4 col-4" th:field="*{cobDate}">
+  		<br>
+  		
+  		Frequency
+  		<br>
+  		<select id="frequencyId" class="form-control mb-4 col-4">
+  			<option value="-1">Select Frequency</option>
+			<option th:each="opt : ${T(com.globeop.riskfeed.enums.Frequency).values()}" th:value="${opt}" th:text="${opt.displayValue}"></option>			
+		</select>
+		<input type="hidden" th:field="*{frequency}"	class="form-control mb-4 col-4" readonly>
+		<br>		
+		
+		<span id="getKd" class="btn btn-info col-2" >Fetch KD</span><br>
+		<br>
+		
+		Knowledge Date
+		<input id="knowledgeDate" type="text" class="form-control mb-4 col-4" th:field="*{knowledgeDate}">
+		<br>
+		
+		<button type="submit" class="btn btn-info col-2">Submit</button>
+							
+	</form>
+		
+</div>
+
+
+</body>
+</html>
