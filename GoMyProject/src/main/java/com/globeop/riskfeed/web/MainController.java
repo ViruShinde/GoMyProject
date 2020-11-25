@@ -74,6 +74,12 @@ public class MainController {
         return "user/index";
     }
     
+    @GetMapping("/mis-log")
+    public String misLog() {
+        return "misLog";
+    }
+
+    
     
     @RequestMapping("/Home")
 	public String home () {
