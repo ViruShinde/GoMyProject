@@ -2,11 +2,15 @@ package com.globeop.riskfeed.util;
 
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
+import java.util.Set;
 
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -158,6 +162,57 @@ public static List<LabelValueDto> getClientFundList(String clientShortname){
 	    return new String(decodedBytes);
 	}
 	
+	
+	public static Properties loadPropertyFile(String fileName){
+        Properties prop=new Properties();
+        String serverFile="/home/rskmtrx/projects/RiskMQ/Resources/"+fileName;
+        String localFile="templates/"+fileName;
+        
+        try {
+            File file = new File(serverFile);
+            //System.out.println(serverFile+" file exists "+file.exists());
+            if(file.exists()){
+                //System.out.println("server config file found "+serverFile);
+                //prop= Resources.getResourceAsProperties(serverFile);
+                prop.load(new FileInputStream(serverFile));
+            }else{
+                //System.out.println("local config file found "+localFile);
+                prop= Resources.getResourceAsProperties(localFile);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return prop;
+    }
+	
+	 public static int checkFundInPropertyFile(Properties fundProp, String fundName){
+	        int taskId =-1;
+
+	        Set keySet = fundProp.keySet();
+	        //System.out.println(keySet);
+	        //System.out.println(fundProp.values());
+	        Iterator keys = keySet.iterator();
+
+	        while (keys.hasNext()) {
+	            String key =keys.next().toString();
+	            String funds = fundProp.get(key).toString();
+	            //System.out.println(key +" = "+fundProp.get(key) );
+	            if(funds.length()>0){
+	                String[] fund = funds.split(",");
+	                for(String f: fund){
+	                    if(f.equals(fundName)) {
+	                        taskId = Integer.parseInt(key);
+	                        break;
+	                    }
+	                }
+	            }
+	        }
+	        if(taskId==-1){
+	            taskId = Integer.parseInt(fundProp.getProperty("DEFAULT_ID"));
+	        }
+	        return taskId;
+	    }
+	 
 	public static String  getFileName(MultipartFile file) {
 		return StringUtils.cleanPath(file.getOriginalFilename());		
 	}
