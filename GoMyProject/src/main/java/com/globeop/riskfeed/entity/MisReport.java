@@ -55,6 +55,8 @@ public class MisReport {
 	@Column(name = "processTime")
 	private String processTime;
 	
+	@Column(name = "automationProcess")
+	private String automationProcess;
 	
 
 	public MisReport() {		
@@ -171,6 +173,16 @@ public class MisReport {
 	public void setProcessTime(String processTime) {
 		this.processTime = processTime;
 	}
+	
+	
+
+	public String getAutomationProcess() {
+		return automationProcess;
+	}
+
+	public void setAutomationProcess(String automationProcess) {
+		this.automationProcess = automationProcess;
+	}
 
 	@Override
 	public String toString() {
@@ -178,10 +190,8 @@ public class MisReport {
 				+ ", cobDate=" + cobDate + ", knowledgeDate=" + knowledgeDate + ", frequency=" + frequency
 				+ ", riskFileNav=" + riskFileNav + ", goCheckNav=" + goCheckNav + ", navDifference=" + navDifference
 				+ ", fileName=" + fileName + ", startTime=" + startTime + ", endTime=" + endTime + ", processTime="
-				+ processTime + "]";
+				+ processTime + ", automationProcess=" + automationProcess + "]";
 	}
-	
-	
-	
-	
+
+		
 }
