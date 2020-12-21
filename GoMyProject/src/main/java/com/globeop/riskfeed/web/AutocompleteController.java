@@ -99,10 +99,27 @@ public class AutocompleteController {
     	return GenricUtil.getClientFundList(clientName);        
     }
     
+    @RequestMapping(value="/getFundsFromClient2",method = RequestMethod.GET)
+	@ResponseBody
+    public List<LabelValueDto> getFundsFromClient2(@RequestParam (value="p1", required=false, defaultValue="") int clientId,@RequestParam (value="p2", required=false, defaultValue="") int riskAggregatorId) {
+    	List <LabelValueDto> funds = new ArrayList<>();
+    	List<TestDto> onBoardedFunds = clientOnboardService.findFundsDetailsByClientAndRiskAggregator2(clientId, riskAggregatorId);
+    	for(TestDto t : onBoardedFunds ) {
+    		LabelValueDto labelValueDto = new LabelValueDto();
+			labelValueDto.setLabel(t.getFundName());
+			labelValueDto.setValue(t.getFundID()+""); 
+			funds.add(labelValueDto);
+    	}    	
+    	return funds;        
+    }
+    
+    
+    
+    
     @RequestMapping(value="/checkFundCount",method = RequestMethod.GET)
 	@ResponseBody
     public List<TestDto> checkFundCount(@RequestParam (value="p1", required=true, defaultValue="") String riskAggregatorId,@RequestParam (value="p2", required=true, defaultValue="") String clientId) {
-    	System.out.println(riskAggregatorId + " >> "+clientId);
+    	//System.out.println(riskAggregatorId + " >> "+clientId);
     	List<TestDto> fundList = new ArrayList<TestDto>();
     	try {
     		fundList = clientOnboardService.findFundsDetailsByClientAndRiskAggregator(Integer.parseInt(clientId),Integer.parseInt(riskAggregatorId));
@@ -118,8 +135,7 @@ public class AutocompleteController {
 	public LabelValueDto fetchKd(@RequestParam (value="p1") String client, @RequestParam (value="p2") String fund ,@RequestParam (value="p3") String cobDate,@RequestParam (value="p4") String frequency ) {
     	LabelValueDto labelValueDto = new LabelValueDto();
     	KDFinder kdFinder = new KDFinder();		
-		String value = kdFinder.getValue(client, fund, cobDate, frequency);
-		System.out.println(value);
+		String value = kdFinder.getValue(client, fund, cobDate, frequency);		
 		labelValueDto.setLabel("KD");
 		labelValueDto.setValue(value);
 		return labelValueDto;
