@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Schedule Details</title>
+
+<!-- working for navbar dropdowns -->
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+<script th:src="@{/webjars/jquery/jquery.js}"></script>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/css/bootstrap.min.css}" />
+<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+
+<!-- Working for auto complete-->
+
+<link th:href="@{/jquery/jquery-ui-1.12.1/jquery-ui.css}"
+	rel="stylesheet" type="text/css" />
+<script th:src="@{/jquery/jquery-ui-1.12.1/jquery-ui.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/popper.js/popper.js}"></script>
+
+<!-- Working for multi select -->
+
+<link th:href="@{/multi-select/css/multi-select.css}" rel="stylesheet" />
+<script th:src="@{/multi-select/js/jquery.multi-select.js}"></script>
+
+<link th:href="@{/multi-select/css/select2.css}" rel="stylesheet" />
+<script th:src="@{/multi-select/js/select2.js}"></script>
+
+<script type="text/javascript">
+	function clearFilter(){
+		window.location="/GoMyProject/getscheduledetails";
+	}
+
+</script>
+</head>
+<body>
+<div th:replace="fragments/nav :: navbar"></div>
+<div class="p-3 m-3"><br>
+
+<div class="container" th:if="${message}">
+		<h3 th:text="${message}"></h3>
+	</div>	
+	   
+	   <div>
+	   		<form th:action="@{/getscheduledetails/search/}" >
+	   			Filter : <input type="text" id="keyword" name="keyword" th:value="${keyword}"  required="required"/>
+	   			&nbsp;
+	   			<input type="submit" value="Search">
+	   			&nbsp;
+	   			<input type="button" value="Clear" onclick="clearFilter()"> 
+	   		</form>	   
+	   </div>
+	   <br>
+   	<div class="table-responsive">
+   <table class = "table table-hover table-sm">
+			<thead class="table-primary">
+				<tr>
+					<th>
+						<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=scheduledDetailsId&sortDir=' + ${reverseSortDir}}">
+							Id</a>
+					</th>
+					<th>
+					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=min&sortDir=' + ${reverseSortDir}}">
+							min</a>
+					</th>					
+					<th>
+					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=hour&sortDir=' + ${reverseSortDir}}">
+							hour</a>
+					</th>
+					<th>
+					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=dayOfMonth&sortDir=' + ${reverseSortDir}}">
+							Day Of Month</a>
+					</th>
+					
+					<th>
+					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=dayOfWeek&sortDir=' + ${reverseSortDir}}">
+							Day Of Week</a>
+					</th>
+					<th>
+					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=r.riskAggregatorName&sortDir=' + ${reverseSortDir}}">
+							RiskAggregator </a>
+					</th>
+					<th>
+					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=c.clientShortName&sortDir=' + ${reverseSortDir}}">
+							Client</a>
+					</th>
+					<th>
+					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=f.fundShortName&sortDir=' + ${reverseSortDir}}">
+							Fund</a>
+					</th>
+					<th>
+					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=frequency&sortDir=' + ${reverseSortDir}}">
+							Frequency</a>
+					</th>
+					<th>
+					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=isActive&sortDir=' + ${reverseSortDir}}">
+							Is Active</a>
+					</th>
+					<th>
+					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=comments&sortDir=' + ${reverseSortDir}}">
+							Comments</a>
+					</th>
+					<th>
+					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=modified_date&sortDir=' + ${reverseSortDir}}">
+							modified_date</a>
+					</th>
+					
+					<th> Actions </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="scheduledDetails : ${listScheduledDetails}">
+					<td th:text="${scheduledDetails.scheduledDetailsId}"></td>
+					<td th:text="${scheduledDetails.min}"></td>
+					<td th:text="${scheduledDetails.hour}"></td>
+					
+					<td th:text="${scheduledDetails.dayOfMonth}"></td>
+					<td th:text="${scheduledDetails.dayOfWeek}"></td>
+					<td th:text="${scheduledDetails.riskAggregatorName}"></td>
+					<td th:text="${scheduledDetails.clientName}"></td>
+					<td th:text="${scheduledDetails.fundName}"></td>
+					<td th:text="${scheduledDetails.frequency}"></td>
+					<td th:text="${scheduledDetails.isActive}"></td>
+					<td th:text="${scheduledDetails.comments}"></td>
+					<td th:text="${scheduledDetails.modified_date}"></td>
+					
+					<td> <a th:href="@{/editscheduledDetails/{id}(id=${scheduledDetails.scheduledDetailsId})}" class="btn btn-primary">Update</a>
+					    <a th:href="@{/deletescheduledDetails/{id}(id=${scheduledDetails.scheduledDetailsId})}" class="btn btn-danger">Delete</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		</div>
+		<hr>		
+		<div th:if = "${totalPages > 1}">
+			<div class = "row col-sm-10">
+				<div class = "col-sm-2">
+					Total Rows: [[${totalItems}]] 
+				</div>
+				<div class = "col-sm-1">
+					<span th:each="i: ${#numbers.sequence(1, totalPages)}">
+						<a th:if="${currentPage != i}" th:href="@{'/getscheduledetails/page/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+						<span th:unless="${currentPage != i}">[[${i}]]</span>  &nbsp; &nbsp;
+					</span>
+				</div>
+				<div class = "col-sm-1">
+					<a th:if="${currentPage >= totalPages}" th:href="@{'/getscheduledetails/page/' + ${currentPage - 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Previous</a>
+					<span th:unless="${currentPage >= totalPages}">Previous</span>
+				</div>
+				<div class = "col-sm-1">
+					<a th:if="${currentPage < totalPages}" th:href="@{'/getscheduledetails/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+					<span th:unless="${currentPage < totalPages}">Next</span>
+				</div>
+				
+				 <div class="col-sm-1">
+    				<a th:if="${currentPage < totalPages}" th:href="@{'/getscheduledetails/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
+					<span th:unless="${currentPage < totalPages}">Last</span>
+   				 </div>
+			</div>
+		</div>
+		
+		
+</div>
+   
+
+</body>
+</html>
