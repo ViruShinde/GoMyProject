@@ -173,3 +173,24 @@ CREATE TABLE `databasedetails` (
   `Password` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB;
+
+
+CREATE TABLE `ScheduledDetails` (
+  `ScheduledDetailsId` int(11) NOT NULL AUTO_INCREMENT,
+  `Min` varchar(5) DEFAULT NULL,
+  `Hour` varchar(5) DEFAULT NULL,
+  `DayOfMonth` varchar(5) DEFAULT NULL,
+  `Month` varchar(5) DEFAULT NULL,
+  `DayOfWeek` varchar(5) DEFAULT NULL,
+  `RiskAggregatorId` int(11) NOT NULL,
+  `ClientID` int(11) NOT NULL,
+  `FundID` int(11) NOT NULL,
+  `Frequency` varchar(20) DEFAULT NULL,
+  `BusinessDay` varchar(5) DEFAULT NULL,
+  `FundGroup` varchar(10) DEFAULT NULL,
+  `Consolidated` varchar(5) DEFAULT NULL,
+  `Comments` varchar(200) DEFAULT NULL,
+  `IsActive` varchar(5) DEFAULT NULL,
+  `Modified_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`ScheduledDetailsId`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
