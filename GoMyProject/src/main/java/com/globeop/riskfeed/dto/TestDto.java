@@ -164,6 +164,15 @@ public class TestDto {
 		this.fundName = fundName;
 		this.monthlyFee = monthlyFee;
 	}
+	//5
+	//findFundsDetailsByClientAndRiskAggregator2
+	public TestDto(int clientOnboardId,int clientID, String clientName, String fundName, int fundId) {
+		this.clientOnboardId=clientOnboardId;
+		this.clientID = clientID;
+		this.clientName = clientName;
+		this.fundName = fundName;
+		this.fundID=fundId;
+	}
 	
 	 //10 
 	public TestDto(int clientOnboardId,int clientID, String clientName, String fundName, LocalDate setUpDate,IsActive isActive, String frequency, AutomationProcess automationProcess,String comment, LocalDate  modifDate) {		
