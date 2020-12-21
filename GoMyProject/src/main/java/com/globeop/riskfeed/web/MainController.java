@@ -246,9 +246,9 @@ public class MainController {
     public String getFundById(@PathVariable Integer id,Model model) {    
     	ClientTable clientTable = clientService.findById(id);
     	List<FundTable> fundTables = fundService.findByClient(clientTable);
-    	for(FundTable f:fundTables) {
-    		System.out.println(f.getFundID()+">>"+f.getFundShortName());    		
-    	}
+//    	for(FundTable f:fundTables) {
+//    		System.out.println(f.getFundID()+">>"+f.getFundShortName());    		
+//    	}
     	//model.addAttribute("funds", fundTables);
     	model.addAttribute("client", clientTable);
     	return "fund";
@@ -285,7 +285,7 @@ public class MainController {
 			//fundService.update(theFundTable);
 			List duplicateList = onBordService.addFundDetails(onBordDto);
 			if(duplicateList.size() > 0) {
-				System.out.println(duplicateList);
+				//System.out.println(duplicateList);
 				redirectAttributes.addFlashAttribute("message", "Fund Already exists : "+duplicateList);
 			}
 			//System.out.println(onBordDto);
