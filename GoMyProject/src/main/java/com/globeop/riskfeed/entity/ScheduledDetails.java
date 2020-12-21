@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name="ScheduledDetails2")
+@Table(name="ScheduledDetails")
 public class ScheduledDetails {
 	
 	private static final long serialVersionUID = 1L;
