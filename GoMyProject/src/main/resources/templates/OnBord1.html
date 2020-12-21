@@ -89,7 +89,7 @@
 	 }else if(form=="OnBordFundForm"){
 		 console.log("OnBordFundForm");
 		 console.log($('#clientId').val())
-		 let client = $('#clientId').val();
+		 let client = $('#clientName').val();
 		 
 		 jQuery.getJSON("/GoMyProject/getFundsFromClient/", {
 				p1 : client
