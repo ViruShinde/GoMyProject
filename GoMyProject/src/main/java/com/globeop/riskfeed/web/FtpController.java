@@ -1,5 +1,6 @@
 package com.globeop.riskfeed.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -65,11 +66,13 @@ public class FtpController {
 
     @GetMapping({"/getFtpDetails","/getFtpDetails/{id}"})
     public String GetFtpDetails(@PathVariable(required = false) Integer id,Model model) {      	
-    	List<FtpServerDetails> ftpDetails=theFtpService.findAllFtpServerDetails();
-    	System.out.println(" ID *************"+id);    	
+    	List<FtpServerDetails> ftpDetails = new ArrayList<FtpServerDetails>();
+    	//System.out.println(" ID *************"+id);    	
     	if(null != id) {
     		ftpDetails.removeAll(ftpDetails);
     		ftpDetails.add(theFtpService.findByFtpServerDetailsId(id));
+    	}else {
+    		ftpDetails=theFtpService.findAllFtpServerDetails();
     	}
     	model.addAttribute("ftpDetails",ftpDetails);    	
     	return "ftpDetails";
