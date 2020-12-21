@@ -59,6 +59,10 @@ public class ClientOnboardService implements CommonService<ClientOnboardTable> {
 	public List<TestDto> findFundsDetailsByClientAndRiskAggregator(int clientId, int riskAggregatorId){
 		return theClientOnboardRepository.findFundsDetailsByClientAndRiskAggregator(riskAggregatorId,clientId);
 	}
+	
+	public List<TestDto> findFundsDetailsByClientAndRiskAggregator2(int clientId, int riskAggregatorId){
+		return theClientOnboardRepository.findFundsDetailsByClientAndRiskAggregator2(riskAggregatorId,clientId);
+	}
 	public List<ClientOnboardTable> getClientsOfRiskAggregator( RiskAggregator theAggregator){
 		//return theClientOnboardRepository.findByRiskAggregator(theAggregator.getId());
 		return theClientOnboardRepository.findByRiskAggregator(theAggregator);
