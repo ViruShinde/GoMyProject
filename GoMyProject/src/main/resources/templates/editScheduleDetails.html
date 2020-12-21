@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Scheduler</title>
+
+<!-- working for navbar dropdowns -->
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+<script th:src="@{/webjars/jquery/jquery.js}"></script>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/css/bootstrap.min.css}" />
+<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+
+<!-- Working for auto complete-->
+
+<link th:href="@{/jquery/jquery-ui-1.12.1/jquery-ui.css}"
+	rel="stylesheet" type="text/css" />
+<script th:src="@{/jquery/jquery-ui-1.12.1/jquery-ui.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/popper.js/popper.js}"></script>
+
+<!-- Working for multi select -->
+
+<link th:href="@{/multi-select/css/multi-select.css}" rel="stylesheet" />
+<script th:src="@{/multi-select/js/jquery.multi-select.js}"></script>
+
+<link th:href="@{/multi-select/css/select2.css}" rel="stylesheet" />
+<script th:src="@{/multi-select/js/select2.js}"></script>
+
+<script th:src="@{/js/cronstrue.js}"></script>
+
+
+<script type="text/javascript">
+	function getClientList(riskAggregatorId) {
+
+		// to get the client list in drop down.
+		//console.log(riskAggregatorId);
+		jQuery("#client").autocomplete(
+				{
+					source : "\clientList\?riskAggregatorId="
+							+ riskAggregatorId,
+					minLength : 0,
+					scroll : true,
+					select : function(event, ui) {
+						this.value = ui.item.label;
+						$("#client").val(ui.item.label);
+						//console.log(this.value);
+						//console.log(ui.item.label);
+						//console.log(ui.item.value);
+						$("#clientId").val(ui.item.value);
+						jQuery.getJSON("getFundsFromClient2", {
+							p1 : ui.item.value,
+							p2 : riskAggregatorId
+						}, function(responseData) {
+							//console.log(responseData);
+							//var clientFunds = jQuery('#clientFunds');
+							jQuery('#fund').empty();
+							var clientFunds = jQuery('#fund');
+							jQuery('<option>').val("").text("Select Fund")
+									.appendTo(clientFunds);
+							jQuery.each(responseData, function(key, value) {								
+								console.log(value.label + " >> "+value.value);										
+								jQuery('<option id =' +value.value+'>').val(value.value)
+			            	    .text(value.label).appendTo(clientFunds);	
+							});
+
+						});
+						return false;
+					}
+				});
+	}
+
+	jQuery(document).ready(
+			function($) {
+
+				jQuery.getJSON("/GoMyProject/riskAggregatorList", function(
+						responseData) {
+					//console.log(responseData);
+					//var clientFunds = jQuery('#clientFunds');
+					jQuery('#riskAggregatorId').empty();
+					let ra = jQuery('#riskAggregatorId');
+					jQuery('<option>').val("-1").text("Select RiskAggregator")
+							.appendTo(ra);
+					jQuery.each(responseData, function(key, value) {
+						//console.log(value.label + " >> "+value.value);				
+						jQuery('<option id =' +value.value+'>')
+								.val(value.value).text(value.label)
+								.appendTo(ra);
+					});
+
+				});
+				
+
+				jQuery('#riskAggregatorId').change(function() {
+					jQuery('#client').val("");
+					let riskAggregatorId = jQuery("#riskAggregatorId").val();
+					// to get the client list in drop down.	
+					//console.log("@@@@@@@@@ "+$("#riskAggregatorId :selected").text());
+					jQuery('#riskAggregator').empty();
+					let r = jQuery("#riskAggregatorId :selected").text();
+					if (r == "Select RiskAggregator") {
+						r = "";
+					}
+					jQuery('#riskAggregator').val(r);
+					getClientList(riskAggregatorId);
+				});
+
+				// its check if clien field is blank then blank clientId as well
+				jQuery('#client').change(function(event) {
+					//let clientLength = $('#client').val().length;
+					//console.log(clientLength);
+					if ($('#client').val() == "") {
+						$("#clientId").val("");
+					}
+				});
+				
+				jQuery('#frequencyId').change(function(event) {
+					jQuery('#frequency').empty();
+					let f = jQuery("#frequencyId :selected").text();
+					if (f == "Select Frequency"){
+						f="";
+					}
+					$("#frequency").val(f);
+				});
+
+				
+				$("#dayOfMonth").select2({
+					  maximumSelectionLength: 2
+					});
+
+				$("#dayOfMonth").select2({
+					  placeholder: 'Select DayOfMonth',
+					  allowClear: true
+					});
+				
+				
+				$("#checkCron").click(function(){	
+					$("#cronResult").text("");
+					let min = jQuery("#min").val();
+					let hour = jQuery("#hour").val();
+					let dayOfMonth = jQuery('#dayOfMonth').val();	
+					let month = jQuery("#month").val();
+					let dayOfWeek = jQuery("#dayOfWeek").val();
+					var cronstrue = window.cronstrue;
+					
+					let result="";
+					let dayOfMonth_toString=dayOfMonth.toString();
+					//console.log(dayOfMonth+" >> "+n.includes("*,"));
+					let cronExpression = min+" "+hour+" "+dayOfMonth+" "+month+" "+dayOfWeek;
+					if(dayOfMonth_toString==""){
+						result="Please select Day Of Month";
+					}else if(dayOfMonth_toString.includes("*,")){
+						result="Day Of Month, * cannot be combined with other value ";
+					}else{
+					
+						 result= cronstrue.toString(cronExpression);
+					}									
+					
+					$("#cronResult").text(result);
+					
+					 
+					  
+				});
+				
+				 
+
+			});
+</script>
+
+<script>
+
+
+</script> 
+
+</head>
+<body>
+
+	<div th:replace="fragments/nav :: navbar"></div>
+
+	<div class="container"><br>         		
+
+		<form action="#" th:action="@{/AddScheduler}" th:object="${scheduledDetails}" method="post">
+		<input type="hidden" id="scheduledDetailsId" th:field="*{scheduledDetailsId}"	placeholder="scheduledDetailsId"  readonly/>
+				<div class="row">					
+					<div class="col-md-2">
+						<div class="form-group mb-4 mt-2">RiskAggregator</div>
+						<div class="form-group mb-4 mt-2">Client</div>						
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+							<!-- <input type="text" id="riskAggregator" class="form-control" placeholder="RiskAggregator" value="" /> -->							
+							<input type="text" id="riskAggregatorName" th:value="${riskAggregatorName}" class="form-control"  readonly>
+							<input type="hidden" id="riskAggregatorId" th:field="*{riskAggregatorId}"	placeholder="clientId"  readonly/>
+						</div>
+						<div class="form-group">
+							<input type="text" id="clientShortName" th:value="${clientShortName}" class="form-control" readonly>							
+							<input type="hidden" id="clientId" th:field="*{clientId}"	placeholder="clientId"  readonly/>
+						</div>
+						
+						
+
+					</div>
+
+					<div class="col-md-2">						
+						<div class="form-group mb-4 mt-2">Fund</div>
+						<div class="form-group mb-4 mt-2">Frequency</div>			
+					</div>
+
+					<div class="col-md-4">
+					<div class="form-group">														
+							<input type="text" id="fundShortName" th:value="${fundShortName}" class="form-control"  readonly>
+							<input type="hidden" id="fundId" th:field="*{fundId}"	placeholder="fundId"  readonly/>
+						</div>
+						<div class="form-group">
+							<!-- <input type="text" id="frequency" class="form-control" placeholder="Frequency" value="" /> -->
+							<select id="frequencyId" class="form-control" >
+								<option value="-1">Select Frequency</option>
+								<option
+									th:each="opt : ${T(com.globeop.riskfeed.enums.Frequency).values()}"
+									th:value="${opt}" th:text="${opt.displayValue}" th:selected="${ scheduledDetails.frequency.contains(opt.toString()) }" ></option>
+							</select> 	
+							<input type="hidden" id="frequency" th:field="*{frequency}"	placeholder="frequency"  readonly/>									
+						</div>		
+					</div>
+				</div>	
+				<div class="row">																														
+								<div class="col-sm-2">	
+									<div class="form-group">								
+										<label>Min</label> 
+										<select id="min" class="form-control" th:field="*{min}" placeholder="Min" >											
+											<option value="*">*</option>
+											<option value="00">00</option>
+											<option value="10">10</option>
+											<option value="20">20</option>
+											<option value="30">30</option>
+											<option value="40">40</option>
+											<option value="50">50</option>
+										</select>	
+									</div>									
+								</div>
+								
+								<div class="col-sm-2">	
+									<div class="form-group">								
+										<label>Hour</label> 																										
+										<select id="hour" class="form-control" th:field="*{hour}">
+											<option value="*">*</option>
+    										<option th:each="i : ${#numbers.sequence(0, 23)}" th:value="${i}" th:text="${i}"></option>
+										</select>
+									</div>										
+								</div>
+								<div class="col-sm-2">	
+									<div class="form-group">								
+										<label>DayOfMonth</label> 																		
+										<select id="dayOfMonth" class="form-control" multiple="multiple" th:field="*{dayOfMonth}">
+											<option value="*" selected>*</option>
+    										<option th:each="i : ${#numbers.sequence(1, 31)}" th:value="${i}" th:text="${i}"></option>
+										</select>	
+									</div>								
+								</div>
+								<div class="col-sm-2">	
+									<div class="form-group">								
+										<label>Month</label> 																										
+										<select id="month" class="form-control" th:field="*{month}">
+											<option value="*">*</option>
+    										<option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
+										</select>			
+									</div>							
+								</div>
+								<div class="col-sm-2">	
+									<div class="form-group">								
+										<label>DayOfWeek</label> 																										
+										<select id="dayOfWeek" class="form-control" th:field="*{dayOfWeek}">
+											<option value="*">*</option>
+    										<option th:each="i : ${#numbers.sequence(1, 7)}" th:value="${i}" th:text="${i}"></option>
+    										<option value="1-5">1-5</option>
+										</select>	
+									</div>									
+								</div>
+								<div class="col-sm-2">
+									<div class="form-group">	
+									<label>&nbsp <br></label> 	
+									<a id="checkCron" class=" form-control btn btn-info">Validate</a>
+									</div>
+								</div>	
+															
+							</div>
+						<div class="row  form-group">
+							<p id="cronResult"></p>	
+						</div>
+						<div class="row  form-group">																																	
+							<button type="submit" class="btn btn-info col-3">Next</button>
+						</div>
+				
+			</form>		
+			
+	<div class="container" th:if="${responseDto}">
+		<h3 th:text="${responseDto.message}"></h3>
+	</div>	
+</div>		
+</body>
+</html>
