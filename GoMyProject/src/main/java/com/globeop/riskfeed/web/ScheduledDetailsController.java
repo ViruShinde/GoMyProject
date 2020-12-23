@@ -102,17 +102,17 @@ public class ScheduledDetailsController {
    }   	
 	 
 	 @GetMapping({"/getscheduledetails","/getscheduledetails/{id}"})
-		public String viewHomePage(@PathVariable(required = false) String id,Model model) {		 
-		 	System.out.println("getscheduledetails>>>>>>>>>>>>>"+id+"<<" );
-			return findPaginated(1, "scheduledDetailsId", "asc", id, "getscheduledetails", model);		
+		public String viewHomePage(@PathVariable(required = false) String id,Model model) {		 		 	
+			return findPaginated(1, "scheduledDetailsId", "asc", id, "getscheduledetails","5", model);		
 		}
 	 
 	 @GetMapping("/getscheduledetails/page/{pageNo}")
 		public String findPaginated(@PathVariable (value = "pageNo") int pageNo, 
 				@RequestParam("sortField") String sortField,
 				@RequestParam("sortDir") String sortDir, String id, String url,
+				@RequestParam (value="records", required=false, defaultValue="5") String records,
 				Model model) {
-			int pageSize = 5;
+			int pageSize = Integer.parseInt(records);
 			if(null==url || "".equals(url)) {
 				url="page";
 			}
@@ -137,12 +137,17 @@ public class ScheduledDetailsController {
 			*/
 		}
 	 
-	 @GetMapping("/getscheduledetails/search")
-		public String search( @Param("keyword") String keyword, Model model) {
-		 keyword=keyword.trim();		 
-		 Page<SchedularDto> page = theScheduledDetailsService.getscheduledetailsSearch(keyword);	
+	 @RequestMapping("/getscheduledetails/search/")
+	 //@RequestParam (value="p1", required=false, defaultValue="") String clientName	
+	 public String search( @RequestParam (value="keyword", required=false, defaultValue="") String keyword, @RequestParam (value="records", required=false, defaultValue="5") String noOfRecords, Model model) {
+	 //public String search( @RequestParam("keyword") String keyword, @RequestParam("records") String noOfRecords, Model model) {
+		 keyword=keyword.trim();
+		 //System.out.println(keyword +":"+noOfRecords);
+		 int no=Integer.parseInt(noOfRecords);
+		 Page<SchedularDto> page = theScheduledDetailsService.getscheduledetailsSearch(keyword,no);	
 		 model.addAttribute("keyword",keyword);
-		 return commonMethod(page, model, 0, 5, "scheduledDetailsId", "asc");
+		 model.addAttribute("records",no);
+		 return commonMethod(page, model, 1, no, "scheduledDetailsId", "asc");
 		 //return null;
 	 }
 	 
@@ -154,6 +159,7 @@ public class ScheduledDetailsController {
 			model.addAttribute("totalItems", page.getTotalElements());			
 			model.addAttribute("sortField", sortField);
 			model.addAttribute("sortDir", sortDir);
+			model.addAttribute("records", pageSize);
 			model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");			
 			model.addAttribute("listScheduledDetails", listScheduledDetails);
 			return "scheduleDetails";
