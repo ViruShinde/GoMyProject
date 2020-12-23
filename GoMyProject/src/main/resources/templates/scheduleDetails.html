@@ -44,12 +44,18 @@
 	</div>	
 	   
 	   <div>
-	   		<form th:action="@{/getscheduledetails/search/}" >
-	   			Filter : <input type="text" id="keyword" name="keyword" th:value="${keyword}"  required="required"/>
+	   		<form th:action="@{/getscheduledetails/search/}">
+	   			Filter : <input type="text" id="keyword" name="keyword" th:value="${keyword}"  />
 	   			&nbsp;
+	   			<label for="records">records</label>								
+				<select name="records" id="records">
+    				<option th:each="i : ${#numbers.sequence(1, 5)}" th:value="${i}" th:text="${i}" 
+      				th:selected="${i== records}"></option>
+				</select>
+				&nbsp;
 	   			<input type="submit" value="Search">
 	   			&nbsp;
-	   			<input type="button" value="Clear" onclick="clearFilter()"> 
+	   			<input type="button" value="Clear" onclick="clearFilter()">
 	   		</form>	   
 	   </div>
 	   <br>
@@ -58,52 +64,52 @@
 			<thead class="table-primary">
 				<tr>
 					<th>
-						<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=scheduledDetailsId&sortDir=' + ${reverseSortDir}}">
+						<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=scheduledDetailsId&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}">
 							Id</a>
 					</th>
 					<th>
-					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=min&sortDir=' + ${reverseSortDir}}">
+					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=min&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}">
 							min</a>
 					</th>					
 					<th>
-					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=hour&sortDir=' + ${reverseSortDir}}">
+					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=hour&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}">
 							hour</a>
 					</th>
 					<th>
-					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=dayOfMonth&sortDir=' + ${reverseSortDir}}">
+					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=dayOfMonth&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}">
 							Day Of Month</a>
 					</th>
 					
 					<th>
-					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=dayOfWeek&sortDir=' + ${reverseSortDir}}">
+					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=dayOfWeek&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}">
 							Day Of Week</a>
 					</th>
 					<th>
-					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=r.riskAggregatorName&sortDir=' + ${reverseSortDir}}">
+					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=r.riskAggregatorName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}">
 							RiskAggregator </a>
 					</th>
 					<th>
-					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=c.clientShortName&sortDir=' + ${reverseSortDir}}">
+					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=c.clientShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}">
 							Client</a>
 					</th>
 					<th>
-					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=f.fundShortName&sortDir=' + ${reverseSortDir}}">
+					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=f.fundShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}">
 							Fund</a>
 					</th>
 					<th>
-					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=frequency&sortDir=' + ${reverseSortDir}}">
+					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=frequency&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}">
 							Frequency</a>
 					</th>
 					<th>
-					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=isActive&sortDir=' + ${reverseSortDir}}">
+					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=isActive&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}">
 							Is Active</a>
 					</th>
 					<th>
-					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=comments&sortDir=' + ${reverseSortDir}}">
+					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=comments&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}">
 							Comments</a>
 					</th>
 					<th>
-					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=modified_date&sortDir=' + ${reverseSortDir}}">
+					<a th:href="@{'/getscheduledetails/page/' + ${currentPage} + '?sortField=modified_date&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}">
 							modified_date</a>
 					</th>
 					
@@ -142,21 +148,21 @@
 				</div>
 				<div class = "col-sm-1">
 					<span th:each="i: ${#numbers.sequence(1, totalPages)}">
-						<a th:if="${currentPage != i}" th:href="@{'/getscheduledetails/page/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+						<a th:if="${currentPage != i}" th:href="@{'/getscheduledetails/page/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}} +'&records='+ ${records}">[[${i}]]</a>
 						<span th:unless="${currentPage != i}">[[${i}]]</span>  &nbsp; &nbsp;
 					</span>
 				</div>
 				<div class = "col-sm-1">
-					<a th:if="${currentPage >= totalPages}" th:href="@{'/getscheduledetails/page/' + ${currentPage - 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Previous</a>
+					<a th:if="${currentPage >= totalPages}" th:href="@{'/getscheduledetails/page/' + ${currentPage - 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}} +'&records='+ ${records}">Previous</a>
 					<span th:unless="${currentPage >= totalPages}">Previous</span>
 				</div>
 				<div class = "col-sm-1">
-					<a th:if="${currentPage < totalPages}" th:href="@{'/getscheduledetails/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+					<a th:if="${currentPage < totalPages}" th:href="@{'/getscheduledetails/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}} +'&records='+ ${records}">Next</a>
 					<span th:unless="${currentPage < totalPages}">Next</span>
 				</div>
 				
 				 <div class="col-sm-1">
-    				<a th:if="${currentPage < totalPages}" th:href="@{'/getscheduledetails/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
+    				<a th:if="${currentPage < totalPages}" th:href="@{'/getscheduledetails/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}} +'&records='+ ${records}">Last</a>
 					<span th:unless="${currentPage < totalPages}">Last</span>
    				 </div>
 			</div>
