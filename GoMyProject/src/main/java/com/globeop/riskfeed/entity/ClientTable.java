@@ -25,6 +25,10 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity  
 @Table(name="ClientTable")  
 public class ClientTable implements Serializable{
+	public ClientTable() {
+		
+	}
+
 	/**
 	 * 
 	 */
@@ -42,8 +46,14 @@ public class ClientTable implements Serializable{
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate modified_date;
 
+	public ClientTable(int clientID, String clientShortName, LocalDate modified_date) {		
+		this.clientID = clientID;
+		this.clientShortName = clientShortName;
+		this.modified_date = modified_date;
+	}
+
 	@JsonManagedReference
-	@OneToMany(targetEntity = FundTable.class, cascade = CascadeType.ALL, mappedBy="client")
+	@OneToMany(targetEntity = FundTable.class, cascade = CascadeType.ALL, mappedBy="client" , fetch = FetchType.LAZY)
 	
 	//@OneToMany(targetEntity = FundTable.class,fetch=FetchType.EAGER, cascade = CascadeType.ALL) 
 	//@JoinColumn(name="ClientID")
@@ -51,12 +61,12 @@ public class ClientTable implements Serializable{
 			
 	@JsonManagedReference
 	@JsonIgnore
-	@OneToMany(targetEntity = ClientOnboardTable.class, cascade = CascadeType.ALL, mappedBy="client") 	
+	@OneToMany(targetEntity = ClientOnboardTable.class, cascade = CascadeType.ALL, mappedBy="client",fetch = FetchType.LAZY) 	
     private Set<ClientOnboardTable> clientOnboardSet;
 
 	@JsonManagedReference
 	@JsonIgnore
-	@OneToMany(targetEntity = BillTable.class, cascade = CascadeType.ALL, mappedBy="client") 	
+	@OneToMany(targetEntity = BillTable.class, cascade = CascadeType.ALL, mappedBy="client", fetch = FetchType.LAZY) 	
     private Set<BillTable> billSet;
 
 	
@@ -138,7 +148,7 @@ public class ClientTable implements Serializable{
 	@Override
 	public String toString() {
 		return "ClientTable [clientID=" + clientID + ", ClientShortName=" + clientShortName + ", Modified_date="
-				+ modified_date + ", funds=" + funds + ", clientOnboardSet=" + clientOnboardSet + "]";
+				+ modified_date +"]";
 	}
 
 
