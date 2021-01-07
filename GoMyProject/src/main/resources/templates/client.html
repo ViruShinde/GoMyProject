@@ -7,7 +7,15 @@
 <script th:src="@{/webjars/jquery/jquery.js}"></script>
 <link rel="stylesheet" type="text/css"  th:href="@{/css/bootstrap.min.css}"/>
 <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/customPagination.js}"></script>
 
+
+<script type="text/javascript">
+	function clearFilter(){
+		window.location="/GoMyProject/getClient";
+	}
+
+</script>
 
 
 <link rel="stylesheet" type="text/css" href="css/all.css"/>
@@ -15,8 +23,10 @@
 </head>
 
 <body>
+
 <!-- to include the Navbar from fragments/nav.html -->
 <div  th:replace="fragments/nav :: navbar"></div>
+<div class="p-3 m-3">
 <br>
 <div class="container">
 
@@ -28,30 +38,94 @@
 		<h3 th:text="${riskAggregator} + ' Clients'"> </h3>
 	</div>
 	<hr>
-	<div class="container">
 	
-	<table class="table table-bordered table-hover">
-		<thead class="thead-dark">
-			<th>Sr No.</th>	
-			<th>Client Id</th>
-			<th>Client Name</th>
-			<th>Setup Date</th>
-		</thead>
-
-		<tbody>
-			<tr th:each="client, iterationStatus : ${clients}">				
-			<td th:text="${iterationStatus.count}">	
-			<td th:text="${client.ClientID}">
-			<td th:if="${riskAggregator}"><a th:text="${client.ClientShortName}" th:href="@{'/getFund/'+${riskAggregatorId}+'/' +${client.ClientID}}"> </a> </td>
-			<td th:unless="${riskAggregator}"><a th:text="${client.ClientShortName}" th:href="@{'/getFund/' +${client.ClientID}}"> </a> </td>
-			<td th:text="${client.Modified_date}">
-		</tbody>
-	</table>
-
-	</div>
 </div>
 
+<div>
+	   		<form th:action="@{/getClient/search/}">
+	   			Filter : <input type="text" id="keyword" name="keyword" th:value="${keyword}"  />
+	   			&nbsp;
+	   			<label for="records">records</label>								
+				<select name="records" id="records">
+    				<option th:each="i : ${#numbers.sequence(1, 5)}" th:value="${i}" th:text="${i}" 
+      				th:selected="${i== records}"></option>
+				</select>
+				&nbsp;
+	   			<input type="submit" value="Search">
+	   			&nbsp;
+	   			<input type="button" value="Clear" onclick="clearFilter()">
+	   		</form>	   
+	   </div>
+	   <br>
+	<div class="table-responsive">
+   <table class = "table table-hover table-sm">
+			<thead class="table-primary">
+				<tr>
+					<th>
+						<a th:href="@{'/getClient/page/' + ${currentPage} + '?sortField=clientID&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}">
+							Client Id</a>
+					</th>
+					<th>
+					<a th:href="@{'/getClient/page/' + ${currentPage} + '?sortField=clientShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}">
+							Client Short Name</a>
+					</th>									
+					
+					<th>
+					<a th:href="@{'/getClient/page/' + ${currentPage} + '?sortField=modified_date&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}">
+							modified_date</a>
+					</th>
+					
+					
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="clientDetails : ${details}">
+					<td th:text="${clientDetails.clientID}"></td>
+					<td th:text="${clientDetails.clientShortName}"></td>
+					<td th:text="${clientDetails.modified_date}"></td>
+									
+				</tr>
+			</tbody>
+		</table>
+		
+		</div>
+		<hr>		
+		<div th:if = "${totalPages > 1}">
+			<div class = "row col-sm-10">
+				<div class = "col-sm-2">
+					Total Rows: [[${totalItems}]] 
+				</div>
+				<div class = "col-sm-1">
+				
+					<div class="pagination">
+					</div>
+						
+				</div>
+				<input id="linkPrefix" type="hidden" value="/GoMyProject/getClient">
+				<input id="currentPage" type="hidden" readonly th:value="${currentPage}">
+				<input id="totalPage" type="hidden" th:value="${totalPages}">
+				<input id="record" type="hidden" th:value="${records}">
+				<input id="sortField" type="hidden" th:value="${sortField}">
+				<input id="sortDir" type="hidden" th:value="${sortDir}">
+				
+				<!--   <div class = "col-sm-1">
+				
+					<a th:if="${currentPage >= totalPages}" th:href="@{'/getClient/page/' + ${currentPage - 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}} +'&records='+ ${records}">Previous</a>
+					<span th:unless="${currentPage >= totalPages}">Previous</span>
+				</div>
+				<div class = "col-sm-1">
+					<a th:if="${currentPage < totalPages}" th:href="@{'/getClient/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}} +'&records='+ ${records}">Next</a>
+					<span th:unless="${currentPage < totalPages}">Next</span>
+				</div>
+				
+				 <div class="col-sm-1">
+    				<a th:if="${currentPage < totalPages}" th:href="@{'/getClient/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}} +'&records='+ ${records}">Last</a>
+					<span th:unless="${currentPage < totalPages}">Last</span>
+   				 </div> -->
+			</div>
+		</div>
+
+
+ </div>
 </body>
-
-
 </html>
