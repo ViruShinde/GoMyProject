@@ -1,238 +1,131 @@
-<!DOCTYPE html>
-<html 	xmlns:th="http://www.thymeleaf.org"
-		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<html lang="en" mlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-
-<!-- <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" /> -->
-
-<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}" />
-
-<script type="text/javascript" th:href="@{/webjars/jquery/3.3.1/jquery.min.js}" ></script>
-
-<link rel="stylesheet" type="text/css" href="/css/Test.css"/>
-
-
-<!-- CDN ref for Datatable -->
-
-<!-- 
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css">
-<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js"></script>
- -->
+<title>Clients</title>
  
- <!-- Local datatable css and js --> 
-
-<link rel="stylesheet" type="text/css" href="/DataTables/datatables.css"/>
-<script type="text/javascript" charset="utf8" src="/DataTables/datatables.js"></script>
-
-<!-- <script type="text/javascript" charset="utf8" src="/DataTables/Buttons-1.6.1/js/dataTables.buttons.min.js"></script>
-<script type="text/javascript" charset="utf8" src="/DataTables/Buttons-1.6.1/js/buttons.flash.min.js"></script>
-<script type="text/javascript" charset="utf8" src="/DataTables/JSZip-2.5.0/jszip.min.js"></script>
-<script type="text/javascript" charset="utf8" src="/DataTables/pdfmake-0.1.36/pdfmake.min.js"></script>
-<script type="text/javascript" charset="utf8" src="/DataTables/pdfmake-0.1.36/vfs_fonts.js"></script>
-<script type="text/javascript" charset="utf8" src="/DataTables/Buttons-1.6.1/js/buttons.html5.js"></script>
-<script type="text/javascript" charset="utf8" src="/DataTables/Buttons-1.6.1/js/buttons.print.min.js"></script> -->
+<!-- working for navbar dropdowns -->
+<script th:src="@{/webjars/jquery/jquery.js}"></script>
+<link rel="stylesheet" type="text/css"  th:href="@{/css/bootstrap.min.css}"/>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/customPagination.js}"></script>
 
 
-<script type="text/javascript"  src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
-<script type="text/javascript"  src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.flash.min.js"></script>
-<script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script type="text/javascript"  src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script type="text/javascript"  src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.html5.min.js"></script>
-<script type="text/javascript"  src="https://cdn.datatables.net/buttons/1.6.1/js/buttons.print.min.js"></script>
-
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css"/>
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css"/>
-
-<script src="/js/dataTable.js"></script>
-
-<!-- <script type="text/javascript">
-jQuery(document).ready(function($) {
-	
-	var request = $("#request").val();
-	
-	var col=[""];
-	createDatatTable(request,col);
-
-	
-	$("button").click(function(){
-		request = $("#request").val();
-        var favorite = [""];
-        //var favorite2 = [];
-        $.each($("input[name='sport']:checked"), function(){
-            favorite.push($(this).val());
-        });
-        
-        //console.log(favorite);
-        /* $.each($("input[name='sport']:not(:checked)"), function(){
-            favorite2.push($(this).val());   
-            let removed = $(this).val();
-            favorite = $.grep(favorite, function(value) {
-          	  return value != removed;
-            });
-        }); */
-        
-             
-
-       // alert(favorite+ "  My favourite sports are: " + favorite.join(", "));
-       	//alert(">>"+ favorite2);
-        createDatatTable(request, favorite );
-    });
-	
-});
-
-
-function createDatatTable(request, column ){
-	console.log(column);
-	$.ajax({
-	    "url": '/api/Test/',
-	    "data" : { req : request, columns : column },
-	    "success": function (result) {
-	    	console.log(result);
-	        var tableHeaders;
-	        $.each(result.columns, function (i, val) {
-	            tableHeaders += "<th>" + val + "</th>";
-	        });
-
-	        //console.log(tableHeaders);
-	        
-	         $("#tableDiv").empty();
-	         $("#tableDiv").append('<table id="displayTable" class="display"     cellspacing="0" width="100%"><thead><tr>' + tableHeaders + '</tr></thead></table>');
-
-	         var columns = [];
-	        jQuery.each(result.columns, function (i, value) {
-	            var obj = { data: value };
-	            columns.push(obj);
-	        });
-	        
-	       /*  var obj = { data : "automationProcess"};
-	        columns.push(obj);
-	        
-	        console.log(columns); */
-
-	        var table = $('#displayTable').DataTable({
-	            data: result.data,
-	            columns: columns,
-	            dom: 'Bfrtip',
-	            buttons: [
-	                {
-	                    extend: 'excelHtml5',
-	                    title: 'Data export'
-	                },
-	                {
-	                    extend: 'pdfHtml5',
-	                    title: 'Data export'
-	                }
-	                ,
-	                {
-	                    extend: 'csvHtml5',
-	                    title: 'Data export'
-	                }
-	                ,
-	                {
-	                    extend: 'print',
-	                    title: 'Data export'
-	                }
-	            ]
-	            
-
-	        });
-	        
-	        
-	        // this is handelled in controller.
-	        $("#request").val("secondRequest");
-	        /* var table2 = $('#displayTable');
-	        addColumn(table2, 'automationProcess'); */
-	               
-
-	    },
-	    "dataType": "json"
-	});
-	
-}
-</script> -->
-
-<style type="text/css">
-
-tfoot input {
-        width: 100%;
-        padding: 3px;
-        box-sizing: border-box;
-    }
-    
-</style>
-</head>
-<body>
-<input type="hidden" id="request" value="firstRequest" />
-
-<div class="container">
-
-<!-- <table id="table_id" class="display">
-    <thead>
-        <tr>
-            <th>Column 1</th>
-            <th>Column 2</th>
-            <th>Column 3</th>
-            <th>Column 4</th>
-            <th>Column 5</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-            <td>xyz</td>
-            <td>Row 1 Data 4</td>
-            <td>Row 1 Data 5</td>
-        </tr>
-        <tr>
-            <td>Row 2 Data 1</td>
-            <td>Row 2 Data 2</td>
-            <td>Row 2 Data 3</td>
-            <td>Row 2 Data 4</td>
-            <td>abc</td>
-            
-        </tr>
-    </tbody>
-</table> -->
-
-<h3>Select your favorite sports:</h3>
-        <label><input type="checkbox" value="automationProcess" name="sport"> Automation Process</label>
-        <label><input type="checkbox" value="isActive" name="sport">Is Active</label>
-        <label><input type="checkbox" value="isWaivedOff" name="sport">Is WaivedOff</label>
-        <label><input type="checkbox" value="endDate" name="sport">EndDate</label>
-        <label><input type="checkbox" value="billingComments" name="sport">Billing Comments</label>
-        <label><input type="checkbox" value="isDevelopmentWaivedOff" name="sport">Is DevelopmentWaivedOff</label>
-        <label><input type="checkbox" value="developmentHours" name="sport">Development Hours</label>
-        <label><input type="checkbox" value="developmentCost" name="sport">Development Cost</label>
-        <!-- <label><input type="checkbox" value="" name="sport"> </label> -->
-        
-        <br>
-        <button type="button">Get Values</button>
-        <br>
-        <hr>
-<div id="tableDiv"></div>
-
-</div>
-
-
-<!-- <script type="text/javascript">
-$(document).ready( function () {
-    $('#table_id').DataTable(
-    		{
-    	        dom: 'Bfrtip',
-    	        buttons: [
-    	            'copy', 'csv', 'excel', 'pdf', 'print'
-    	        ]
-    	    }		
-    );
-} );
+<script type="text/javascript">
+	function clearFilter(){
+		window.location="/GoMyProject/getClient";
+	}
 
 </script>
- -->
+
+
+<link rel="stylesheet" type="text/css" href="css/all.css"/>
+ 
+</head>
+
+<body>
+
+<!-- to include the Navbar from fragments/nav.html -->
+<div  th:replace="fragments/nav :: navbar"></div>
+<div class="p-3 m-3">
+<br>
+<div class="container">
+
+<!-- <a th:href="@{/showFormForAdd}" class="btn btn-primary btn-sm mb-3">Add Client</a>
+
+<a th:href="@{/OnBordClient}" class="btn btn-primary btn-sm mb-3">OnBord Client</a> -->
+
+	<div class="container" th:if="${riskAggregator}">		
+		<h3 th:text="${riskAggregator} + ' Clients'"> </h3>
+	</div>
+	<hr>
+	
+</div>
+
+<div>
+	   		<form th:action="@{/getClient/search/}">
+	   			Filter : <input type="text" id="keyword" name="keyword" th:value="${keyword}"  />
+	   			&nbsp;
+	   			<label for="records">records</label>								
+				<select name="records" id="records">
+    				<option th:each="i : ${#numbers.sequence(1, 5)}" th:value="${i}" th:text="${i}" 
+      				th:selected="${i== records}"></option>
+				</select>
+				&nbsp;
+	   			<input type="submit" value="Search">
+	   			&nbsp;
+	   			<input type="button" value="Clear" onclick="clearFilter()">
+	   		</form>	   
+	   </div>
+	   <br>
+	<div class="table-responsive">
+   <table class = "table table-hover table-sm">
+			<thead class="table-primary">
+				<tr>
+					<th>
+						<a th:href="@{'/getClient/page/' + ${currentPage} + '?sortField=clientID&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}">
+							Client Id</a>
+					</th>
+					<th>
+					<a th:href="@{'/getClient/page/' + ${currentPage} + '?sortField=clientShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}">
+							Client Short Name</a>
+					</th>									
+					
+					<th>
+					<a th:href="@{'/getClient/page/' + ${currentPage} + '?sortField=modified_date&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}">
+							modified_date</a>
+					</th>
+					
+					
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="clientDetails : ${details}">
+					<td th:text="${clientDetails.clientID}"></td>
+					<td th:text="${clientDetails.clientShortName}"></td>
+					<td th:text="${clientDetails.modified_date}"></td>
+									
+				</tr>
+			</tbody>
+		</table>
+		
+		</div>
+		<hr>		
+		<div th:if = "${totalPages > 1}">
+			<div class = "row col-sm-10">
+				<div class = "col-sm-2">
+					Total Rows: [[${totalItems}]] 
+				</div>
+				<div class = "col-sm-1">
+				
+					<div class="pagination">
+					</div>
+						
+				</div>
+				<input id="linkPrefix" type="hidden" value="/GoMyProject/getClient">
+				<input id="currentPage" type="hidden" readonly th:value="${currentPage}">
+				<input id="totalPage" type="hidden" th:value="${totalPages}">
+				<input id="record" type="hidden" th:value="${records}">
+				<input id="sortField" type="hidden" th:value="${sortField}">
+				<input id="sortDir" type="hidden" th:value="${sortDir}">
+				
+				<!--   <div class = "col-sm-1">
+				
+					<a th:if="${currentPage >= totalPages}" th:href="@{'/getClient/page/' + ${currentPage - 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}} +'&records='+ ${records}">Previous</a>
+					<span th:unless="${currentPage >= totalPages}">Previous</span>
+				</div>
+				<div class = "col-sm-1">
+					<a th:if="${currentPage < totalPages}" th:href="@{'/getClient/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}} +'&records='+ ${records}">Next</a>
+					<span th:unless="${currentPage < totalPages}">Next</span>
+				</div>
+				
+				 <div class="col-sm-1">
+    				<a th:if="${currentPage < totalPages}" th:href="@{'/getClient/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}} +'&records='+ ${records}">Last</a>
+					<span th:unless="${currentPage < totalPages}">Last</span>
+   				 </div> -->
+			</div>
+		</div>
+
+
+ </div>
 </body>
 </html>
