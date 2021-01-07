@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,7 @@ import com.globeop.riskfeed.service.ClientService;
 import com.globeop.riskfeed.service.DatabasedetailsService;
 import com.globeop.riskfeed.service.FundService;
 import com.globeop.riskfeed.service.OnBordService;
+import com.globeop.riskfeed.service.PageServiceHelper;
 import com.globeop.riskfeed.service.RiskAggregatorService;
 
 @Controller
@@ -121,12 +123,47 @@ public class MainController {
    	} 
 
     // return list of clients available in Mysql DB
-    @GetMapping("/getClient")
+    @GetMapping("/getClient2")
     public String getClient(Model model) {       
     	List<ClientTable> clientList =clientService.findAll();    	
     	model.addAttribute("clients", clientList);    	
     	return "client";
     }
+    
+    @Autowired
+    PageServiceHelper thePageServiceHelper;
+    
+    @GetMapping({"/getClient", "/getClient/{id}" })
+	public String viewHomePage(@PathVariable(required = false) String id,Model model) {	
+    	//0 and 10 are initial page and default size
+    	Page page=thePageServiceHelper.getDetails(id, "clientID", "client",0,10);
+		return thePageServiceHelper.commonMethod(page, model, 1, 10, "clientID", "asc", "client");		
+	}
+ 
+ @GetMapping("/getClient/page/{pageNo}")
+	public String findPaginated(@PathVariable (value = "pageNo") int pageNo, 
+			@RequestParam("sortField") String sortField,
+			@RequestParam("sortDir") String sortDir, String id, String url,
+			@RequestParam (value="records", required=false, defaultValue="5") String records,
+			Model model) {
+		int pageSize = Integer.parseInt(records);
+		Page page=thePageServiceHelper.getDetails(id, sortField, "client",pageNo,pageSize);
+		return thePageServiceHelper.commonMethod(page, model, pageNo, Integer.parseInt(records), sortField, "asc", "client");
+		}
+    
+ @RequestMapping("/getClient/search/")	
+
+ public String search( @RequestParam (value="keyword", required=false, defaultValue="") String keyword, @RequestParam (value="records", required=false, defaultValue="5") String noOfRecords, Model model) {
+ //public String search( @RequestParam("keyword") String keyword, @RequestParam("records") String noOfRecords, Model model) {
+	 keyword=keyword.trim();
+	 //System.out.println(keyword +":"+noOfRecords);
+	 int no=Integer.parseInt(noOfRecords);
+	 Page page = thePageServiceHelper.getSearchDetails(keyword, no, "client", "clientID");	
+	 model.addAttribute("keyword",keyword);
+	 model.addAttribute("records",no);	 
+	 return thePageServiceHelper.commonMethod(page, model, 1, no, "clientID", "asc", "client");
+ }
+
     
     
     // return form to add new client
