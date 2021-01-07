@@ -42,8 +42,17 @@ public class FundTable implements Serializable{
 	@OneToMany(targetEntity = ClientOnboardTable.class, cascade = CascadeType.ALL, mappedBy="fund") 	
     private Set<ClientOnboardTable> clientOnboardSet;
 	
+	public FundTable() {
+		
+	}
 	
-	
+	public FundTable(int fundID, String fundShortName, LocalDate modified_date) {
+		super(); 
+		this.fundID = fundID;
+		this.fundShortName = fundShortName;
+		this.modified_date = modified_date;
+	}
+
 	@JsonBackReference
 	public ClientTable getClient() {
 		return client;
