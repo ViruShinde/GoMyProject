@@ -1,18 +1,22 @@
 package com.globeop.riskfeed.service;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.globeop.riskfeed.dto.TestDto;
 import com.globeop.riskfeed.entity.ClientTable;
 import com.globeop.riskfeed.repository.ClientRepository;
 
+import org.springframework.data.domain.Pageable;
+
 @Service
-public class ClientService implements CommonService<ClientTable> {
+public class ClientService implements CommonService<ClientTable>, PageableService<ClientTable> {
 
 	private ClientRepository clientRepository;
 	
@@ -106,5 +110,22 @@ public class ClientService implements CommonService<ClientTable> {
 		//return null;
 	}
 	
+	@Override
+	public Page<ClientTable> findAllPage(Pageable pageable){
+		
+		return clientRepository.findAllPageable(pageable);
+	}
+
+	@Override
+	public Page<ClientTable> findByIdPage(Pageable pageable, int id) {
+		// TODO Auto-generated method stub
+		return clientRepository.findByIdPageable(pageable, id);
+	}
+
+	@Override
+	public Page<ClientTable> getSearchDetails(Pageable pageable, String keyword) {
+		
+		return clientRepository.searchClientPageable(pageable, keyword);
+	}
 
 }
