@@ -40,7 +40,7 @@ function getPageList(totalPages, page, maxLength) {
 //Below is an example use of the above function.
 $(function () {
  // Number of items and limits the number of items per page
- var numberOfItems = $('#totalPage').val()-1;
+ var numberOfItems = $('#totalPage').val();
  var limitPerPage = 1;
  // Total pages rounded upwards
  var totalPages = Math.ceil(numberOfItems / limitPerPage);
@@ -54,6 +54,8 @@ $(function () {
  var sortField=$('#sortField').val();
  var sortDir=$('#sortDir').val();
  var linkPrefix=$('#linkPrefix').val();
+ var keyword=$('#keyword').val();
+ 
  function showPage(whichPage) {
      if (whichPage < 1 || whichPage > totalPages) return false;
      currentPage = whichPage;
@@ -65,7 +67,7 @@ $(function () {
                   .addClass(item ? "current-page" : "disabled")
                   .toggleClass("active", item == currentPage).append(
              $("<a>").addClass("page-link").attr({
-                 href: linkPrefix+"/page/"+item+"?sortField="+sortField+"&sortDir="+sortDir+"&records="+records}).text(item || "...")
+                 href: linkPrefix+"/page/"+item+"?sortField="+sortField+"&sortDir="+sortDir+"&records="+records+"&keyword="+keyword}).text(item || "...")
          ).insertBefore("#next-page");
      });
      // Disable prev/next when at first/last page:
@@ -81,11 +83,11 @@ $(function () {
  $(".pagination").append(
      $("<li>").addClass("page-item").attr({ id: "previous-page" }).append(
          $("<a>").addClass("page-link").attr({
-             href: linkPrefix+"/page/"+(parseInt(currentPage2)-1)+"?sortField="+sortField+"&sortDir="+sortDir+"&records="+records}).text("Prev")
+             href: linkPrefix+"/page/"+(parseInt(currentPage2)-1)+"?sortField="+sortField+"&sortDir="+sortDir+"&records="+records+"&keyword="+keyword}).text("Prev")
      ),
      $("<li>").addClass("page-item").attr({ id: "next-page" }).append(
          $("<a>").addClass("page-link").attr({
-             href: linkPrefix+"/page/"+(parseInt(currentPage2)+1)+"?sortField="+sortField+"&sortDir="+sortDir+"&records="+records}).text("Next")
+             href: linkPrefix+"/page/"+(parseInt(currentPage2)+1)+"?sortField="+sortField+"&sortDir="+sortDir+"&records="+records+"&keyword="+keyword}).text("Next")
      )
  );
 
