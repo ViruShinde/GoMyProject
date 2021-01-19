@@ -20,10 +20,21 @@ public interface FundTableRepository extends JpaRepository<FundTable, Integer> {
 	@Query(value= "SELECT NEW com.globeop.riskfeed.entity.FundTable(f.fundID,f.fundShortName,f.modified_date) from FundTable AS f ")
 	public Page<FundTable> findAllPageable(Pageable pageable);
 	
-	@Query(value= "SELECT NEW com.globeop.riskfeed.entity.FundTable(f.fundID,f.fundShortName,f.modified_date) from FundTable AS f where f.fundID=?1 ")
+	@Query(value= "SELECT NEW com.globeop.riskfeed.entity.FundTable(f.fundID,f.fundShortName,f.modified_date) "
+			+ " from FundTable AS f "
+			+ " LEFT JOIN ClientTable AS c " 
+			+ " on c.clientID = f.client.clientID " 
+			+ " where c.clientID=?1 ")
 	public Page<FundTable> findByIdPageable(Pageable pageable, int id);
 	
 	@Query(value= "SELECT NEW com.globeop.riskfeed.entity.FundTable(f.fundID,f.fundShortName,f.modified_date) "
 			+ "from FundTable AS f where f.fundShortName LIKE %?1% ")
 	public Page<FundTable> searchFundPageable(Pageable pageable, String keyword);
+	
+	@Query(value= "SELECT NEW com.globeop.riskfeed.entity.FundTable(f.fundID,f.fundShortName,f.modified_date) "
+			+ " from FundTable AS f "
+			+ " LEFT JOIN ClientTable AS c " 
+			+ " on c.clientID = f.client.clientID " 
+			+ " where c.clientID=?2 and f.fundShortName LIKE %?1% ")
+	public Page<FundTable> searchFundPageable(Pageable pageable, String keyword,int clientId);
 }
