@@ -121,4 +121,9 @@ public class FundService implements CommonService<FundTable>, PageableService<Fu
 		return fundTableRepository.searchFundPageable(pageable, keyword);
 	}
 	
+
+	public Page<FundTable> getSearchDetails(Pageable pageable, String keyword, int clientId) {
+		// TODO Auto-generated method stub
+		return fundTableRepository.searchFundPageable(pageable, keyword, clientId);
+	}
 }
