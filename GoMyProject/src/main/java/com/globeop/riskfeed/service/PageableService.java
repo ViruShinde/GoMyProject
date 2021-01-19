@@ -10,4 +10,6 @@ public interface PageableService<T> {
 	public Page<T> findByIdPage(Pageable pageable, int id);
 	
 	public Page<T> getSearchDetails(Pageable pageable,String keyword);
+	
+	public Page<T> getSearchDetails(Pageable pageable,String keyword, int clientId);
 }
