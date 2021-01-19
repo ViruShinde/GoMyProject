@@ -128,4 +128,10 @@ public class ClientService implements CommonService<ClientTable>, PageableServic
 		return clientRepository.searchClientPageable(pageable, keyword);
 	}
 
+	@Override
+	public Page<ClientTable> getSearchDetails(Pageable pageable, String keyword, int clientId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
