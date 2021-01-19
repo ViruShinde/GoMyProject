@@ -42,12 +42,15 @@
 </div>
 
 <div>
-	   		<form th:action="@{/getClient/search/}">
+			
+	   		<form th:action="@{/getClient/page/1}" method="get">
+	   			<input id="sortField" type="text"  name="sortField" th:value="${sortField}">
+				<input id="sortDir" type="text" name="sortDir" th:value="${sortDir}">
 	   			Filter : <input type="text" id="keyword" name="keyword" th:value="${keyword}"  />
 	   			&nbsp;
 	   			<label for="records">records</label>								
 				<select name="records" id="records">
-    				<option th:each="i : ${#numbers.sequence(1, 5)}" th:value="${i}" th:text="${i}" 
+    				<option th:each="i : ${#numbers.sequence(5, 50,5)}" th:value="${i}" th:text="${i}" 
       				th:selected="${i== records}"></option>
 				</select>
 				&nbsp;
@@ -81,7 +84,9 @@
 			<tbody>
 				<tr th:each="clientDetails : ${details}">
 					<td th:text="${clientDetails.clientID}"></td>
-					<td th:text="${clientDetails.clientShortName}"></td>
+					<!-- <td th:text="${clientDetails.clientShortName}"></td>  -->
+					<td th:if="${riskAggregator}"><a th:text="${clientDetails.clientShortName}" th:href="@{'/getFund/'+${riskAggregatorId}+'/' +${clientDetails.ClientID}}"> </a> </td>
+					<td th:unless="${riskAggregator}"><a th:text="${clientDetails.clientShortName}" th:href="@{'/getFund/' +${clientDetails.ClientID}}"> </a> </td>			
 					<td th:text="${clientDetails.modified_date}"></td>
 									
 				</tr>
@@ -104,9 +109,8 @@
 				<input id="linkPrefix" type="hidden" value="/GoMyProject/getClient">
 				<input id="currentPage" type="hidden" readonly th:value="${currentPage}">
 				<input id="totalPage" type="hidden" th:value="${totalPages}">
-				<input id="record" type="hidden" th:value="${records}">
-				<input id="sortField" type="hidden" th:value="${sortField}">
-				<input id="sortDir" type="hidden" th:value="${sortDir}">
+				<input id="record" type="hidden" th:value="${records}">				
+				
 				
 				<!--   <div class = "col-sm-1">
 				
