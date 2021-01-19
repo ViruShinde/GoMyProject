@@ -6,11 +6,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -135,37 +137,45 @@ public class MainController {
     
     @GetMapping({"/getClient", "/getClient/{id}" })
 	public String viewHomePage(@PathVariable(required = false) String id,Model model) {	
-    	//0 and 10 are initial page and default size
-    	Page page=thePageServiceHelper.getDetails(id, "clientID", "client",0,10);
-		return thePageServiceHelper.commonMethod(page, model, 1, 10, "clientID", "asc", "client");		
+    	//0 and 10 are initial page and default size    	
+    	Page page=thePageServiceHelper.getDetails("client",id,0, "clientID","asc","",10);		
+		return thePageServiceHelper.commonMethod("client",id,1,"clientID", "asc","",10,page,model);
 	}
  
  @GetMapping("/getClient/page/{pageNo}")
 	public String findPaginated(@PathVariable (value = "pageNo") int pageNo, 
-			@RequestParam("sortField") String sortField,
-			@RequestParam("sortDir") String sortDir, String id, String url,
-			@RequestParam (value="records", required=false, defaultValue="5") String records,
+			@Param("sortField") String sortField,
+			@Param("sortDir") String sortDir,
+			@PathVariable(required = false) String id, String url,
+			@RequestParam (value="records", required=false, defaultValue="10") String records,
+			@RequestParam ("keyword") String keyword,
 			Model model) {
-		int pageSize = Integer.parseInt(records);
-		Page page=thePageServiceHelper.getDetails(id, sortField, "client",pageNo,pageSize);
-		return thePageServiceHelper.commonMethod(page, model, pageNo, Integer.parseInt(records), sortField, "asc", "client");
+		int pageSize = Integer.parseInt(records);			
+		Page page=thePageServiceHelper.getDetails("client",id,pageNo, sortField,sortDir,keyword,pageSize);
+		return thePageServiceHelper.commonMethod("client",id,pageNo,sortField,sortDir,keyword,pageSize,page,model);
 		}
     
- @RequestMapping("/getClient/search/")	
-
- public String search( @RequestParam (value="keyword", required=false, defaultValue="") String keyword, @RequestParam (value="records", required=false, defaultValue="5") String noOfRecords, Model model) {
- //public String search( @RequestParam("keyword") String keyword, @RequestParam("records") String noOfRecords, Model model) {
-	 keyword=keyword.trim();
-	 //System.out.println(keyword +":"+noOfRecords);
-	 int no=Integer.parseInt(noOfRecords);
-	 Page page = thePageServiceHelper.getSearchDetails(keyword, no, "client", "clientID");	
-	 model.addAttribute("keyword",keyword);
-	 model.addAttribute("records",no);	 
-	 return thePageServiceHelper.commonMethod(page, model, 1, no, "clientID", "asc", "client");
+ // Note here ID is ClientID and not FundID
+ @GetMapping("/getFund/{id}")
+ public String getFundById(@PathVariable String id,Model model) {    
+	Page page=thePageServiceHelper.getDetails("fund",id,0, "fundID","asc","",10);		
+	return thePageServiceHelper.commonMethod("fund",id,1,"fundID", "asc","",10,page,model);
+ 	
  }
+ 
+ @GetMapping({"/getFund/page/{pageNo}", "/getFund/{id}/page/{pageNo}" })
+	public String findPaginatedFund(@PathVariable (value = "pageNo") int pageNo, 
+			@Param("sortField") String sortField,
+			@Param("sortDir") String sortDir,
+			@PathVariable(required = false) String id, String url,
+			@RequestParam (value="records", required=false, defaultValue="10") String records,
+			@RequestParam ("keyword") String keyword,
+			Model model) {
+		int pageSize = Integer.parseInt(records);		
+		Page page=thePageServiceHelper.getDetails("fund",id,pageNo, sortField,sortDir,keyword,pageSize);
+		return thePageServiceHelper.commonMethod("fund",id,pageNo,sortField,sortDir,keyword,pageSize,page,model);
+	}
 
-    
-    
     // return form to add new client
     @GetMapping("/AddClient")
     public String showFormForAdd(Model model) {   
@@ -279,17 +289,7 @@ public class MainController {
     }
     
     
-    @GetMapping("/getFund/{id}")
-    public String getFundById(@PathVariable Integer id,Model model) {    
-    	ClientTable clientTable = clientService.findById(id);
-    	List<FundTable> fundTables = fundService.findByClient(clientTable);
-//    	for(FundTable f:fundTables) {
-//    		System.out.println(f.getFundID()+">>"+f.getFundShortName());    		
-//    	}
-    	//model.addAttribute("funds", fundTables);
-    	model.addAttribute("client", clientTable);
-    	return "fund";
-    }
+  
     
     @GetMapping("/getFund/{riskAggregatorId}/{clientId}")
     public String getFundByriskAggregatorIdAndClientId(@PathVariable Integer riskAggregatorId,@PathVariable Integer clientId,Model model) {
