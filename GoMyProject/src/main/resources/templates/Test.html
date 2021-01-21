@@ -1,7 +1,7 @@
 
 <html lang="en" mlns:th="http://www.thymeleaf.org">
 <head>
-<title>Clients</title>
+<title>OnBoard Details</title>
  
 <!-- working for navbar dropdowns -->
 <script th:src="@{/webjars/jquery/jquery.js}"></script>
@@ -12,7 +12,9 @@
 
 <script type="text/javascript">
 	function clearFilter(){
-		window.location="/GoMyProject/getFund/"+document.getElementById("id").value;
+		//window.location="/GoMyProject/getOnBordedDetails/";
+		document.getElementById("keyword").value="";
+		document.getElementById("records").selectedIndex="1";
 	}
 
 </script>
@@ -27,24 +29,20 @@
 <!-- to include the Navbar from fragments/nav.html -->
 <div  th:replace="fragments/nav :: navbar"></div>
 <div class="p-3 m-3">
-<br>
+
 <div class="container">
 
 <!-- <a th:href="@{/showFormForAdd}" class="btn btn-primary btn-sm mb-3">Add Client</a>
 
 <a th:href="@{/OnBordClient}" class="btn btn-primary btn-sm mb-3">OnBord Client</a> -->
-
-	<div class="container" th:if="${riskAggregator}">		
-		<h3 th:text="${riskAggregator} + ' Clients'"> </h3>
-	</div>
-	<hr>
+	
 	
 </div>
+<div th:if="${requestFor == 'clientsByRiskAggregator'}">
 
-<div>
-	   		<form th:action="@{'/getFund/'+${id}+'/page/1'}" method="get">
-	   			<input id="sortField" type="text"  name="sortField" th:value="${sortField}">
-				<input id="sortDir" type="text" name="sortDir" th:value="${sortDir}">
+	   		<form th:action="@{'/getClientsOfRisKAggregator/'+${id}+'/page/1'}" method="get">
+	   			<input id="sortField" type="hidden"  name="sortField" th:value="${sortField}">
+				<input id="sortDir" type="hidden" name="sortDir" th:value="${sortDir}">
 	   			Filter : <input type="text" id="keyword" name="keyword" th:value="${keyword}"  />
 	   			&nbsp;	   			
 	   			<label for="records">records</label>								
@@ -57,35 +55,133 @@
 	   			&nbsp;
 	   			<input type="button" value="Clear" onclick="clearFilter()">
 	   		</form>	   
-	   </div>
+	   
+	   
+	<div class="table-responsive">
+   <table class = "table table-hover table-sm">
+			<thead class="table-primary">
+				<tr>
+					<th>						
+							Sr NO.
+					</th>
+	
+					<th>
+						<a th:href="@{'/getClientsOfRisKAggregator/'+${id}+'/page/' + ${currentPage} + '?sortField=client.clientShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records} +'&keyword='+${keyword}">
+							client Name</a>
+					</th>
+					
+					<th>					
+							Start date</a>
+					</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<tr th:each="clientOnboarded, iterationStatus : ${details}">
+					<td th:text="${iterationStatus.count}">					
+					<td> <a th:text="${clientOnboarded.clientName}" th:href="@{'/getFund/'+${clientOnboarded.riskAggregatorId}+'/' +${clientOnboarded.clientID}}"> </a> </td>			
+					<td th:text="${clientOnboarded.setUpDate}">									
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<hr>		
+		<div th:if = "${totalPages > 1}">
+			<div class = "row col-sm-10">
+				<div class = "col-sm-2">
+					Total Rows: [[${totalItems}]] 
+				</div>
+				<div class = "col-sm-1">
+				
+					<div class="pagination">
+					</div>
+						
+				</div>
+				<input id="linkPrefix" type="hidden" th:value="${'/GoMyProject/getClientsOfRisKAggregator/'+id}">
+				<input id="currentPage" type="hidden" readonly th:value="${currentPage}">
+				<input id="totalPage" type="hidden" th:value="${totalPages}">
+				<input id="record" type="hidden" th:value="${records}">				
+				<input id="id" type="hidden" th:value="${id}">
+				
+			</div>
+		</div>
+</div>
+
+<div th:if="${requestFor == 'allOnboardDetails'}">
+	   		<form th:action="@{'/getOnBordedDetails/page/1'}" method="get">
+	   			<input id="sortField" type="hidden"  name="sortField" th:value="${sortField}">
+				<input id="sortDir" type="hidden" name="sortDir" th:value="${sortDir}">
+	   			Filter : <input type="text" id="keyword" name="keyword" th:value="${keyword}"  />
+	   			&nbsp;	   			
+	   			<label for="records">records</label>								
+				<select name="records" id="records">
+    				<option th:each="i : ${#numbers.sequence(5, 50,5)}" th:value="${i}" th:text="${i}" 
+      				th:selected="${i== records}"></option>
+				</select>
+				&nbsp;
+	   			<input type="submit" value="Search">
+	   			&nbsp;
+	   			<input type="button" value="Clear" onclick="clearFilter()">
+	   		</form>	   
+	   
 	   <br>
 	<div class="table-responsive">
    <table class = "table table-hover table-sm">
 			<thead class="table-primary">
 				<tr>
-					<th>
-						<a th:href="@{'/getFund/'+${id}+'/page/' + ${currentPage} + '?sortField=fundID&sortDir=' + ${reverseSortDir}} +'&records='+ ${records} +'&keyword='+${keyword}">
-							Fund Id</a>
+					<th>						
+							Sr NO.
 					</th>
 					<th>
-					<a th:href="@{'/getFund/'+${id}+'/page/' + ${currentPage} + '?sortField=fundShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records} +'&keyword='+${keyword}">
-							Fund Short Name</a>
-					</th>									
-					
-					<th>
-					<a th:href="@{'/getFund/'+${id}+'/page/' + ${currentPage} + '?sortField=modified_date&sortDir=' + ${reverseSortDir}} +'&records='+ ${records} +'&keyword='+${keyword}">
-							modified_date</a>
+						<a th:href="@{'/getOnBordedDetails/page/' + ${currentPage} + '?sortField=riskAggregator.riskAggregatorName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records} +'&keyword='+${keyword}">
+							RiskAggregator Name</a>
 					</th>
-					
+					<th>
+						<a th:href="@{'/getOnBordedDetails/page/' + ${currentPage} + '?sortField=client.clientShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records} +'&keyword='+${keyword}">
+							client Name</a>
+					</th>
+					<th>
+						<a th:href="@{'/getOnBordedDetails/page/' + ${currentPage} + '?sortField=setUpDate&sortDir=' + ${reverseSortDir}} +'&records='+ ${records} +'&keyword='+${keyword}">
+							SetUp Date</a>
+					</th>
+					<th>
+						<a th:href="@{'/getOnBordedDetails/page/' + ${currentPage} + '?sortField=endDate&sortDir=' + ${reverseSortDir}} +'&records='+ ${records} +'&keyword='+${keyword}">
+							End Date</a>
+					</th>
+					<th>						
+							Is Billing Added
+					</th>
+					<th>
+							Add/Edit Bill Details
+					</th>																												
 					
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="fundDetails : ${details}">
-					<td th:text="${fundDetails.fundID}"></td>
-					<td th:text="${fundDetails.fundShortName}"></td>
-					<td th:text="${fundDetails.modified_date}"></td>
-									
+				<tr th:each="clientOnboarded, iterationStatus : ${details}">
+					<td th:text="${iterationStatus.count}">
+					<td th:text="${clientOnboarded.riskAggregatorName}">
+					<td> <a th:text="${clientOnboarded.clientName}" th:href="@{'/getFund/'+${clientOnboarded.riskAggregatorId}+'/' +${clientOnboarded.clientID}}"> </a> </td>			
+					<td th:text="${clientOnboarded.billStartDate}">
+					<td th:text="${clientOnboarded.billEndDate}">			
+					<td th:if="${clientOnboarded.billStartDate}"> YES </td>
+					<td th:unless="${clientOnboarded.billStartDate}"> NO </td>											
+					<td th:if="${clientOnboarded.billStartDate}"> 	
+        		
+        				<a th:href="@{/editBillDetails/(billId=${clientOnboarded.billId})}"
+					   		class="btn btn-danger"
+					   		onclick="if (!(confirm('Are you sure you want to Edit this Bill details ?'))) return false">
+							Edit <span class="fa fa-edit"></span>
+						</a>
+					</td>
+			
+					<td th:unless="${clientOnboarded.billStartDate}">		<!-- class="btn btn-link" --> 	
+        		
+        				<a th:href="@{/AddBill}" class="btn btn-info"
+					   		onclick="if (!(confirm('Are you sure you want to Add Bill details ?'))) return false">
+							Add <span class="fa fa-plus"></span>
+						</a>
+					</td>				
 				</tr>
 			</tbody>
 		</table>
@@ -103,14 +199,14 @@
 					</div>
 						
 				</div>
-				<input id="linkPrefix" type="hidden" th:value="${'/GoMyProject/getFund/'+id}">
+				<input id="linkPrefix" type="hidden" th:value="${'/GoMyProject/getOnBordedDetails'}">
 				<input id="currentPage" type="hidden" readonly th:value="${currentPage}">
 				<input id="totalPage" type="hidden" th:value="${totalPages}">
 				<input id="record" type="hidden" th:value="${records}">
 				
 				<input id="id" type="hidden" th:value="${id}">
 				
-				<!--   <div class = "col-sm-1">
+				<!--   <div class = "col-sm-1">s
 				
 					<a th:if="${currentPage >= totalPages}" th:href="@{'/getClient/page/' + ${currentPage - 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}} +'&records='+ ${records}">Previous</a>
 					<span th:unless="${currentPage >= totalPages}">Previous</span>
@@ -127,7 +223,7 @@
 			</div>
 		</div>
 
-
+</div>
  </div>
 </body>
 </html>
