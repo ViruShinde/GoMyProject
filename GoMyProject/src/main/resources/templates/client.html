@@ -27,25 +27,13 @@
 <!-- to include the Navbar from fragments/nav.html -->
 <div  th:replace="fragments/nav :: navbar"></div>
 <div class="p-3 m-3">
-<br>
-<div class="container">
 
-<!-- <a th:href="@{/showFormForAdd}" class="btn btn-primary btn-sm mb-3">Add Client</a>
-
-<a th:href="@{/OnBordClient}" class="btn btn-primary btn-sm mb-3">OnBord Client</a> -->
-
-	<div class="container" th:if="${riskAggregator}">		
-		<h3 th:text="${riskAggregator} + ' Clients'"> </h3>
-	</div>
-	<hr>
-	
-</div>
 
 <div>
 			
 	   		<form th:action="@{/getClient/page/1}" method="get">
-	   			<input id="sortField" type="text"  name="sortField" th:value="${sortField}">
-				<input id="sortDir" type="text" name="sortDir" th:value="${sortDir}">
+	   			<input id="sortField" type="hidden"  name="sortField" th:value="${sortField}">
+				<input id="sortDir" type="hidden" name="sortDir" th:value="${sortDir}">
 	   			Filter : <input type="text" id="keyword" name="keyword" th:value="${keyword}"  />
 	   			&nbsp;
 	   			<label for="records">records</label>								
@@ -65,16 +53,16 @@
 			<thead class="table-primary">
 				<tr>
 					<th>
-						<a th:href="@{'/getClient/page/' + ${currentPage} + '?sortField=clientID&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}">
+						<a th:href="@{'/getClient/page/' + ${currentPage} + '?sortField=clientID&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
 							Client Id</a>
 					</th>
 					<th>
-					<a th:href="@{'/getClient/page/' + ${currentPage} + '?sortField=clientShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}">
+					<a th:href="@{'/getClient/page/' + ${currentPage} + '?sortField=clientShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
 							Client Short Name</a>
 					</th>									
 					
 					<th>
-					<a th:href="@{'/getClient/page/' + ${currentPage} + '?sortField=modified_date&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}">
+					<a th:href="@{'/getClient/page/' + ${currentPage} + '?sortField=modified_date&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
 							modified_date</a>
 					</th>
 					
