@@ -7,6 +7,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -27,6 +29,7 @@ import com.globeop.riskfeed.entity.RiskAggregator;
 import com.globeop.riskfeed.service.ClientOnboardService;
 import com.globeop.riskfeed.service.ClientService;
 import com.globeop.riskfeed.service.OnBordService;
+import com.globeop.riskfeed.service.PageServiceHelper;
 import com.globeop.riskfeed.service.RiskAggregatorService;
 import com.globeop.riskfeed.validator.OnBordValidator;
 
@@ -57,6 +60,9 @@ public class OnboardController {
     
     @Autowired
     private OnBordValidator onBordValidator;
+    
+    @Autowired
+    PageServiceHelper thePageServiceHelper;
     
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
@@ -193,7 +199,7 @@ public class OnboardController {
     	return "OnBordDetails";
     }
     
-    @GetMapping("/getOnBordedDetails")
+    @GetMapping("/getOnBordedDetails3/")
 	 public String getDevelopmentDetails(Model model) {    
 	    	//ClientTable theClientTable = clientService.findById(clientId);
 	    	//RiskAggregator theAggregator = riskAggregatorService.findById(riskAggregatorId);
@@ -202,7 +208,51 @@ public class OnboardController {
 	    	return "OnBordDetails";
 	    }
     
-    @GetMapping("/getClientsOFRisKAggregator/{id}")
+    @GetMapping({"/getOnBordedDetails" })
+  	public String viewHomePage(@PathVariable(required = false) String id,Model model) {	
+      	//0 and 10 are initial page and default size    	
+      	Page page=thePageServiceHelper.getDetails("onboard",id,0, "clientOnboardId","asc","",10);
+      	model.addAttribute("requestFor","allOnboardDetails"); // To Differenciate All onBoardDetails with particular clients of RiskAggregator
+  		return thePageServiceHelper.commonMethod("OnBordDetails",id,1,"clientOnboardId", "asc","",10,page,model);
+  	}
+   
+     @GetMapping({"/getOnBordedDetails/page/{pageNo}" })
+  	public String findPaginated(@PathVariable (value = "pageNo") int pageNo, 
+  			@Param("sortField") String sortField,
+  			@Param("sortDir") String sortDir,
+  			@PathVariable(required = false) String id, String url,
+  			@RequestParam (value="records", required=false, defaultValue="10") String records,
+  			@RequestParam ("keyword") String keyword,
+  			Model model) {
+  		int pageSize = Integer.parseInt(records);			
+  		Page page=thePageServiceHelper.getDetails("onboard",id,pageNo, sortField,sortDir,keyword,pageSize);
+  		model.addAttribute("requestFor","allOnboardDetails"); // To Differenciate All onBoardDetails with particular clients of RiskAggregator
+  		return thePageServiceHelper.commonMethod("OnBordDetails",id,pageNo,sortField,sortDir,keyword,pageSize,page,model);
+  		}
+     
+     @GetMapping({"/getClientsOFRisKAggregator/{id}" })
+   	public String getClientsOfRisKAggregator(@PathVariable(required = false) String id,Model model) {	
+       	//0 and 10 are initial page and default size    	
+       	Page page=thePageServiceHelper.getDetails("onboard",id,0, "clientOnboardId","asc","",10);
+       	model.addAttribute("requestFor","clientsByRiskAggregator"); // To Differenciate All onBoardDetails with particular clients of RiskAggregator
+   		return thePageServiceHelper.commonMethod("OnBordDetails",id,1,"clientOnboardId", "asc","",10,page,model);
+   	}
+    
+      @GetMapping({"/getClientsOfRisKAggregator/{id}/page/{pageNo}" })
+   	public String getClientsOFRisKAggregatorPaginated(@PathVariable (value = "pageNo") int pageNo, 
+   			@Param("sortField") String sortField,
+   			@Param("sortDir") String sortDir,
+   			@PathVariable(required = false) String id, String url,
+   			@RequestParam (value="records", required=false, defaultValue="10") String records,
+   			@RequestParam ("keyword") String keyword,
+   			Model model) {
+   		int pageSize = Integer.parseInt(records);			
+   		Page page=thePageServiceHelper.getDetails("onboard",id,pageNo, sortField,sortDir,keyword,pageSize);
+   		model.addAttribute("requestFor","clientsByRiskAggregator"); // To Differenciate All onBoardDetails with particular clients of RiskAggregator
+   		return thePageServiceHelper.commonMethod("OnBordDetails",id,pageNo,sortField,sortDir,keyword,pageSize,page,model);
+   		}
+    
+    @GetMapping("/getClientsOFRisKAggregator2/{id}")
     public String getFundById(@PathVariable Integer id,Model model) {    
     	RiskAggregator theAggregator = riskAggregatorService.findById(id);
     	//List<ClientOnboardTable> clientOnboardList= theClientOnboardService.getClientsOfRiskAggregator(theAggregator);
