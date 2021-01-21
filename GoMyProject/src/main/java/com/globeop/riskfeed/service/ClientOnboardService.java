@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.globeop.riskfeed.dto.TestDto;
@@ -15,7 +17,7 @@ import com.globeop.riskfeed.entity.RiskAggregator;
 import com.globeop.riskfeed.repository.ClientOnboardRepository;
 
 @Service
-public class ClientOnboardService implements CommonService<ClientOnboardTable> {
+public class ClientOnboardService implements CommonService<ClientOnboardTable>, PageableService<ClientOnboardTable> {
 
 	@Autowired
 	private ClientOnboardRepository theClientOnboardRepository;
@@ -110,5 +112,28 @@ public class ClientOnboardService implements CommonService<ClientOnboardTable> {
 		System.out.println(t);
 		return t;
 		//return theClientOnboardRepository.getClientOnBoardBillDetails();		
+	}
+
+	@Override
+	public Page findAllPage(Pageable pageable) {			
+		return theClientOnboardRepository.findAllPageable(pageable);		
+	}
+
+	@Override
+	public Page findByIdPage(Pageable pageable, int id) {
+		
+		return theClientOnboardRepository.findClientsByRiskAggregatorPageable(pageable, id);
+	}
+
+	@Override
+	public Page getSearchDetails(Pageable pageable, String keyword) {
+		// TODO Auto-generated method stub
+		return theClientOnboardRepository.searchOnBoardPageable(pageable, keyword);
+	}
+
+	@Override
+	public Page getSearchDetails(Pageable pageable, String keyword, int id) {
+		// TODO Auto-generated method stub
+		return theClientOnboardRepository.SearchClientsByRiskAggregatorPageable(pageable,id , keyword);
 	}
 }
