@@ -75,6 +75,9 @@ public class ClientOnboardTable implements Serializable{
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate modified_date;
 	
+	public ClientOnboardTable() {
+		
+	}
 	
 	public RiskAggregator getRiskAggregator() {
 		return riskAggregator;
