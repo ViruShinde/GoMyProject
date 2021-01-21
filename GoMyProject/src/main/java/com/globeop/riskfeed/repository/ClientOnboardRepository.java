@@ -2,13 +2,15 @@ package com.globeop.riskfeed.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.globeop.riskfeed.dto.TestDto;
 import com.globeop.riskfeed.entity.ClientOnboardTable;
 import com.globeop.riskfeed.entity.ClientTable;
-
+import com.globeop.riskfeed.entity.FundTable;
 import com.globeop.riskfeed.entity.RiskAggregator;
 
 public interface ClientOnboardRepository extends JpaRepository<ClientOnboardTable, Integer> {
@@ -187,4 +189,79 @@ public interface ClientOnboardRepository extends JpaRepository<ClientOnboardTabl
 			 )
 	  
 	public List<TestDto> getClientOnBoardBillDetails(); 
+	  
+	 
+	  @Query(value=
+			  "SELECT NEW com.globeop.riskfeed.dto.TestDto("
+			  + "c.riskAggregator.riskAggregatorId,  "
+			  + "c.riskAggregator.riskAggregatorName,  "
+			  + "c.client.clientID,  "
+			  + "c.client.clientShortName, "
+			  + "b.billId, "
+			  + "b.billStartDate, "
+			  + "b.billEndDate )"
+			  
+			  + " from ClientOnboardTable AS c "
+			  
+ 			  + " LEFT JOIN BillTable AS b " 
+ 			  + " on b.client.clientID = c.client.clientID " 
+ 			  + " AND b.riskAggregator.riskAggregatorId = c.riskAggregator.riskAggregatorId "
+ 			  + " GROUP BY c.riskAggregator, c.client"
+			//  + " ORDER BY c.riskAggregator.riskAggregatorName asc"
+ 			  
+			 )
+	public Page<TestDto> findAllPageable(Pageable pageable);
+
+	  @Query(value=
+			  "SELECT NEW com.globeop.riskfeed.dto.TestDto("
+			  + "c.riskAggregator.riskAggregatorId,  "
+			  + "c.riskAggregator.riskAggregatorName,  "
+			  + "c.client.clientID,  "
+			  + "c.client.clientShortName, "
+			  + "b.billId, "
+			  + "b.billStartDate, "
+			  + "b.billEndDate )"
+			  
+			  + " from ClientOnboardTable AS c "
+			  
+ 			  + " LEFT JOIN BillTable AS b " 
+ 			  + " on b.client.clientID = c.client.clientID " 
+ 			  + " AND b.riskAggregator.riskAggregatorId = c.riskAggregator.riskAggregatorId " 			  			
+			  + " where c.riskAggregator.riskAggregatorName LIKE %?1% "
+			  + " OR c.client.clientShortName LIKE %?1%"
+			  + " GROUP BY c.riskAggregator, c.client"
+			 )
+	  	public Page<TestDto> searchOnBoardPageable(Pageable pageable, String keyword);
+	  
+
+	  @Query(value=
+			  "SELECT NEW com.globeop.riskfeed.dto.TestDto("
+			  + "c.client.clientID,  "
+			  + "c.client.clientShortName, "
+			  + "c.setUpDate  )"	
+			  
+			  + " from ClientOnboardTable AS c "
+		//	  + " left JOIN BillTable AS b on " 
+ 			//  + " b.riskAggregator.riskAggregatorId = c.riskAggregator.riskAggregatorId "
+			  + " where c.riskAggregator.riskAggregatorId =?1"
+			  + " and c.isActive = 'Active' "
+			  +" GROUP BY c.client.clientID"			  
+			 )
+	  public Page<TestDto> findClientsByRiskAggregatorPageable(Pageable pageable, int theAggregatorId);
+	  
+	  @Query(value=
+			  "SELECT NEW com.globeop.riskfeed.dto.TestDto("
+			  + "c.client.clientID,  "
+			  + "c.client.clientShortName, "
+			  + "c.setUpDate  )"	
+			  
+			  + " from ClientOnboardTable AS c "
+			//  + " left JOIN BillTable AS b on " 
+ 			//  + " b.riskAggregator.riskAggregatorId = c.riskAggregator.riskAggregatorId "
+			  + " where c.riskAggregator.riskAggregatorId =?1"
+			  + " AND c.isActive = 'Active' "
+			  + " AND c.client.clientShortName LIKE %?2%"
+			  +" GROUP BY c.client.clientID"			  
+			 )
+	  public Page<TestDto> SearchClientsByRiskAggregatorPageable(Pageable pageable, int theAggregatorId, String keyword);
 }
