@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface PageableService<T> {
 
-	public Page<T> findAllPage(Pageable pageable);
+	public Page findAllPage(Pageable pageable);
 	
 	public Page<T> findByIdPage(Pageable pageable, int id);
 	
