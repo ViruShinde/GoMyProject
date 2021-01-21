@@ -20,6 +20,9 @@ public class PageServiceHelper {
 	@Autowired
 	FundService theFundService;
 	
+	@Autowired
+	ClientOnboardService theClientOnboardService;
+	
 	private Sort sort;
 	private Pageable pageable;
 	private PageableService thePageableService;
@@ -61,8 +64,8 @@ public class PageServiceHelper {
 			model.addAttribute("details", details);
 			model.addAttribute("id", id);
 			model.addAttribute("keyword",keyword);			
-			/*System.out.println("pageNo ="+pageNo+" totalPages="+page.getTotalPages()+" totalItems="+page.getTotalElements()+
-					" sortField="+sortField+" sortDir="+sortDir+" records="+recordSize+" details="+details+" id="+id);*/
+			System.out.println("pageNo ="+pageNo+" totalPages="+page.getTotalPages()+" totalItems="+page.getTotalElements()+
+					" sortField="+sortField+" sortDir="+sortDir+" records="+recordSize+" details="+details+" id="+id);
 			return returnPage;
 	 }
 	
@@ -73,6 +76,8 @@ public class PageServiceHelper {
 			
 		}else if(requestFor.equals("fund")) {
 			thePageableService=theFundService;
+		}else if(requestFor.equals("onboard")) {
+			thePageableService=theClientOnboardService;
 		}
 		if(startPage !=0) {
 			startPage=startPage-1;
