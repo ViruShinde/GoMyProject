@@ -31,6 +31,7 @@ public class PageServiceHelper {
 		//Sort sort = "asc".equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();			
 		//Pageable pageable = PageRequest.of(0, 10, sort);
 		//PageableService thePageableService=getService(requestFor);
+		System.out.println("req "+requestFor +" ID"+id);
 		getServiceConfig(requestFor, sortField, pageNo, recordSize,sortDir);
 		Page page=null;
 		if(keyword == null || "".equals(keyword)) {
@@ -50,6 +51,25 @@ public class PageServiceHelper {
 		return page;
 		
 	}
+
+	public Page getDetails(String requestFor,String riskAggregatorId,String clientId, int pageNo,String sortField,String sortDir,String keyword, int recordSize) {
+		//Sort sort = "asc".equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();			
+		//Pageable pageable = PageRequest.of(0, 10, sort);
+		//PageableService thePageableService=getService(requestFor);
+		getServiceConfig(requestFor, sortField, pageNo, recordSize,sortDir);
+		Page page=null;
+		if(! ( (null == riskAggregatorId || "".equals(riskAggregatorId) ) && (null == clientId || "".equals(clientId) ) ) ) {
+			if(keyword == null || "".equals(keyword)) {					
+				page= theClientOnboardService.getDetails(pageable,requestFor, riskAggregatorId, clientId, pageNo, sortField, sortDir, keyword, recordSize);
+			}else {
+				page= theClientOnboardService.getSearchDetails(pageable,requestFor, riskAggregatorId, clientId, pageNo, sortField, sortDir, keyword, recordSize);
+			}
+		}
+									
+			
+		return page;
+		
+	}
 	
  public String commonMethod(String returnPage,String id, int pageNo,String sortField,String sortDir,String keyword, int recordSize, Page page, Model model) {
 		 
@@ -64,8 +84,10 @@ public class PageServiceHelper {
 			model.addAttribute("details", details);
 			model.addAttribute("id", id);
 			model.addAttribute("keyword",keyword);			
-			System.out.println("pageNo ="+pageNo+" totalPages="+page.getTotalPages()+" totalItems="+page.getTotalElements()+
+			/*
+			  System.out.println("pageNo ="+pageNo+" totalPages="+page.getTotalPages()+" totalItems="+page.getTotalElements()+
 					" sortField="+sortField+" sortDir="+sortDir+" records="+recordSize+" details="+details+" id="+id);
+			*/		
 			return returnPage;
 	 }
 	
@@ -76,7 +98,7 @@ public class PageServiceHelper {
 			
 		}else if(requestFor.equals("fund")) {
 			thePageableService=theFundService;
-		}else if(requestFor.equals("onboard")) {
+		}else if(requestFor.equals("onboard") || requestFor.equals("fundByRiskAggAndClient")) {
 			thePageableService=theClientOnboardService;
 		}
 		if(startPage !=0) {
