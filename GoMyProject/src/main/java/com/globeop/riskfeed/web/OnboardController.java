@@ -252,6 +252,36 @@ public class OnboardController {
    		return thePageServiceHelper.commonMethod("OnBordDetails",id,pageNo,sortField,sortDir,keyword,pageSize,page,model);
    		}
     
+      // Note here ID is ClientID and not FundID
+      @GetMapping("/getFund/{riskAggregatorId}/{clientId}")
+      public String getFundByRiskaggandClientId(@PathVariable String riskAggregatorId,@PathVariable String clientId,Model model) {    
+     	Page page=thePageServiceHelper.getDetails("fundByRiskAggAndClient",riskAggregatorId,clientId,0, "fund.fundShortName","asc","",10);
+     	model.addAttribute("requestFor","fundByRiskAggAndClient");
+     	model.addAttribute("riskAggregatorId",riskAggregatorId);
+     	model.addAttribute("clientId",clientId);
+     	return thePageServiceHelper.commonMethod("OnBordDetails",riskAggregatorId,1,"fund.fundShortName", "asc","",10,page,model);
+      	
+      }
+      
+      @GetMapping({"/getFund/{riskAggregatorId}/{clientId}/page/{pageNo}" })
+     	public String findFundByRiskaggandClientId(@PathVariable (value = "pageNo") int pageNo, 
+     			@Param("sortField") String sortField,
+     			@Param("sortDir") String sortDir,
+     			@PathVariable(required = false) String riskAggregatorId,
+     			@PathVariable(required = false) String clientId, String url,
+     			@RequestParam (value="records", required=false, defaultValue="10") String records,
+     			@RequestParam ("keyword") String keyword,
+     			Model model) {
+     		int pageSize = Integer.parseInt(records);		
+     		Page page=thePageServiceHelper.getDetails("fundbyRiskAggAndClient",riskAggregatorId,clientId,pageNo, sortField,sortDir,keyword,pageSize);
+     		model.addAttribute("requestFor","fundByRiskAggAndClient");
+     		model.addAttribute("riskAggregatorId",riskAggregatorId);
+     		model.addAttribute("clientId",clientId);		
+     		return thePageServiceHelper.commonMethod("OnBordDetails",riskAggregatorId,pageNo,sortField,sortDir,keyword,pageSize,page,model);
+     	}
+ 
+      
+      
     @GetMapping("/getClientsOFRisKAggregator2/{id}")
     public String getFundById(@PathVariable Integer id,Model model) {    
     	RiskAggregator theAggregator = riskAggregatorService.findById(id);
