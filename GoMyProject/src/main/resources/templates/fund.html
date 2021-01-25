@@ -12,7 +12,7 @@
 
 <script type="text/javascript">
 	function clearFilter(){
-		window.location="/GoMyProject/getFund/"+document.getElementById("id").value;
+		window.location="/GoMyProject/getFundByClient/"+document.getElementById("id").value;
 	}
 
 </script>
@@ -41,7 +41,7 @@
 </div>
 
 <div>
-	   		<form th:action="@{'/getFund/'+${id}+'/page/1'}" method="get">
+	   		<form th:action="@{'/getFundByClient/'+${id}+'/page/1'}" method="get">
 	   			<input id="sortField" type="hidden"  name="sortField" th:value="${sortField}">
 				<input id="sortDir" type="hidden" name="sortDir" th:value="${sortDir}">
 	   			Filter : <input type="text" id="keyword" name="keyword" th:value="${keyword}"  />
@@ -63,16 +63,16 @@
 			<thead class="table-primary">
 				<tr>
 					<th>
-						<a th:href="@{'/getFund/'+${id}+'/page/' + ${currentPage} + '?sortField=fundID&sortDir=' + ${reverseSortDir}} +'&records='+ ${records} +'&keyword='+${keyword}">
+						<a th:href="@{'/getFundByClient/'+${id}+'/page/' + ${currentPage} + '?sortField=fundID&sortDir=' + ${reverseSortDir}} +'&records='+ ${records} +'&keyword='+${keyword}">
 							Fund Id</a>
 					</th>
 					<th>
-					<a th:href="@{'/getFund/'+${id}+'/page/' + ${currentPage} + '?sortField=fundShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records} +'&keyword='+${keyword}">
+					<a th:href="@{'/getFundByClient/'+${id}+'/page/' + ${currentPage} + '?sortField=fundShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records} +'&keyword='+${keyword}">
 							Fund Short Name</a>
 					</th>									
 					
 					<th>
-					<a th:href="@{'/getFund/'+${id}+'/page/' + ${currentPage} + '?sortField=modified_date&sortDir=' + ${reverseSortDir}} +'&records='+ ${records} +'&keyword='+${keyword}">
+					<a th:href="@{'/getFundByClient/'+${id}+'/page/' + ${currentPage} + '?sortField=modified_date&sortDir=' + ${reverseSortDir}} +'&records='+ ${records} +'&keyword='+${keyword}">
 							modified_date</a>
 					</th>
 					
@@ -102,7 +102,7 @@
 					</div>
 						
 				</div>
-				<input id="linkPrefix" type="hidden" th:value="${'/GoMyProject/getFund/'+id}">
+				<input id="linkPrefix" type="hidden" th:value="${'/GoMyProject/getFundByClient/'+id}">
 				<input id="currentPage" type="hidden" readonly th:value="${currentPage}">
 				<input id="totalPage" type="hidden" th:value="${totalPages}">
 				<input id="record" type="hidden" th:value="${records}">
