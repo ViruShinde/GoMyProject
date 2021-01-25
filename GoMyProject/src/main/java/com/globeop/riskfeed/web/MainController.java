@@ -124,13 +124,6 @@ public class MainController {
    		return "allDetails";		
    	} 
 
-    // return list of clients available in Mysql DB
-    @GetMapping("/getClient2")
-    public String getClient(Model model) {       
-    	List<ClientTable> clientList =clientService.findAll();    	
-    	model.addAttribute("clients", clientList);    	
-    	return "client";
-    }
     
     @Autowired
     PageServiceHelper thePageServiceHelper;
@@ -156,14 +149,15 @@ public class MainController {
 		}
     
  // Note here ID is ClientID and not FundID
- @GetMapping("/getFund/{id}")
- public String getFundById(@PathVariable String id,Model model) {    
+ @GetMapping("/getFundByClient/{id}")
+ public String getFundById(@PathVariable String id,Model model) { 
+	 System.out.println("get funds "+id);
 	Page page=thePageServiceHelper.getDetails("fund",id,0, "fundID","asc","",10);		
 	return thePageServiceHelper.commonMethod("fund",id,1,"fundID", "asc","",10,page,model);
  	
  }
  
- @GetMapping({"/getFund/page/{pageNo}", "/getFund/{id}/page/{pageNo}" })
+ @GetMapping({"/getFundByClient/page/{pageNo}", "/getFundByClient/{id}/page/{pageNo}" })
 	public String findPaginatedFund(@PathVariable (value = "pageNo") int pageNo, 
 			@Param("sortField") String sortField,
 			@Param("sortDir") String sortDir,
@@ -175,6 +169,8 @@ public class MainController {
 		Page page=thePageServiceHelper.getDetails("fund",id,pageNo, sortField,sortDir,keyword,pageSize);
 		return thePageServiceHelper.commonMethod("fund",id,pageNo,sortField,sortDir,keyword,pageSize,page,model);
 	}
+
+
 
     // return form to add new client
     @GetMapping("/AddClient")
@@ -281,29 +277,6 @@ public class MainController {
    	}
     
     
-    @GetMapping("/getFund")
-    public String getFund(Model model) {           	
-    	List<FundTable> fundTables = fundService.findAll();
-    	model.addAttribute("funds", fundTables);    	
-    	return "fund";
-    }
-    
-    
-  
-    
-    @GetMapping("/getFund/{riskAggregatorId}/{clientId}")
-    public String getFundByriskAggregatorIdAndClientId(@PathVariable Integer riskAggregatorId,@PathVariable Integer clientId,Model model) {
-    	ClientTable clientTable = clientService.findById(clientId);
-    	RiskAggregator riskAggregator = riskAggregatorService.findById(riskAggregatorId);
-    	List<TestDto> testDto = theClientOnboardService.findFundsDetailsByClientAndRiskAggregator(clientId,riskAggregatorId);    	   
-    	//System.out.println("######### "+testDto);
-    	model.addAttribute("riskAggregator", riskAggregator.getRiskAggregatorName());
-    	model.addAttribute("clientName", clientTable.getClientShortName());
-    	model.addAttribute("riskAggregatorId", riskAggregator.getRiskAggregatorId());
-    	model.addAttribute("clientId", clientTable.getClientID());
-    	model.addAttribute("clientDto", testDto);
-    	return "fund";
-    }
     
     // return form to add new funds
     @GetMapping("/AddFunds")
