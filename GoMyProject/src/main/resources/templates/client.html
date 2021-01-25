@@ -74,7 +74,7 @@
 					<td th:text="${clientDetails.clientID}"></td>
 					<!-- <td th:text="${clientDetails.clientShortName}"></td>  -->
 					<td th:if="${riskAggregator}"><a th:text="${clientDetails.clientShortName}" th:href="@{'/getFund/'+${riskAggregatorId}+'/' +${clientDetails.ClientID}}"> </a> </td>
-					<td th:unless="${riskAggregator}"><a th:text="${clientDetails.clientShortName}" th:href="@{'/getFund/' +${clientDetails.ClientID}}"> </a> </td>			
+					<td th:unless="${riskAggregator}"><a th:text="${clientDetails.clientShortName}" th:href="@{'/getFundByClient/' +${clientDetails.ClientID}}"> </a> </td>			
 					<td th:text="${clientDetails.modified_date}"></td>
 									
 				</tr>
