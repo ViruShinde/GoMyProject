@@ -29,6 +29,119 @@
 <!-- to include the Navbar from fragments/nav.html -->
 <div  th:replace="fragments/nav :: navbar"></div>
 
+<div class="p-3 m-3" th:if="${requestFor == 'fundByRiskAggAndClient'}">
+
+	   		<form th:action="@{'/getFund/'+${riskAggregatorId}+'/'+${clientId}+'/page/1'}" method="get">
+	   			<input id="sortField" type="hidden"  name="sortField" th:value="${sortField}">
+				<input id="sortDir" type="hidden" name="sortDir" th:value="${sortDir}">
+	   			Filter : <input type="text" id="keyword" name="keyword" th:value="${keyword}"  />
+	   			&nbsp;	   			
+	   			<label for="records">records</label>								
+				<select name="records" id="records">
+    				<option th:each="i : ${#numbers.sequence(5, 50,5)}" th:value="${i}" th:text="${i}" 
+      				th:selected="${i== records}"></option>
+				</select>
+				&nbsp;
+	   			<input type="submit" value="Search">
+	   			&nbsp;
+	   			<input type="button" value="Clear" onclick="clearFilter()">
+	   		</form>	   
+	   
+	   
+	<div class="table-responsive">
+	<table border="1" class="table table-bordered table-hover">
+		<thead class="thead-dark">			
+			<th>Sr NO.</th>			
+			<th>
+				<a th:href="@{'/getFund/'+${riskAggregatorId}+'/'+${clientId}+'/page/' + ${currentPage} + '?sortField=client.clientShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records} +'&keyword='+${keyword}">
+					Client Name
+				</a>
+			</th>			
+			<th>
+				<a th:href="@{'/getFund/'+${riskAggregatorId}+'/'+${clientId}+'/page/' + ${currentPage} + '?sortField=fund.fundShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records} +'&keyword='+${keyword}">
+					Fund Name
+				</a>
+			</th>			
+			<th>
+				<a th:href="@{'/getFund/'+${riskAggregatorId}+'/'+${clientId}+'/page/' + ${currentPage} + '?sortField=frequency&sortDir=' + ${reverseSortDir}} +'&records='+ ${records} +'&keyword='+${keyword}">
+					Frequency
+				</a>
+			</th>			
+			<th>
+				<a th:href="@{'/getFund/'+${riskAggregatorId}+'/'+${clientId}+'/page/' + ${currentPage} + '?sortField=automationProcess&sortDir=' + ${reverseSortDir}} +'&records='+ ${records} +'&keyword='+${keyword}">
+					Automation Process
+				</a>
+			</th>			
+			<th>
+				<a th:href="@{'/getFund/'+${riskAggregatorId}+'/'+${clientId}+'/page/' + ${currentPage} + '?sortField=setUpDate&sortDir=' + ${reverseSortDir}} +'&records='+ ${records} +'&keyword='+${keyword}">
+					Setup Date
+				</a>
+			</th>			
+			<th>
+				<a th:href="@{'/getFund/'+${riskAggregatorId}+'/'+${clientId}+'/page/' + ${currentPage} + '?sortField=isActive&sortDir=' + ${reverseSortDir}} +'&records='+ ${records} +'&keyword='+${keyword}">
+					Is Active
+				</a>
+			</th>			
+			<th>
+				<a th:href="@{'/getFund/'+${riskAggregatorId}+'/'+${clientId}+'/page/' + ${currentPage} + '?sortField=comments&sortDir=' + ${reverseSortDir}} +'&records='+ ${records} +'&keyword='+${keyword}">
+					Comment
+				</a>
+			</th>			
+			<th>
+				Action
+			</th>			
+		</thead>
+		
+		<tbody>
+			<tr th:each="client,iterationStatus : ${details}">			
+			<!-- <tr th:each="fund, iterationStatus : ${client.funds}"> -->			
+			<td th:text="${iterationStatus.count}">						
+			<td th:text="${client.clientName}">
+			<!-- <td th:text="${fund.FundID}">	 -->
+			<td th:text="${client.fundName}">
+			<td th:text="${client.frequency}">
+			<td th:text="${client.automationProcess}">
+			<td th:text="${client.setUpDate}">
+			<td th:text="${client.isActive}">
+			<td th:text="${client.clientOnBoardComments}">			
+			<td><!-- <a th:href="@{'/deleteFund/' + ${client.fundID}}"class="btn btn-info btn-lg">
+          			<span class="glyphicon glyphicon-trash"></span>
+        		</a> -->
+        		
+        		<a th:href="@{/editClientOnboard/(ClientOnboardId=${client.ClientOnboardId})}"
+					   class="btn btn-danger"
+					   onclick="if (!(confirm('Are you sure you want to Edit this Fund details ?'))) return false">
+						Edit <span class="fa fa-trash"></span>
+					</a>
+			</td>
+		</tbody>
+	</table>
+	   
+	</div>
+	<hr>		
+		<div th:if = "${totalPages > 1}">
+			<div class = "row col-sm-10">
+				<div class = "col-sm-2">
+					Total Rows: [[${totalItems}]] 
+				</div>
+				<div class = "col-sm-1">
+				
+					<div class="pagination">
+					</div>
+						
+				</div>
+				<input id="linkPrefix" type="hidden" th:value="${'/GoMyProject/getFund/'+riskAggregatorId+'/'+clientId}">
+				<input id="currentPage" type="hidden" readonly th:value="${currentPage}">
+				<input id="totalPage" type="hidden" th:value="${totalPages}">
+				<input id="record" type="hidden" th:value="${records}">				
+				<input id="id" type="hidden" th:value="${id}">
+			
+				
+			</div>
+		</div>
+</div>
+
+
 <div class="p-3 m-3" th:if="${requestFor == 'clientsByRiskAggregator'}">
 			<div class="container" th:if="${riskAggregator}">		
 				<h3 th:text="${riskAggregator} + ' Clients'"> </h3>
@@ -72,7 +185,7 @@
 			<tbody>
 				<tr th:each="clientOnboarded, iterationStatus : ${details}">
 					<td th:text="${iterationStatus.count}">					
-					<td> <a th:text="${clientOnboarded.clientName}" th:href="@{'/getFund/'+${clientOnboarded.riskAggregatorId}+'/' +${clientOnboarded.clientID}}"> </a> </td>			
+					<td> <a th:text="${clientOnboarded.clientName}" th:href="@{'/getFund/'+${id}+'/' +${clientOnboarded.clientID}}"> </a> </td>			
 					<td th:text="${clientOnboarded.setUpDate}">									
 				</tr>
 			</tbody>
