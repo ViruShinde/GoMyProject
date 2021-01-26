@@ -57,10 +57,23 @@ public class RiskAggregator implements Serializable{
 	@JsonIgnore
 	@OneToMany(targetEntity = FtpServerDetails.class, cascade = CascadeType.ALL, mappedBy="riskAggregator") 	
     private Set<FtpServerDetails> ftpServerDetailsSet;
+	
 	public RiskAggregator() {		
+	
 	}
 	
 	
+	
+	public RiskAggregator(int riskAggregatorId, String riskAggregatorName, String riskAggregatorContact,
+			LocalDate modified_date) {		
+		this.riskAggregatorId = riskAggregatorId;
+		this.riskAggregatorName = riskAggregatorName;
+		this.riskAggregatorContact = riskAggregatorContact;
+		this.modified_date = modified_date;
+	}
+
+
+
 	public Set<FtpServerDetails> getFtpServerDetailsSet() {
 		return ftpServerDetailsSet;
 	}
