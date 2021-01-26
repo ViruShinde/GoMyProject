@@ -17,7 +17,7 @@ import com.globeop.riskfeed.entity.RiskAggregator;
 import com.globeop.riskfeed.repository.ClientOnboardRepository;
 
 @Service
-public class ClientOnboardService extends ClientOnBoardPageableService implements CommonService<ClientOnboardTable> {
+public class ClientOnboardService implements CommonService<ClientOnboardTable>, OnBoardPageableService {
 
 	@Autowired
 	private ClientOnboardRepository theClientOnboardRepository;
@@ -139,9 +139,7 @@ public class ClientOnboardService extends ClientOnBoardPageableService implement
 
 	@Override
 	public Page getDetails(Pageable pageable, String requestFor, String riskAggregatorId, String clientId, int pageNo, String sortField,
-			String sortDir, String keyword, int recordSize) {
-		// TODO Auto-generated method stub
-		System.out.println(" r"+riskAggregatorId+" c"+clientId);
+			String sortDir, String keyword, int recordSize) {				
 		return theClientOnboardRepository.findFundsDetailsByClientAndRiskAggregatorPageable(pageable, Integer.parseInt(riskAggregatorId), Integer.parseInt(clientId));
 	}
 	
