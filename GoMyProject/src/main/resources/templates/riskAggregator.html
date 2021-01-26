@@ -6,7 +6,7 @@
 <script th:src="@{/webjars/jquery/jquery.js}"></script>
 <link rel="stylesheet" type="text/css"  th:href="@{/css/bootstrap.min.css}"/>
 <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
-
+<script th:src="@{/js/customPagination.js}"></script>
 
 <!-- for fontawesome -->
 <link rel="stylesheet" type="text/css" th:href="@{/webjars/font-awesome/5.12.0/css/fontawesome.min.css}"/>
@@ -20,46 +20,84 @@
 <body>
 	<!-- to include the Navbar from fragments/nav.html -->
 	<div  th:replace="fragments/nav :: navbar"></div>
-<br>
-<div class="container">
 
-<!-- <a th:href="@{/showFormForAdd}" class="btn btn-primary btn-sm mb-3">Add Client</a>
+<div class="p-3 m-3">
 
-<a th:href="@{/OnBordClient}" class="btn btn-primary btn-sm mb-3">OnBord Client</a> -->
 
-<!--         <a th:href="@{/AddRiskAggregator}" class="btn btn-primary btn-sm mb-3">Add RiskAggregator</a>
-		<a th:href="@{/AddClient}" class="btn btn-primary btn-sm mb-3">Add Client</a>
-		<a th:href="@{/AddFunds}" class="btn btn-primary btn-sm mb-3">Add Funds</a>
-		<a th:href="@{/OnBordClient}" class="btn btn-primary btn-sm mb-3">OnBord Client</a> -->
-
-	<div class="container">
-	
-	<h3>RiskAggregators </h3>
-	
-	<hr>
-	
-	<table class="table table-bordered table-hover">
-		<thead class="thead-dark">
-			<th>Sr No.</th>	
-			<!-- <th>RiskAggregator Id</th> -->
-			<th>RiskAggregator  Name</th>
-			<th>RiskAggregator  Contact</th>
-			<th>Modified Date</th>
-		</thead>
+<div>
+			
+	   		<form th:action="@{/getRiskAggregator/page/1}" method="get">
+	   			<input id="sortField" type="hidden"  name="sortField" th:value="${sortField}">
+				<input id="sortDir" type="hidden" name="sortDir" th:value="${sortDir}">
+	   			Filter : <input type="text" id="keyword" name="keyword" th:value="${keyword}"  />
+	   			&nbsp;
+	   			<label for="records">records</label>								
+				<select name="records" id="records">
+    				<option th:each="i : ${#numbers.sequence(5, 50,5)}" th:value="${i}" th:text="${i}" 
+      				th:selected="${i== records}"></option>
+				</select>
+				&nbsp;
+	   			<input type="submit" value="Search">
+	   			&nbsp;
+	   			<input type="button" value="Clear" onclick="clearFilter()">
+	   		</form>	   
+	   </div>
+	   <br>
+	<div class="table-responsive">
+   <table class = "table table-hover table-sm">
+			<thead class="table-primary">
+				<tr>
+					<th>						
+						Sr No.
+					</th>
+					<th>
+					<a th:href="@{'/getRiskAggregator/page/' + ${currentPage} + '?sortField=riskAggregatorName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
+							RiskAggregator Name</a>
+					</th>	
+					<th>
+					<a th:href="@{'/getRiskAggregator/page/' + ${currentPage} + '?sortField=riskAggregatorContact&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
+							RiskAggregator Contact</a>
+					</th>								
+					
+					<th>
+					<a th:href="@{'/getRiskAggregator/page/' + ${currentPage} + '?sortField=modified_date&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
+							modified_date</a>
+					</th>
+					
+					
+				</tr>
+			</thead>
+			<tbody>				
+				<tr th:each="riskAggregator, iterationStatus : ${details}">				
+					<td th:text="${iterationStatus.count}">			
+				<td><a th:text="${riskAggregator.RiskAggregatorName}" th:href="@{'getClientsOFRisKAggregator/' +${riskAggregator.riskAggregatorId}}"> </a> </td> 
+				<td th:text="${riskAggregator.RiskAggregatorContact}">			
+				<td th:text="${riskAggregator.Modified_date}">
+			</tbody>
+		</table>
 		
-		<tbody>
-			<tr th:each="riskAggregator, iterationStatus : ${riskAggreList}">				
-			<td th:text="${iterationStatus.count}">	
-			<!-- <td th:text="${riskAggregator.id}"> -->
-			<!-- <td th:text="${riskAggregator.RiskAggregatorName}"> -->
-			<td><a th:text="${riskAggregator.RiskAggregatorName}" th:href="@{'getClientsOFRisKAggregator/' +${riskAggregator.riskAggregatorId}}"> </a> </td> 
-			<td th:text="${riskAggregator.RiskAggregatorContact}">			
-			<td th:text="${riskAggregator.Modified_date}">
-		</tbody>
-	</table>
-	
-	</div>
-</div>
+		</div>
+		<hr>		
+		<div th:if = "${totalPages > 1}">
+			<div class = "row col-sm-10">
+				<div class = "col-sm-2">
+					Total Rows: [[${totalItems}]] 
+				</div>
+				<div class = "col-sm-1">
+				
+					<div class="pagination">
+					</div>
+						
+				</div>
+				<input id="linkPrefix" type="hidden" value="/GoMyProject/getRiskAggregator">
+				<input id="currentPage" type="hidden" readonly th:value="${currentPage}">
+				<input id="totalPage" type="hidden" th:value="${totalPages}">
+				<input id="record" type="hidden" th:value="${records}">														
+			</div>
+		</div>
+
+
+ </div>
 
 </body>
 
