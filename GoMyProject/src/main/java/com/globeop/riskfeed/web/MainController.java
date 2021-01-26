@@ -128,6 +128,26 @@ public class MainController {
     @Autowired
     PageServiceHelper thePageServiceHelper;
     
+    @GetMapping({"/getRiskAggregator", "/getRiskAggregator/{id}" })
+ 	public String getRiskaggregator(@PathVariable(required = false) String id,Model model) {	
+     	//0 and 10 are initial page and default size    	
+     	Page page=thePageServiceHelper.getDetails("riskAggregator",id,0, "riskAggregatorId","asc","",10);		
+ 		return thePageServiceHelper.commonMethod("riskAggregator",id,1,"riskAggregatorId", "asc","",10,page,model);
+ 	}
+  
+     @GetMapping("/getRiskAggregator/page/{pageNo}")
+ 	public String getRiskaggregatorPaginated(@PathVariable (value = "pageNo") int pageNo, 
+ 			@Param("sortField") String sortField,
+ 			@Param("sortDir") String sortDir,
+ 			@PathVariable(required = false) String id, String url,
+ 			@RequestParam (value="records", required=false, defaultValue="10") String records,
+ 			@RequestParam ("keyword") String keyword,
+ 			Model model) {
+ 		int pageSize = Integer.parseInt(records);			
+ 		Page page=thePageServiceHelper.getDetails("riskAggregator",id,pageNo, sortField,sortDir,keyword,pageSize);
+ 		return thePageServiceHelper.commonMethod("riskAggregator",id,pageNo,sortField,sortDir,keyword,pageSize,page,model);
+ 		}
+    
     @GetMapping({"/getClient", "/getClient/{id}" })
 	public String viewHomePage(@PathVariable(required = false) String id,Model model) {	
     	//0 and 10 are initial page and default size    	
@@ -135,7 +155,7 @@ public class MainController {
 		return thePageServiceHelper.commonMethod("client",id,1,"clientID", "asc","",10,page,model);
 	}
  
- @GetMapping("/getClient/page/{pageNo}")
+    @GetMapping("/getClient/page/{pageNo}")
 	public String findPaginated(@PathVariable (value = "pageNo") int pageNo, 
 			@Param("sortField") String sortField,
 			@Param("sortDir") String sortDir,
@@ -202,15 +222,7 @@ public class MainController {
 		return "redirect:/getClient";
 	}
     
-    
- // return list of clients available in Mysql DB
-    @GetMapping("/getRiskAggregator")
-    public String getRiskAggregator(Model model) {           	
-    	List<RiskAggregator> riskAggreList = riskAggregatorService.findAll();
-    	model.addAttribute("riskAggreList", riskAggreList);    	
-    	return "riskAggregator";
-    }
-    
+      
  // return form to add new client
     @GetMapping("/AddRiskAggregator")
     public String riskAggregatorForm(Model model) {   
