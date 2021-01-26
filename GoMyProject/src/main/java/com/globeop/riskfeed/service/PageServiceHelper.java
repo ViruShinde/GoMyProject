@@ -23,6 +23,9 @@ public class PageServiceHelper {
 	@Autowired
 	ClientOnboardService theClientOnboardService;
 	
+	@Autowired
+	RiskAggregatorService theRiskAggregatorService;
+	
 	private Sort sort;
 	private Pageable pageable;
 	private PageableService thePageableService;
@@ -100,6 +103,8 @@ public class PageServiceHelper {
 			thePageableService=theFundService;
 		}else if(requestFor.equals("onboard") || requestFor.equals("fundByRiskAggAndClient")) {
 			thePageableService=theClientOnboardService;
+		}else if(requestFor.equals("riskAggregator")) {
+			thePageableService=theRiskAggregatorService;
 		}
 		if(startPage !=0) {
 			startPage=startPage-1;
