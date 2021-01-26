@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 import com.globeop.riskfeed.entity.RiskAggregator;
 import com.globeop.riskfeed.repository.RiskAggregatorRepository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 @Service
-public class RiskAggregatorService implements CommonService<RiskAggregator> {
+public class RiskAggregatorService implements CommonService<RiskAggregator>, PageableService {
 
 	private RiskAggregatorRepository riskAggregatorRepository;
 	
@@ -68,6 +70,30 @@ public class RiskAggregatorService implements CommonService<RiskAggregator> {
 	public void deleteById(int theId) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Page findAllPage(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return riskAggregatorRepository.findAllPageable(pageable);
+	}
+
+	@Override
+	public Page findByIdPage(Pageable pageable, int id) {
+		// TODO Auto-generated method stub
+		return riskAggregatorRepository.findByIdPageable(pageable, id);
+	}
+
+	@Override
+	public Page getSearchDetails(Pageable pageable, String keyword) {
+		// TODO Auto-generated method stub
+		return riskAggregatorRepository.searchRiskAggregatorPageable(pageable, keyword);
+	}
+
+	@Override
+	public Page getSearchDetails(Pageable pageable, String keyword, int clientId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
