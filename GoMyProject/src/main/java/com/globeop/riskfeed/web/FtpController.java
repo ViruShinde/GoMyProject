@@ -6,6 +6,8 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -15,11 +17,13 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.globeop.riskfeed.entity.FtpServerDetails;
 import com.globeop.riskfeed.entity.OnBordDto;
 import com.globeop.riskfeed.service.FtpService;
+import com.globeop.riskfeed.service.PageServiceHelper;
 import com.globeop.riskfeed.validator.OnBordValidator;
 
 @Controller
@@ -31,6 +35,9 @@ public class FtpController {
     
     @Autowired
     private FtpService theFtpService;
+    
+    @Autowired
+    private PageServiceHelper thePageServiceHelper;
     
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
@@ -64,7 +71,7 @@ public class FtpController {
 		}		    	
     }    
 
-    @GetMapping({"/getFtpDetails","/getFtpDetails/{id}"})
+    @GetMapping({"/getFtpDetails2","/getFtpDetails2/{id}"})
     public String GetFtpDetails(@PathVariable(required = false) Integer id,Model model) {      	
     	List<FtpServerDetails> ftpDetails = new ArrayList<FtpServerDetails>();
     	//System.out.println(" ID *************"+id);    	
@@ -78,4 +85,24 @@ public class FtpController {
     	return "ftpDetails";
     	//return "redirect:/ftp-form";
     }
+    
+    @GetMapping({"/getFtpDetails", "/getFtpDetails/{id}" })
+	public String viewHomePage(@PathVariable(required = false) String id,Model model) {	
+    	//0 and 10 are initial page and default size    	
+    	Page page=thePageServiceHelper.getDetails("ftpDetails",id,0, "ftpDetailID","asc","",10);		
+		return thePageServiceHelper.commonMethod("ftpDetails",id,1,"ftpDetailID", "asc","",10,page,model);
+	}
+ 
+    @GetMapping("/getFtpDetails/page/{pageNo}")
+	public String findPaginated(@PathVariable (value = "pageNo") int pageNo, 
+			@Param("sortField") String sortField,
+			@Param("sortDir") String sortDir,
+			@PathVariable(required = false) String id, String url,
+			@RequestParam (value="records", required=false, defaultValue="10") String records,
+			@RequestParam ("keyword") String keyword,
+			Model model) {
+		int pageSize = Integer.parseInt(records);			
+		Page page=thePageServiceHelper.getDetails("ftpDetails",id,pageNo, sortField,sortDir,keyword,pageSize);
+		return thePageServiceHelper.commonMethod("ftpDetails",id,pageNo,sortField,sortDir,keyword,pageSize,page,model);
+		}    
 }
