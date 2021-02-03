@@ -7,6 +7,7 @@
 <script th:src="@{/webjars/jquery/jquery.js}"></script>
 <link rel="stylesheet" type="text/css"  th:href="@{/css/bootstrap.min.css}"/>
 <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/customPagination.js}"></script>
 
 <link rel="stylesheet" type="text/css" href="css/all.css"/>
  
@@ -15,59 +16,116 @@
 <body>
 <!-- to include the Navbar from fragments/nav.html -->
 <div  th:replace="fragments/nav :: navbar"></div>
-<br>
-<div class="container">
 
-	<div class="container" th:if="${message}">		
-		<h3 th:text="${message}"> </h3>
-		<a th:href="@{/getFtpDetails}">View All FTP Details</a>
-	</div> 
-	
-	<hr>
-	<div class="container">
-	
-	<table class="table table-bordered table-hover">
-		<thead class="thead-dark">
-			<th>Sr No.</th>	
-			<th>Risk Aggregator</th>
-			<th>Client</th>
-			<th>Type</th>
-			<th>FTP Server Name</th>
-			<th>User Name</th>
-			<th>Password</th>
-			<th>Ftp Path</th>
-			<th>Comments</th>
-			<th>Modified Date</th>			
-		</thead>
+<div class="p-3 m-3">
 
-		<tbody>
-			<tr th:each="ftpDetail, iterationStatus : ${ftpDetails}">				
-			<td th:text="${iterationStatus.count}">	
-			<td th:text="${ftpDetail.riskAggregator.riskAggregatorName}">
-		<!-- 	<div th:if= "${ftpDetail.client = null}">
-			<td> </td> 
+
+<div>
+			
+	   		<form th:action="@{/getFtpDetails/page/1}" method="get">
+	   			<input id="sortField" type="hidden"  name="sortField" th:value="${sortField}">
+				<input id="sortDir" type="hidden" name="sortDir" th:value="${sortDir}">
+	   			Filter : <input type="text" id="keyword" name="keyword" th:value="${keyword}"  />
+	   			&nbsp;
+	   			<label for="records">records</label>								
+				<select name="records" id="records">
+    				<option th:each="i : ${#numbers.sequence(5, 50,5)}" th:value="${i}" th:text="${i}" 
+      				th:selected="${i== records}"></option>
+				</select>
+				&nbsp;
+	   			<input type="submit" value="Search">
+	   			&nbsp;
+	   			<input type="button" value="Clear" onclick="clearFilter()">
+	   		</form>	   
+	   </div>
+	   <br>
+	<div class="table-responsive">
+   <table class = "table table-hover table-sm">
+			<thead class="table-primary">
+				<tr>
+					<th>						
+						Sr No.
+					</th>
+					<th>
+					<a th:href="@{'/getFtpDetails/page/' + ${currentPage} + '?sortField=riskAggregator.riskAggregatorName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
+							Risk Aggregator</a>
+					</th>	
+					<th>
+					<a th:href="@{'/getFtpDetails/page/' + ${currentPage} + '?sortField=client.clientShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
+							Client</a>
+					</th>	
+					<th>
+					<a th:href="@{'/getFtpDetails/page/' + ${currentPage} + '?sortField=ftpType&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
+							Type</a>
+					</th>	
+					<th>
+					<a th:href="@{'/getFtpDetails/page/' + ${currentPage} + '?sortField=ftpName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
+							FTP Server Name</a>
+					</th>	
+					<th>
+					<a th:href="@{'/getFtpDetails/page/' + ${currentPage} + '?sortField=ftpUserName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
+							User Name</a>
+					</th>	
+					<th>
+					<a th:href="@{'/getFtpDetails/page/' + ${currentPage} + '?sortField=ftpPassword&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
+							Password</a>
+					</th>	
+					<th>
+					<a th:href="@{'/getFtpDetails/page/' + ${currentPage} + '?sortField=ftpPath&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
+							Ftp Path</a>
+					</th>	
+					<th>
+					<a th:href="@{'/getFtpDetails/page/' + ${currentPage} + '?sortField=comments&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
+							Comment</a>
+					</th>																
+					<th>
+					<!-- URL name does not support underscore
+					<a th:href="@{'/getFtpDetails/page/' + ${currentPage} + '?sortField=modified_date&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}"> 					
+							modified_date</a>  -->
+							modified_date
+					</th>
+					
+					
+				</tr>
+			</thead>
+			<tbody>		
+	
+				<tr th:each="ftpDeteails , iterationStatus : ${details}">				
+					<td th:text="${iterationStatus.count}">			
+					<td th:text="${ftpDeteails.riskAggregator.riskAggregatorName}">
+					<td th:text="${ftpDeteails.client.clientShortName}"> 
+					<td th:text="${ftpDeteails.ftpName}">
+					<td th:text="${ftpDeteails.ftpName}">
+					<td th:text="${ftpDeteails.ftpUserName}">
+					<td th:text="${ftpDeteails.ftpPassword}">
+					<td th:text="${ftpDeteails.ftpType}">
+					<td th:text="${ftpDeteails.comments}">			
+					<td th:text="${ftpDeteails.modified_date}">
+			</tbody>
+		</table>
+		
+		</div>
+		<hr>		
+		<div th:if = "${totalPages > 1}">
+			<div class = "row col-sm-10">
+				<div class = "col-sm-2">
+					Total Rows: [[${totalItems}]] 
+				</div>
+				<div class = "col-sm-1">
+				
+					<div class="pagination">
+					</div>
+						
+				</div>
+				<input id="linkPrefix" type="hidden" value="/GoMyProject/getFtpDetails">
+				<input id="currentPage" type="hidden" readonly th:value="${currentPage}">
+				<input id="totalPage" type="hidden" th:value="${totalPages}">
+				<input id="record" type="hidden" th:value="${records}">														
 			</div>
-			<div th:unless= "${ftpDetail.client}">			
-			<td th:text="${ftpDetail.client.clientShortName}">
-			</div> -->
-			<td th:text="${ftpDetail?.client?.clientShortName}">
-			<td th:text="${ftpDetail.ftpType}">
-			<td th:text="${ftpDetail.ftpName}">
-			<td th:text="${ftpDetail.ftpUserName}">
-			<td th:text="${ftpDetail.ftpPassword}">
-			<td th:text="${ftpDetail.ftpPath}">
-			<td th:text="${ftpDetail.comments}">
-			<td th:text="${ftpDetail.modified_date}">	
-			<!-- <td th:if="${riskAggregator}"><a th:text="${client.ClientShortName}" th:href="@{'/getFund/'+${riskAggregatorId}+'/' +${client.ClientID}}"> </a> </td>
-			<td th:unless="${riskAggregator}"><a th:text="${client.ClientShortName}" th:href="@{'/getFund/' +${client.ClientID}}"> </a> </td>
-			<td th:text="${client.Modified_date}"> -->
-		</tbody>
-	</table>
-
-	</div>
+		</div>
+ 
 </div>
 
 </body>
-
 
 </html>
