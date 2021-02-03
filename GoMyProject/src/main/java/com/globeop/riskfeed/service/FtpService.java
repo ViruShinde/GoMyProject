@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.globeop.riskfeed.dto.TestDto;
@@ -18,7 +20,7 @@ import com.globeop.riskfeed.repository.FTPPathDetailsRepository;
 import com.globeop.riskfeed.repository.FtpServerDetailsRepository;
 
 @Service
-public class FtpService  {
+public class FtpService  implements PageableService {
 	
 	@Autowired
 	FtpServerDetailsRepository theFtpServerDetailsRepository;
@@ -104,6 +106,31 @@ public class FtpService  {
 			e.printStackTrace();			
 		}
 		return result;
+	}
+
+	@Override
+	public Page findAllPage(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return theFtpServerDetailsRepository.findAll(pageable);
+	}
+
+	@Override
+	public Page findByIdPage(Pageable pageable, int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Page getSearchDetails(Pageable pageable, String keyword) {
+		// TODO Auto-generated method stub
+		//return theFtpServerDetailsRepository.searchFtpPageable(pageable, keyword);
+		return theFtpServerDetailsRepository.searchFtpPageable(pageable, keyword);
+	}
+
+	@Override
+	public Page getSearchDetails(Pageable pageable, String keyword, int clientId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	
