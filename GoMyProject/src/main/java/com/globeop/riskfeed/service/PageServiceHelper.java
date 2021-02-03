@@ -26,6 +26,9 @@ public class PageServiceHelper {
 	@Autowired
 	RiskAggregatorService theRiskAggregatorService;
 	
+	@Autowired
+	FtpService theFtpService;
+	
 	private Sort sort;
 	private Pageable pageable;
 	private PageableService thePageableService;
@@ -87,10 +90,10 @@ public class PageServiceHelper {
 			model.addAttribute("details", details);
 			model.addAttribute("id", id);
 			model.addAttribute("keyword",keyword);			
-			/*
+			
 			  System.out.println("pageNo ="+pageNo+" totalPages="+page.getTotalPages()+" totalItems="+page.getTotalElements()+
 					" sortField="+sortField+" sortDir="+sortDir+" records="+recordSize+" details="+details+" id="+id);
-			*/		
+				
 			return returnPage;
 	 }
 	
@@ -105,7 +108,10 @@ public class PageServiceHelper {
 			thePageableService=theClientOnboardService;
 		}else if(requestFor.equals("riskAggregator")) {
 			thePageableService=theRiskAggregatorService;
+		}else if(requestFor.equals("ftpDetails")) {
+			thePageableService=theFtpService;
 		}
+		
 		if(startPage !=0) {
 			startPage=startPage-1;
 		}
