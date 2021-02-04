@@ -8,6 +8,7 @@
 <script th:src="@{/webjars/jquery/jquery.js}"></script>
 <link rel="stylesheet" type="text/css"  th:href="@{/css/bootstrap.min.css}"/>
 <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/customPagination.js}"></script>
 
 
 
@@ -24,43 +25,84 @@
 <body>
 <!-- to include the Navbar from fragments/nav.html -->
 <div  th:replace="fragments/nav :: navbar"></div>
-<div class="container">
 
-<br>
 
-<h3>Development Details</h3>
+<div class="p-3 m-3">
 
-<hr>
 
-<a th:href="@{/AddClient}" class="btn btn-primary btn-sm mb-3">Add Client</a>
-<a th:href="@{/AddFunds}" class="btn btn-primary btn-sm mb-3">Add Funds</a>
-<a th:href="@{/OnBordClient}" class="btn btn-primary btn-sm mb-3">OnBord Client</a>
-
-<br>
-</div>
-	
-	<table border="1" class="table table-bordered table-hover" style="font-size:12px;">
-		<thead class="thead-dark">
-			<!-- <th>Id</th>	 -->
-			<th>Sr NO.</th>		
-			<th>Dev Id</th>	
-			<th>Client Name</th>					
-			<th>RiskAggregator Name</th>	
-			<th>Is waidOff</th>	
-			<th>Development Hours</th>
-			<th>Development Cost</th>					
-			<th>start Date</th>
-			<th>End Date</th>
-			<th>Comments </th>
-			<th>Approved mail</th>
-			<th>Modified_date</th>
-			<th>Action</th>			
-		</thead>
-		
+<div>
+			
+	   		<form th:action="@{/getDevelopmentDetails/page/1}" method="get">
+	   			<input id="sortField" type="hidden"  name="sortField" th:value="${sortField}">
+				<input id="sortDir" type="hidden" name="sortDir" th:value="${sortDir}">
+	   			Filter : <input type="text" id="keyword" name="keyword" th:value="${keyword}"  />
+	   			&nbsp;
+	   			<label for="records">records</label>								
+				<select name="records" id="records">
+    				<option th:each="i : ${#numbers.sequence(5, 50,5)}" th:value="${i}" th:text="${i}" 
+      				th:selected="${i== records}"></option>
+				</select>
+				&nbsp;
+	   			<input type="submit" value="Search">
+	   			&nbsp;
+	   			<input type="button" value="Clear" onclick="clearFilter()">
+	   		</form>	   
+	   </div>
+	   <br>
+	<div class="table-responsive">
+   <table class = "table table-hover table-sm">
+			<thead class="table-primary">
+				<tr>									
+					<th>
+						<a th:href="@{'/getDevelopmentDetails/page/' + ${currentPage} + '?sortField=developmentId&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">						
+							Dev Id</a>
+					</th>
+					<th>
+						<a th:href="@{'/getDevelopmentDetails/page/' + ${currentPage} + '?sortField=client.clientShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
+							Client Name</a>
+					</th>
+					<th>
+						<a th:href="@{'/getDevelopmentDetails/page/' + ${currentPage} + '?sortField=client.clientShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
+							RiskAggregator Name</a>
+					</th>
+					<th>
+						<a th:href="@{'/getDevelopmentDetails/page/' + ${currentPage} + '?sortField=client.clientShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
+							Is waiveddOff</a>
+					</th>
+					<th>
+						<a th:href="@{'/getDevelopmentDetails/page/' + ${currentPage} + '?sortField=client.clientShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
+							Development Hours</a>
+					</th>
+					<th>
+						<a th:href="@{'/getDevelopmentDetails/page/' + ${currentPage} + '?sortField=client.clientShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
+							Development Cost</a>
+					</th>	
+					<th>
+					<a th:href="@{'/getDevelopmentDetails/page/' + ${currentPage} + '?sortField=client.clientShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
+							start Date</a>
+					</th>
+					<th>
+					<a th:href="@{'/getDevelopmentDetails/page/' + ${currentPage} + '?sortField=client.clientShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
+							end Date</a>
+					</th>
+					<th>
+					<a th:href="@{'/getDevelopmentDetails/page/' + ${currentPage} + '?sortField=client.clientShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
+							Comments</a>
+					</th>
+					<th>
+					<a th:href="@{'/getDevelopmentDetails/page/' + ${currentPage} + '?sortField=client.clientShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
+							Approved mail</a>
+					</th>																		
+					<th>
+					<a th:href="@{'/getDevelopmentDetails/page/' + ${currentPage} + '?sortField=modified_date&sortDir=' + ${reverseSortDir}} +'&records='+ ${records}+'&keyword='+${keyword}">
+							modified_date</a>
+					</th>
+					<th>Action</th>
+					
+				</tr>
+			</thead>
 		<tbody>
-			<tr th:each="development , iterationStatus : ${developmentList}">			
-			<!-- <tr th:each="fund, iterationStatus : ${client.funds}"> -->			
-			<td th:text="${iterationStatus.count}">	
+			<tr th:each="development : ${details}">			
 			<td th:text="${development.developmentId}">			
 			<td th:text="${development.client.clientShortName}">
 			<td th:text="${development.riskAggregator.RiskAggregatorName}">
@@ -71,7 +113,7 @@
 			<td th:text="${development.endDate}">
 			<td th:text="${development.developmentComments}">
 			<td><!-- <a th:text="${development.downloadUrl}"></a> -->
-				<a th:href="${development.downloadUrl}" class="btn btn-link">	          			 
+				<a th:href="@{'/downloadFile/' + ${development.developmentId}}" class="btn btn-link">				          			 
           			<i class="fa fa-envelope" style="font-size:24px"></i>            			      		
         		</a>
 			</td>
@@ -84,11 +126,35 @@
 						<span class="fa fa-trash"></span>
 					</a>
 			</td>
-		</tbody>
-	</table>
-	
-	<button type="submit" class="btn btn-primary"><span class="fa fa-search"></span> Search</button>
-    <button type="submit" class="btn btn-danger"><span class="fa fa-trash"></span> Search</button>	
+		</tbody>	
+			
+		</table>
+		
+		</div>
+		<hr>		
+		<div th:if = "${totalPages > 1}">
+			<div class = "row col-sm-10">
+				<div class = "col-sm-2">
+					Total Rows: [[${totalItems}]] 
+				</div>
+				<div class = "col-sm-1">
+				
+					<div class="pagination">
+					</div>
+						
+				</div>
+				<input id="linkPrefix" type="hidden" value="/GoMyProject/getDevelopmentDetails">
+				<input id="currentPage" type="hidden" readonly th:value="${currentPage}">
+				<input id="totalPage" type="hidden" th:value="${totalPages}">
+				<input id="record" type="hidden" th:value="${records}">				
+											
+			</div>
+		</div>
+
+
+ </div>
+
+
 	
 
 
