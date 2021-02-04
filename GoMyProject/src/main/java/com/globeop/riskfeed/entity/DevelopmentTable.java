@@ -93,6 +93,26 @@ public class DevelopmentTable {
     
 
     
+	public DevelopmentTable(int developmentId, int developmentHours, int developmentCost, IsWaivedOff isWaivedOff,
+			LocalDate startDate, LocalDate endDate, String developmentComments, byte[] approvalMail, String fileName,
+			String fileType, ClientTable client, RiskAggregator riskAggregator, LocalDate modified_date
+			) {
+		super();
+		this.developmentId = developmentId;
+		this.developmentHours = developmentHours;
+		this.developmentCost = developmentCost;
+		this.isWaivedOff = isWaivedOff;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.developmentComments = developmentComments;
+		this.approvalMail = approvalMail;
+		this.fileName = fileName;
+		this.fileType = fileType;
+		this.client = client;
+		this.riskAggregator = riskAggregator;
+		this.modified_date = modified_date;		
+	}
+
 	public int getDevelopmentId() {
 		return developmentId;
 	}
