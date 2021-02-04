@@ -8,6 +8,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +32,7 @@ import com.globeop.riskfeed.entity.OnBordDto;
 import com.globeop.riskfeed.entity.RiskAggregator;
 import com.globeop.riskfeed.service.ClientService;
 import com.globeop.riskfeed.service.DevelopmentService;
+import com.globeop.riskfeed.service.PageServiceHelper;
 import com.globeop.riskfeed.service.RiskAggregatorService;
 import com.globeop.riskfeed.validator.OnBordValidator;
 
@@ -47,6 +50,9 @@ public class DevelopmentController {
 	
 	 @Autowired
 	 private OnBordValidator onBordValidator;
+	 
+	 @Autowired
+	 private PageServiceHelper thePageServiceHelper;
 	    
 	 @InitBinder
 	 protected void initBinder(WebDataBinder binder) {
@@ -115,7 +121,27 @@ public class DevelopmentController {
 	    	return "developmentDetails";
 	    }
 	 
-	 @GetMapping("/getDevelopmentDetails")
+	  @GetMapping({"/getDevelopmentDetails", "/getDevelopmentDetails/{id}" })
+		public String viewHomePage(@PathVariable(required = false) String id,Model model) {	
+	    	//0 and 10 are initial page and default size    	
+	    	Page page=thePageServiceHelper.getDetails("developmentDetails",id,0, "developmentId","asc","",10);		
+			return thePageServiceHelper.commonMethod("developmentDetails",id,1,"developmentId", "asc","",10,page,model);
+		}
+	 
+	    @GetMapping("/getDevelopmentDetails/page/{pageNo}")
+		public String findPaginated(@PathVariable (value = "pageNo") int pageNo, 
+				@Param("sortField") String sortField,
+				@Param("sortDir") String sortDir,
+				@PathVariable(required = false) String id, String url,
+				@RequestParam (value="records", required=false, defaultValue="10") String records,
+				@RequestParam ("keyword") String keyword,
+				Model model) {
+			int pageSize = Integer.parseInt(records);			
+			Page page=thePageServiceHelper.getDetails("developmentDetails",id,pageNo, sortField,sortDir,keyword,pageSize);
+			return thePageServiceHelper.commonMethod("developmentDetails",id,pageNo,sortField,sortDir,keyword,pageSize,page,model);
+			}    
+	 
+	 @GetMapping("/getDevelopmentDetails2")
 	 public String getDevelopmentDetails(Model model) {    
 	    	//ClientTable theClientTable = clientService.findById(clientId);
 	    	//RiskAggregator theAggregator = riskAggregatorService.findById(riskAggregatorId);
