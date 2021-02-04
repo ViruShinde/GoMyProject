@@ -29,6 +29,9 @@ public class PageServiceHelper {
 	@Autowired
 	FtpService theFtpService;
 	
+	@Autowired
+	DevelopmentService theDevelopmentService;
+	
 	private Sort sort;
 	private Pageable pageable;
 	private PageableService thePageableService;
@@ -110,6 +113,8 @@ public class PageServiceHelper {
 			thePageableService=theRiskAggregatorService;
 		}else if(requestFor.equals("ftpDetails")) {
 			thePageableService=theFtpService;
+		}else if(requestFor.equals("developmentDetails")) {
+			thePageableService=theDevelopmentService;
 		}
 		
 		if(startPage !=0) {
