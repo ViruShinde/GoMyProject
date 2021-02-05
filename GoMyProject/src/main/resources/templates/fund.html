@@ -10,12 +10,6 @@
 <script th:src="@{/js/customPagination.js}"></script>
 
 
-<script type="text/javascript">
-	function clearFilter(){
-		window.location="/GoMyProject/getFundByClient/"+document.getElementById("id").value;
-	}
-
-</script>
 
 
 <link rel="stylesheet" type="text/css" href="css/all.css"/>
@@ -27,6 +21,10 @@
 <!-- to include the Navbar from fragments/nav.html -->
 <div  th:replace="fragments/nav :: navbar"></div>
 <div class="p-3 m-3">
+
+<div class="container" th:if="${message}">		
+		<p th:text="${message}"> </p>
+</div> 
 
 <div class="container">
 
