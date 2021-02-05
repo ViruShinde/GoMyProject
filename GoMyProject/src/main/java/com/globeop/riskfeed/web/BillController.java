@@ -8,6 +8,8 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,7 @@ import com.globeop.riskfeed.entity.OnBordDto;
 import com.globeop.riskfeed.entity.RiskAggregator;
 import com.globeop.riskfeed.service.BillService;
 import com.globeop.riskfeed.service.ClientService;
+import com.globeop.riskfeed.service.PageServiceHelper;
 import com.globeop.riskfeed.service.RiskAggregatorService;
 import com.globeop.riskfeed.validator.OnBordValidator;
 
@@ -46,6 +49,9 @@ public class BillController {
 	
 	@Autowired
     private OnBordValidator onBordValidator;
+	
+	@Autowired
+	PageServiceHelper thePageServiceHelper;
     
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
@@ -78,7 +84,26 @@ public class BillController {
 			}		
 	}
 	
-	
+	 @GetMapping({"/getBillDetails", "/getBillDetails/{id}" })
+		public String viewHomePage(@PathVariable(required = false) String id,Model model) {	
+	    	//0 and 10 are initial page and default size    	
+	    	Page page=thePageServiceHelper.getDetails("billDetails",id,0, "billId","asc","",10);		
+			return thePageServiceHelper.commonMethod("billDetails",id,1,"billId", "asc","",10,page,model);
+		}
+	 
+	   @GetMapping("/getBillDetails/page/{pageNo}")
+	   	public String findPaginated(@PathVariable (value = "pageNo") int pageNo, 
+				@Param("sortField") String sortField,
+				@Param("sortDir") String sortDir,
+				@PathVariable(required = false) String id, String url,
+				@RequestParam (value="records", required=false, defaultValue="10") String records,
+				@RequestParam ("keyword") String keyword,
+				Model model) {
+			int pageSize = Integer.parseInt(records);			
+			Page page=thePageServiceHelper.getDetails("billDetails",id,pageNo, sortField,sortDir,keyword,pageSize);
+			return thePageServiceHelper.commonMethod("billDetails",id,pageNo,sortField,sortDir,keyword,pageSize,page,model);
+		}   
+	   
 	@GetMapping("/BillDetails")
     public String getBillDetails(Model model) {    
     	List<BillTable> billList= theBillService.findAll();  	
