@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,7 +24,7 @@ import com.globeop.riskfeed.repository.ClientOnboardRepository;
 import com.globeop.riskfeed.util.GenricUtil;
 
 @Service
-public class BillService implements CommonService<BillTable> {
+public class BillService implements CommonService<BillTable>, PageableService {
 	
 	@Autowired
 	private BillRepository billRepository;
@@ -166,6 +168,30 @@ public class BillService implements CommonService<BillTable> {
 		return billRepository.findById(Id)
             //.orElseThrow(() -> new MyFileNotFoundException("File not found with id " + fileId));
     		.orElseThrow(() -> new FileNotFoundException("File not found with id " + Id));
+	}
+
+	@Override
+	public Page findAllPage(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return billRepository.findAll(pageable);
+	}
+
+	@Override
+	public Page findByIdPage(Pageable pageable, int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Page getSearchDetails(Pageable pageable, String keyword) {
+		// TODO Auto-generated method stub
+		return billRepository.searchPageable(pageable, keyword);
+	}
+
+	@Override
+	public Page getSearchDetails(Pageable pageable, String keyword, int clientId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
