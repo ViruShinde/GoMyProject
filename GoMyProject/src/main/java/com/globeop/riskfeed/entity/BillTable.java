@@ -67,12 +67,12 @@ public class BillTable implements Serializable{
 	private LocalDate billEndDate;
 
 	@JsonBackReference
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.EAGER, optional = false)
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "ClientID", nullable = false)    
 	private ClientTable client;
 	
 	@JsonBackReference
-	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.EAGER,optional = false)
+	@ManyToOne(cascade=CascadeType.ALL,fetch = FetchType.LAZY,optional = false)
 	@JoinColumn(name="RiskAggregatorId", nullable = false)
 	private RiskAggregator riskAggregator;
 	
@@ -129,6 +129,67 @@ public class BillTable implements Serializable{
 		this.terminationMail = terminationMail;
 		this.terminationMailName = terminationMailName;
 	}
+
+	
+	public BillTable(int billId, int setupFee, int monthlyFee, int devlopementFee,
+			IsClientPayingOldCharges isClientPayingOldCharges, IsWaivedOff isWaivedOff, byte[] waiverMail,
+			String waiverFileName, LocalDate billStartDate, LocalDate billEndDate, ClientTable client,
+			RiskAggregator riskAggregator, String crmName, String crmailID, byte[] clientApprovalMail,
+			String clientApprovalMailName, String billingComments, int goCheckNoteId, byte[] terminationMail,
+			String terminationMailName, int fundcount, LocalDate modified_date) {
+		super();
+		this.billId = billId;
+		this.setupFee = setupFee;
+		this.monthlyFee = monthlyFee;
+		this.devlopementFee = devlopementFee;
+		this.isClientPayingOldCharges = isClientPayingOldCharges;
+		this.isWaivedOff = isWaivedOff;
+		this.waiverMail = waiverMail;
+		this.waiverFileName = waiverFileName;
+		this.billStartDate = billStartDate;
+		this.billEndDate = billEndDate;
+		this.client = client;
+		this.riskAggregator = riskAggregator;
+		this.crmName = crmName;
+		this.crmailID = crmailID;
+		this.clientApprovalMail = clientApprovalMail;
+		this.clientApprovalMailName = clientApprovalMailName;
+		this.billingComments = billingComments;
+		this.goCheckNoteId = goCheckNoteId;
+		this.terminationMail = terminationMail;
+		this.terminationMailName = terminationMailName;
+		this.fundcount = fundcount;
+		this.modified_date = modified_date;
+	}
+
+	public BillTable(BillTable billtable,ClientTable client, RiskAggregator riskAggregator) {
+		super();
+		this.billId = billtable.billId;
+		this.setupFee = billtable.setupFee;
+		this.monthlyFee = billtable.monthlyFee;
+		this.devlopementFee = billtable.devlopementFee;
+		this.isClientPayingOldCharges = billtable.isClientPayingOldCharges;
+		this.isWaivedOff = billtable.isWaivedOff;
+		this.waiverMail = billtable.waiverMail;
+		this.waiverFileName = billtable.waiverFileName;
+		this.billStartDate = billtable.billStartDate;
+		this.billEndDate = billtable.billEndDate;
+		this.client = client;
+		this.riskAggregator = riskAggregator;
+		this.crmName = billtable.crmName;
+		this.crmailID = billtable.crmailID;
+		this.clientApprovalMail = billtable.clientApprovalMail;
+		this.clientApprovalMailName = billtable.clientApprovalMailName;
+		this.billingComments = billtable.billingComments;
+		this.goCheckNoteId = billtable.goCheckNoteId;
+		this.terminationMail = billtable.terminationMail;
+		this.terminationMailName = billtable.terminationMailName;
+		this.fundcount = billtable.fundcount;
+		this.modified_date = billtable.modified_date;
+	}
+	
+	
+	
 
 	public int getBillId() {
 		return billId;
