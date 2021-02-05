@@ -315,7 +315,7 @@ public class MainController {
 			e.printStackTrace();
 			return "error";
 		}
-		return "redirect:/getFund/"+onBordDto.getClientId();
+		return "redirect:/getFundByClient/"+onBordDto.getClientId();
 	}
     
     
