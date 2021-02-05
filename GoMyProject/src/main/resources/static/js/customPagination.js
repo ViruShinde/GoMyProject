@@ -1,3 +1,9 @@
+
+function clearFilter(){		
+		document.getElementById("keyword").value="";
+		document.getElementById("records").selectedIndex="1";
+	}
+
 //Returns an array of maxLength (or less) page numbers
 //where a 0 in the returned array denotes a gap in the series.
 //Parameters:
