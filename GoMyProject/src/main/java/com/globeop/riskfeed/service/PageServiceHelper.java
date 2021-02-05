@@ -32,6 +32,9 @@ public class PageServiceHelper {
 	@Autowired
 	DevelopmentService theDevelopmentService;
 	
+	@Autowired
+	BillService theBillService;
+	
 	private Sort sort;
 	private Pageable pageable;
 	private PageableService thePageableService;
@@ -40,7 +43,7 @@ public class PageServiceHelper {
 		//Sort sort = "asc".equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();			
 		//Pageable pageable = PageRequest.of(0, 10, sort);
 		//PageableService thePageableService=getService(requestFor);
-		System.out.println("req "+requestFor +" ID"+id);
+		//System.out.println("req "+requestFor +" ID"+id);
 		getServiceConfig(requestFor, sortField, pageNo, recordSize,sortDir);
 		Page page=null;
 		if(keyword == null || "".equals(keyword)) {
@@ -115,6 +118,8 @@ public class PageServiceHelper {
 			thePageableService=theFtpService;
 		}else if(requestFor.equals("developmentDetails")) {
 			thePageableService=theDevelopmentService;
+		}else if(requestFor.equals("billDetails")) {
+			thePageableService=theBillService;
 		}
 		
 		if(startPage !=0) {
