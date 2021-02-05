@@ -19,7 +19,7 @@ public interface DevelopmentRepository extends JpaRepository<DevelopmentTable, I
 	public List<DevelopmentTable> findByClientAndRiskAggregator(ClientTable theClientTable, RiskAggregator theAggregator);
 	
 	
-
+/*
 	@Query(value= "SELECT NEW com.globeop.riskfeed.entity.DevelopmentTable(d.developmentId, d.developmentHours, d.developmentCost, d.isWaivedOff, "
 			+ "	d.startDate, d.endDate, d.developmentComments, d.approvalMail, d.fileName, "
 			+ "	d.fileType, c,r, d.modified_date ) "			
@@ -29,7 +29,7 @@ public interface DevelopmentRepository extends JpaRepository<DevelopmentTable, I
 			+ " LEFT JOIN RiskAggregator AS r " 
 			+ " on r.riskAggregatorId = d.riskAggregator.riskAggregatorId ")
 	public Page<DevelopmentTable> findAllPageable(Pageable pageable);
-
+*/
 	
 	@Query(value= "SELECT NEW com.globeop.riskfeed.entity.DevelopmentTable(d.developmentId, d.developmentHours, d.developmentCost, d.isWaivedOff, "
 			+ "	d.startDate, d.endDate, d.developmentComments, d.approvalMail, d.fileName, "
@@ -39,8 +39,8 @@ public interface DevelopmentRepository extends JpaRepository<DevelopmentTable, I
 			+ " on c.clientID = d.client.clientID "
 			+ " LEFT JOIN RiskAggregator AS r " 
 			+ " on r.riskAggregatorId = d.riskAggregator.riskAggregatorId "
-			+ " where d.developmentHours LIKE %?1% OR d.developmentCost LIKE %?1% OR d.isWaivedOff LIKE %?1% OR "
-			+ " d.startDate LIKE %?1% OR d.endDate LIKE %?1% OR d.developmentComments LIKE %?1% OR "
+			+ " where "
+			+ " d.developmentComments LIKE %?1% OR "
 			+ " c.clientShortName LIKE %?1% OR r.riskAggregatorName LIKE %?1% ")	
 	public Page<DevelopmentTable> searchPageable(Pageable pageable, String keyword);
 }
