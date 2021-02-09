@@ -76,27 +76,21 @@ public class OnBordService {
 	}
 	
 	public void addOnboardDetails(OnBordDto onBordDto) {
-		//OnBordDto [clientName=BFAM, clientId=2, riskAggregatorId=1, fundName=null, fundIds=null, setUpDate=2020-04-04, endDate=2020-04-04,
-		//automationProcess=RiskMQ, isActive=Active, comments=CCCCCCCCCCCCCCCCCC, frequency=null, 
-		//onBoardFundsList=[OnBoardFunds [fundName=FUND1, frequency=D], OnBoardFunds [fundName=FUND2, frequency=W], OnBoardFunds [fundName=FUND3, frequency=D,W,M], OnBoardFunds [fundName=FUND4, frequency=null]]]
 	
-		System.out.println("@@@@@@@@@@@@@@ Inside addOnboardDetails @@@@@@@@@@@@@@@@@@@ ");
-		
 		ClientTable client = clientService.findById(onBordDto.getClientId());
 		RiskAggregator riskAggregator = riskAggregatorService.findById(onBordDto.getRiskAggregatorId());
 		System.out.println(riskAggregator);
 		
 		List<OnBoardFunds> onBoardFundsList = onBordDto.getOnBoardFundsList();
 		
-		for(OnBoardFunds funds: onBoardFundsList) {
-			System.out.println("11111111 "+funds.getFundName());
-			FundTable fundTable = fundService.findByFundShortName(funds.getFundName());
-			System.out.println("22222222 "+fundTable.getFundShortName() + " >> "+ onBordDto.getSetUpDate() );
-			ClientOnboardTable theClientOnboardTable = new ClientOnboardTable();
-			//theClientOnboardTable.setSetUpDate(new Date());//(GenricUtil.convertStringToDate(onBordDto.getSetUpDate()));
+		// Added this call to save funds in Fundtable as well before onboarding and also checks if fund already exists.
+		addFundDetails(onBordDto);
+		
+		for(OnBoardFunds funds: onBoardFundsList) {			
+			FundTable fundTable = fundService.findByFundShortName(funds.getFundName());			
+			ClientOnboardTable theClientOnboardTable = new ClientOnboardTable();			
 			theClientOnboardTable.setSetUpDate(LocalDate.parse(onBordDto.getSetUpDate()));
-			if( !("".equalsIgnoreCase(onBordDto.getEndDate()) || null==onBordDto.getEndDate()) ) {
-				System.out.println("TRUE ");
+			if( !("".equalsIgnoreCase(onBordDto.getEndDate()) || null==onBordDto.getEndDate()) ) {				
 				theClientOnboardTable.setEndDate(LocalDate.parse(onBordDto.getEndDate()));
 			}			
 			theClientOnboardTable.setAutomationProcess(AutomationProcess.valueOf(onBordDto.getAutomationProcess()));
@@ -108,17 +102,11 @@ public class OnBordService {
 			theClientOnboardTable.setClient(client);
 			theClientOnboardTable.setRiskAggregator(riskAggregator);
 			theClientOnboardTable.setFund(fundTable);
-			
-			//client.addClientOnboard(theClientOnboardTable);			
-			//riskAggregator.addClientOnboard(theClientOnboardTable);
-			//fundTable.addClientOnboard(theClientOnboardTable);
-			
-			//fundService.save(fundTable);
+
 			
 			theClientOnboardService.save(theClientOnboardTable);
 		}
-		//clientService.save(client);
-		//riskAggregatorService.save(riskAggregator);
+
 		
 	}
 	
