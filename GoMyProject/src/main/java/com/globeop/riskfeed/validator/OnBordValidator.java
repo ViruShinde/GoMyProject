@@ -96,14 +96,15 @@ public class OnBordValidator implements Validator {
 	}
 	
 	private static void validateForm2(OnBordDto onBordDto,Errors errors) {		
-		
-		for(OnBoardFunds onBoardFunds : onBordDto.getOnBoardFundsList()){
-			if(onBoardFunds.getFrequency()==null) {
-				ValidationUtils.rejectIfEmpty(errors, "frequency", "OnBordDto.fundFrequency.empty");
-				break;
+		System.out.println("onboardDTO "+onBordDto.getAllDaily() + onBordDto.getAllMonthly() + onBordDto.getAllWeekly());
+		if(null == onBordDto.getAllDaily() && null == onBordDto.getAllWeekly() && null == onBordDto.getAllMonthly()) {
+			for(OnBoardFunds onBoardFunds : onBordDto.getOnBoardFundsList()){
+				if(onBoardFunds.getFrequency()==null) {
+					ValidationUtils.rejectIfEmpty(errors, "frequency", "OnBordDto.fundFrequency.empty");
+					break;
+				}
 			}
 		}
-		
 	    ValidationUtils.rejectIfEmpty(errors, "setUpDate", "OnBordDto.setUpDate.empty");
 	    if(onBordDto.getAutomationProcess().equals("-1") ) {
 	    	errors.rejectValue("automationProcess", "OnBordDto.automationProcess.empty");
