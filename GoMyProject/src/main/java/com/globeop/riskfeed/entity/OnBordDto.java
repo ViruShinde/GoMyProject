@@ -115,8 +115,45 @@ public class OnBordDto implements Serializable{
 	
 	private String ftpType;
 	
+	private String allMonthly;
+	
+	private String allDaily;
+	
+	private String allWeekly;
 	
 	
+	
+	
+	public String getAllMonthly() {
+		return allMonthly;
+	}
+
+
+	public void setAllMonthly(String allMonthly) {
+		this.allMonthly = allMonthly;
+	}
+
+
+	public String getAllDaily() {
+		return allDaily;
+	}
+
+
+	public void setAllDaily(String allDaily) {
+		this.allDaily = allDaily;
+	}
+
+
+	public String getAllWeekly() {
+		return allWeekly;
+	}
+
+
+	public void setAllWeekly(String allWeekly) {
+		this.allWeekly = allWeekly;
+	}
+
+
 	public int getFtpPathId() {
 		return ftpPathId;
 	}
