@@ -75,7 +75,14 @@ table, td, th {
 	});
 	 */
 	//label	value
-			
+	
+	
+
+	$('input[type="checkbox"]').click(function(){
+		frequencySelector();
+        });
+	
+	
 	$("#funds").select2({
 		  maximumSelectionLength: 2
 		});
@@ -115,9 +122,51 @@ table, td, th {
 		}	
 	});
 			
-	
+	frequencySelector();	
 	 
 });
+ 
+ function frequencySelector(){
+	 var result=false;	
+     let allCheck=document.getElementsByClassName("allCheck");            		
+
+     for(let i=0; i< allCheck.length; i++){
+			if(allCheck[i].checked == true ){
+				console.log(" inside if"+i);
+     		result=true;
+     		break;
+     	}         						
+     }
+     
+     console.log(" result "+result);
+     let freq = document.getElementsByClassName("frequency");
+     if(result == true){
+     	 
+     	 for(let i=0; i< allCheck.length; i++){
+     		 if(allCheck[i].checked == true ){
+     			//let newOption="Monthly";
+     			 //$('option[value=Monthly]', newOption).attr('selected', 'selected');
+     			 console.log("allcheck value : "+allCheck[i].value);
+     			 // if(allCheck[i].value == "Monthly"){
+     				// var newOption = new Option("Monthly", "Monthly", true, true);
+     				 for(let i=0; i< freq.length; i++){
+     					 //select[i].append(newOption);
+     					 console.log(" select "+freq[i].value);
+     					 freq[i].disabled=true;
+     				 }
+     			// }
+     			
+     		 }
+     	 }
+     	            	
+     }else{
+     	 for(let i=0; i< freq.length; i++){
+				 //select[i].append(newOption);
+				 console.log(" select "+freq[i].value);
+				 freq[i].disabled=false;
+			 }
+     }
+ }
 
 </script>
 
@@ -182,8 +231,8 @@ table, td, th {
 		<table class="table">
             <thead>
                 <tr>
-                    <th > Fund</th>
-                    <th > Frequency</th>
+                    <th> Fund</th>
+                    <th> Frequency &nbsp; &nbsp; <input type="checkbox" id="allMonthy" th:field="*{allMonthly}" class="allCheck" value="M"> All Monthly</input> &nbsp; <input type="checkbox" id="allWeekly" th:field="*{allWeekly}" class="allCheck" value="W" > All Weekly</input> &nbsp; <input type="checkbox" id="allDaily" th:field="*{allDaily}" class="allCheck" value="D"> All Daily</input></th>                    
                 </tr>
             </thead>
             <tbody>
@@ -249,7 +298,7 @@ table, td, th {
   		<br>	  		
 		<br>
 		<br>
-		<a href="/AddOnBordDetails1" class="btn btn-info col-2">Back</a> &nbsp; &nbsp; &nbsp;<button type="submit" class="btn btn-info col-2">Save</button>
+		<a href="/GoMyProject/AddOnBordDetails1" class="btn btn-info col-2">Back</a> &nbsp; &nbsp; &nbsp;<button type="submit" class="btn btn-info col-2">Save</button>
 	</form>
 
 </div>
