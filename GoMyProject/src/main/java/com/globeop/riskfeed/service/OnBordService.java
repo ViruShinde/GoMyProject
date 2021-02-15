@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.globeop.gocheck.core.FundStructureFrequency;
 import com.globeop.riskfeed.dto.OnBoardFunds;
 import com.globeop.riskfeed.entity.ClientOnboardTable;
 import com.globeop.riskfeed.entity.ClientTable;
@@ -96,7 +97,7 @@ public class OnBordService {
 			theClientOnboardTable.setAutomationProcess(AutomationProcess.valueOf(onBordDto.getAutomationProcess()));
 			theClientOnboardTable.setIsActive(IsActive.valueOf(onBordDto.getIsActive() ));
 			theClientOnboardTable.setComments(onBordDto.getComments());
-			theClientOnboardTable.setFrequency(funds.getFrequency());
+			theClientOnboardTable.setFrequency(generateFrequency(onBordDto,funds.getFrequency()));			
 			theClientOnboardTable.setModified_date(LocalDate.now());
 			
 			theClientOnboardTable.setClient(client);
@@ -108,6 +109,35 @@ public class OnBordService {
 		}
 
 		
+	}
+	
+	private String generateFrequency(OnBordDto onBordDto, String fundFrequency) {
+		String frequency="";
+		if(null == onBordDto.getAllDaily() && null == onBordDto.getAllWeekly() && null == onBordDto.getAllMonthly()) {
+			//frequency=onBordDto.getFrequency();
+			frequency=fundFrequency;
+		}else {
+			if("D".equals(onBordDto.getAllDaily())){
+				frequency+=onBordDto.getAllDaily();
+			}
+			if("W".equals(onBordDto.getAllWeekly())){
+				frequency+=onBordDto.getAllWeekly();
+			}
+			if("M".equals(onBordDto.getAllMonthly())){
+				frequency+=onBordDto.getAllMonthly();
+			}
+			
+			String tempFreq="";
+			if(frequency.length() > 1) {
+				for(int i=0;i < frequency.length();i++) {
+					tempFreq+=frequency.charAt(i)+",";
+				}
+				frequency=tempFreq.substring(0,tempFreq.length()-1);
+			}
+			
+		}
+		
+		return frequency;
 	}
 	
 	public List<ClientOnboardTable> findByClientAndRiskAggregator(ClientTable theClientTable, RiskAggregator theAggregator) {		
