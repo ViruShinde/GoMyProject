@@ -10,6 +10,9 @@
 <script th:src="@{/js/customPagination.js}"></script>
 
 
+<link rel="stylesheet" type="text/css" th:href="@{/css/tablestyle.css}"/>
+<script th:src="@{/js/tablestyle.js}"></script> 
+
 <script type="text/javascript">
 	function clearFilter(){
 		//window.location="/GoMyProject/getOnBordedDetails/";
@@ -20,7 +23,6 @@
 </script>
 
 
-<link rel="stylesheet" type="text/css" href="css/all.css"/>
  
 </head>
 
@@ -46,11 +48,13 @@
 	   			&nbsp;
 	   			<input type="button" value="Clear" onclick="clearFilter()">
 	   		</form>	   
-	   
-	   
-	<div class="table-responsive">
-	<table border="1" class="table table-bordered table-hover">
-		<thead class="thead-dark">			
+
+<div class="m-3">
+<div class="row">
+<div class="col-lg-12 mx-auto bg-white rounded shadow">
+<div class='table-cont' id='table-cont'>
+	<table class ="table table-fixed table-hover table-sm">
+		<thead class="table-primary">
 			<th>Sr NO.</th>			
 			<th>
 				<a th:href="@{'/getFund/'+${riskAggregatorId}+'/'+${clientId}+'/page/' + ${currentPage} + '?sortField=client.clientShortName&sortDir=' + ${reverseSortDir}} +'&records='+ ${records} +'&keyword='+${keyword}">
@@ -118,13 +122,16 @@
 	</table>
 	   
 	</div>
+	</div>
+	</div>
+	</div>
 	<hr>		
-		<div th:if = "${totalPages > 1}">
+		<div>
 			<div class = "row col-sm-10">
 				<div class = "col-sm-2">
 					Total Rows: [[${totalItems}]] 
 				</div>
-				<div class = "col-sm-1">
+				<div th:if = "${totalPages > 1}" class = "col-sm-1">
 				
 					<div class="pagination">
 					</div>
@@ -160,10 +167,12 @@
 	   			<input type="submit" value="Search">
 	   			&nbsp;
 	   			<input type="button" value="Clear" onclick="clearFilter()">
-	   		</form>	   
-	   
-	   
-	<div class="table-responsive">
+	   		</form>
+
+<div class="m-3">
+<div class="row">
+<div class="col-lg-12 mx-auto bg-white rounded shadow">
+<div class='table-cont' id='table-cont'>
    <table class = "table table-hover table-sm">
 			<thead class="table-primary">
 				<tr>
@@ -191,10 +200,13 @@
 			</tbody>
 		</table>
 	</div>
+	</div>
+	</div>
+	</div>
 	<hr>		
-		<div th:if = "${totalPages > 1}">
+		<div>
 			<div class = "row col-sm-10">
-				<div class = "col-sm-2">
+				<div th:if = "${totalPages > 1}" class = "col-sm-2">
 					Total Rows: [[${totalItems}]] 
 				</div>
 				<div class = "col-sm-1">
@@ -229,8 +241,10 @@
 	   			&nbsp;
 	   			<input type="button" value="Clear" onclick="clearFilter()">
 	   		</form>	   
-	   	   
-	<div class="table-responsive">
+<div class="m-3">
+<div class="row">
+<div class="col-lg-12 mx-auto bg-white rounded shadow">
+<div class='table-cont' id='table-cont'>
    <table class = "table table-hover table-sm">
 			<thead class="table-primary">
 				<tr>
@@ -292,13 +306,16 @@
 		</table>
 		
 		</div>
+		</div>
+		</div>
+		</div>
 		<hr>		
-		<div th:if = "${totalPages > 1}">
+		<div>
 			<div class = "row col-sm-10">
 				<div class = "col-sm-2">
 					Total Rows: [[${totalItems}]] 
 				</div>
-				<div class = "col-sm-1">
+				<div th:if = "${totalPages > 1}" class = "col-sm-1">
 				
 					<div class="pagination">
 					</div>
@@ -329,6 +346,5 @@
 		</div>
 
 </div>
- </div>
 </body>
 </html>
