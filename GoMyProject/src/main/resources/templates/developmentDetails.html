@@ -10,7 +10,8 @@
 <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
 <script th:src="@{/js/customPagination.js}"></script>
 
-
+<link rel="stylesheet" type="text/css" th:href="@{/css/tablestyle.css}"/>
+<script th:src="@{/js/tablestyle.js}"></script> 
 
 
 <!-- for fontawesome -->
@@ -28,10 +29,6 @@
 
 
 <div class="p-3 m-3">
-
-
-<div>
-			
 	   		<form th:action="@{/getDevelopmentDetails/page/1}" method="get">
 	   			<input id="sortField" type="hidden"  name="sortField" th:value="${sortField}">
 				<input id="sortDir" type="hidden" name="sortDir" th:value="${sortDir}">
@@ -46,10 +43,12 @@
 	   			<input type="submit" value="Search">
 	   			&nbsp;
 	   			<input type="button" value="Clear" onclick="clearFilter()">
-	   		</form>	   
-	   </div>
-	   <br>
-	<div class="table-responsive">
+	   		</form>
+	   			   
+<div class="m-3">
+<div class="row">
+<div class="col-lg-12 mx-auto bg-white rounded shadow">
+<div class='table-cont' id='table-cont'>
    <table class = "table table-hover table-sm">
 			<thead class="table-primary">
 				<tr>									
@@ -131,6 +130,8 @@
 		</table>
 		
 		</div>
+		</div>
+		</div>
 		<hr>		
 		<div th:if = "${totalPages > 1}">
 			<div class = "row col-sm-10">
@@ -153,7 +154,7 @@
 
 
  </div>
-
+</div>
 
 	
 
