@@ -112,7 +112,7 @@ $("#frequency").select2({
 		<input type="text" th:field="*{comments}" placeholder="Comments" class="form-control mb-4 col-4">
 		
 		Setup Date
-		<input type="text" th:field="*{setUpDate}"  class="form-control mb-4 col-4" readonly>
+		<input type="date" th:field="*{setUpDate}"  class="form-control mb-4 col-4"> <!-- removed readonly to enter correct setup date. make it readonly after all insert -->
 	
 		
 		End Date
