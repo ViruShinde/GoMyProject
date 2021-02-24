@@ -144,7 +144,7 @@
 			
 			<td th:if="${bill.clientApprovalMailName == ''}"> </td>	
 			<td th:unless="${#strings.isEmpty(bill.clientApprovalMailName)}">
-				<a th:href="${bill.clientApprovalMailUrl}" class="btn btn-link">	          			 
+				<a th:href="@{'/ClientApprovalMail/' + ${bill.billId} }"  class="btn btn-link">	          			 
           			<i class="fa fa-envelope" style="font-size:24px"></i>            			      		
         		</a>			
 			</td>
@@ -152,7 +152,7 @@
 			
 			<td th:if="${bill.waiverFileName == '' }"> </td>
 			<td th:unless="${#strings.isEmpty(bill.waiverFileName)}">
-				<a th:href="${bill.waiverMailUrl}" class="btn btn-link">	          			 
+				<a th:href="@{'/WaiverMail/' + ${bill.billId} }"  class="btn btn-link">	          			 
           			<i class="fa fa-envelope" style="font-size:24px"></i>            			      		
         		</a>
 			</td>
@@ -160,7 +160,7 @@
 			<td th:if="${bill.terminationMailName == ''}">				
 			</td>
 			<td th:unless="${#strings.isEmpty(bill.terminationMailName)}">
-				<a th:href="${bill.terminationMailUrl}" class="btn btn-link">	          			 
+				<a th:href="@{'/TerminationMail/' + ${bill.billId} }"  class="btn btn-link">	          			 
           			<i class="fa fa-envelope" style="font-size:24px"></i>            			      		
         		</a>
 			</td>
