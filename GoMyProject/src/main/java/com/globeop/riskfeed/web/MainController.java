@@ -96,6 +96,14 @@ public class MainController {
 		return "database";		
 	}
     
+    @RequestMapping("/mySql-UAT")
+	public String mySqlUat (Model model) {				
+		model.addAttribute("database", "G2O");
+    	model.addAttribute("env", "MYSQL-UAT");
+    	model.addAttribute("servers", theDatabasedetailsService.findByEnvironment("MYSQL-UAT"));		
+		return "database";	
+	}
+    
     @RequestMapping("/g2o-UAT")
 	public String g2OUat (Model model) {	
     	model.addAttribute("database", "G2O");
