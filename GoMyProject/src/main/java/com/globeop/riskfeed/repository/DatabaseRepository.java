@@ -101,6 +101,11 @@ public class DatabaseRepository {
 		//String query="show databases";
 		//for sybase
 		String query="sp_databases";
+		String field="database_name";
+		if(dbDetails.getEnvironment().contains("MYSQL")) {
+			query="show databases";
+			field="Database";
+		}
 		
 		List databaseList=new ArrayList();
 		try {
@@ -108,7 +113,7 @@ public class DatabaseRepository {
 		PreparedStatement pstmt=conn.prepareStatement(query);
 		ResultSet rs=pstmt.executeQuery();
 		while(rs.next()) {
-			databaseList.add(rs.getString("database_name"));
+			databaseList.add(rs.getString(field));
 		}
 		}catch (Exception e) {
 			// TODO: handle exception
@@ -124,6 +129,12 @@ public class DatabaseRepository {
 		//String query="show tables";
 		//for sybase
 		String query="sp_tables";
+		String field="table_name";
+		if(dbDetails.getEnvironment().contains("MYSQL")) {
+			query="show tables";
+			field="Tables_in_"+dbName;
+		}
+		
 		List databaseList=new ArrayList();
 		try {
 			System.out.println(dbDetails);
@@ -132,7 +143,7 @@ public class DatabaseRepository {
 		ResultSet rs=pstmt.executeQuery();
 		while(rs.next()) {
 			// mysql databaseList.add(rs.getString("Tables_in_"+dbName));
-			databaseList.add(rs.getString("table_name"));
+			databaseList.add(rs.getString(field));
 		}
 		}catch (Exception e) {
 			// TODO: handle exception
